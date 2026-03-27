@@ -469,13 +469,15 @@ fetch('viz_data.json')
       });
     })();
 
-    // ── Decades ──
+    // ── Across The Decades ──
     (function() {
       var grid = document.getElementById('decades-grid');
-      if (!DATA.decades) return;
-      var allDecades = Object.keys(DATA.decades).sort();
+      if (!DATA.musicDecades) return;
+      var allDecades = Object.keys(DATA.musicDecades).sort();
+      var maxPlays = Math.max.apply(null, allDecades.map(function(dec) { return DATA.musicDecades[dec].plays; }));
+
       allDecades.forEach(function(dec) {
-        var ddata = DATA.decades[dec];
+        var ddata = DATA.musicDecades[dec];
         var card = document.createElement('div');
         card.className = 'decade-card';
 
@@ -484,26 +486,27 @@ fetch('viz_data.json')
         label.textContent = dec;
         card.appendChild(label);
 
-        var years = document.createElement('div');
-        years.className = 'dc-years';
-        years.textContent = ddata.years[0] + '\u2013' + ddata.years[ddata.years.length - 1];
-        card.appendChild(years);
+        var stats = document.createElement('div');
+        stats.className = 'dc-years';
+        stats.textContent = ddata.plays.toLocaleString() + ' plays \u00B7 ' + ddata.artist_count + ' artists';
+        card.appendChild(stats);
 
-        var maxWeight = ddata.top_genres.length > 0 ? ddata.top_genres[0].weight : 1;
-        ddata.top_genres.forEach(function(g) {
-          var row = document.createElement('div');
-          row.className = 'dc-genre';
-          var bar = document.createElement('div');
-          bar.className = 'dc-bar';
-          bar.style.width = Math.round((g.weight / maxWeight) * 120) + 'px';
-          bar.style.background = COLORS[g.genre] || '#555';
-          row.appendChild(bar);
-          var name = document.createElement('span');
-          name.className = 'dc-genre-name';
-          name.textContent = g.genre;
-          row.appendChild(name);
-          card.appendChild(row);
-        });
+        // Bar showing relative weight
+        var barRow = document.createElement('div');
+        barRow.className = 'dc-genre';
+        var bar = document.createElement('div');
+        bar.className = 'dc-bar';
+        bar.style.width = Math.round((ddata.plays / maxPlays) * 160) + 'px';
+        bar.style.background = '#ff6b35';
+        barRow.appendChild(bar);
+        card.appendChild(barRow);
+
+        // Sample artists
+        var sample = document.createElement('div');
+        sample.className = 'dc-years';
+        sample.style.marginTop = '0.5rem';
+        sample.textContent = ddata.sample_artists.join(', ');
+        card.appendChild(sample);
 
         grid.appendChild(card);
       });
