@@ -200,7 +200,7 @@ fetch('viz_data.json')
         .selectAll("text").data(years).join("text")
         .attr("x", function(d) { return x(d); }).attr("text-anchor", "middle").attr("dy", 12)
         .style("fill", "#555").style("font-size", "11px")
-        .style("font-family", "'Space Mono', monospace")
+        .style("font-family", "'JetBrains Mono', monospace")
         .text(function(d) { return "'" + d.slice(-2); });
 
       var legend = d3.select("#stream-legend");
@@ -292,7 +292,7 @@ fetch('viz_data.json')
         .selectAll("text").data(years).join("text")
         .attr("x", function(d) { return x(d); }).attr("text-anchor", "middle").attr("dy", 12)
         .style("fill", "#555").style("font-size", "11px")
-        .style("font-family", "'Space Mono', monospace")
+        .style("font-family", "'JetBrains Mono', monospace")
         .text(function(d) { return "'" + d.slice(-2); });
 
       multiYear.forEach(function(entry) {
@@ -338,7 +338,7 @@ fetch('viz_data.json')
           .attr("x", -10).attr("y", y(name))
           .attr("text-anchor", "end").attr("dy", "0.35em")
           .style("fill", color).style("font-size", "10px")
-          .style("font-family", "'Space Mono', monospace")
+          .style("font-family", "'JetBrains Mono', monospace")
           .text(name);
       });
     })();
