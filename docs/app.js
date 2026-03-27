@@ -123,7 +123,7 @@ fetch('viz_data.json')
         titleDiv.textContent = a.input_album;
         info.appendChild(titleDiv);
 
-        if (a.preview) {
+        if (a.preview_track) {
           var btn = document.createElement('button');
           btn.className = 'ac-play';
           var trackName = a.preview_track.length > 30 ? a.preview_track.slice(0, 28) + '\u2026' : a.preview_track;
@@ -470,6 +470,46 @@ fetch('viz_data.json')
       });
     })();
 
+    // ── Decades ──
+    (function() {
+      var grid = document.getElementById('decades-grid');
+      if (!DATA.decades) return;
+      var allDecades = Object.keys(DATA.decades).sort();
+      allDecades.forEach(function(dec) {
+        var ddata = DATA.decades[dec];
+        var card = document.createElement('div');
+        card.className = 'decade-card';
+
+        var label = document.createElement('div');
+        label.className = 'dc-label';
+        label.textContent = dec;
+        card.appendChild(label);
+
+        var years = document.createElement('div');
+        years.className = 'dc-years';
+        years.textContent = ddata.years[0] + '\u2013' + ddata.years[ddata.years.length - 1];
+        card.appendChild(years);
+
+        var maxWeight = ddata.top_genres.length > 0 ? ddata.top_genres[0].weight : 1;
+        ddata.top_genres.forEach(function(g) {
+          var row = document.createElement('div');
+          row.className = 'dc-genre';
+          var bar = document.createElement('div');
+          bar.className = 'dc-bar';
+          bar.style.width = Math.round((g.weight / maxWeight) * 120) + 'px';
+          bar.style.background = COLORS[g.genre] || '#555';
+          row.appendChild(bar);
+          var name = document.createElement('span');
+          name.className = 'dc-genre-name';
+          name.textContent = g.genre;
+          row.appendChild(name);
+          card.appendChild(row);
+        });
+
+        grid.appendChild(card);
+      });
+    })();
+
     // ── Fun Facts ──
     (function() {
       var grid = document.getElementById('facts-grid');
@@ -492,10 +532,18 @@ fetch('viz_data.json')
           label.textContent = 'Longest-running top 15 artist';
           value.textContent = fact.data.name;
           detail.textContent = fact.data.years + ' years (' + fact.data.span + ')';
-        } else if (fact.type === 'most_obscure') {
-          label.textContent = 'Most obscure top 15 artist';
+        } else if (fact.type === 'classical_outlier') {
+          label.textContent = 'The classical outlier';
           value.textContent = fact.data.name;
-          detail.textContent = fact.data.listeners.toLocaleString() + ' global listeners \u00B7 ' + fact.data.tags.slice(0,3).join(", ");
+          detail.textContent = fact.data.detail + ' (' + fact.data.plays + ' plays, ' + fact.data.year + ')';
+        } else if (fact.type === 'deepest_devotion') {
+          label.textContent = 'Deepest devotion';
+          value.textContent = fact.data.name;
+          detail.textContent = fact.data.your_plays + ' of your plays \u00B7 ' + fact.data.listeners.toLocaleString() + ' listeners worldwide';
+        } else if (fact.type === 'widest_year') {
+          label.textContent = 'Widest year';
+          value.textContent = fact.data.year;
+          detail.textContent = fact.data.families + ' genre families in your top 15';
         }
 
         card.appendChild(label);
