@@ -12,15 +12,14 @@ function playPreview(artist, track, btn) {
     currentBtn = null;
     return;
   }
-  // Fetch a fresh preview URL from Deezer (signed URLs expire)
   btn.textContent = '\u00B7\u00B7\u00B7';
   var q = encodeURIComponent(artist + ' ' + track);
-  fetch('https://api.deezer.com/search?q=' + q + '&limit=1')
+  fetch('https://itunes.apple.com/search?term=' + q + '&limit=1&entity=song')
     .then(function(r) { return r.json(); })
     .then(function(data) {
-      var results = data.data || [];
-      if (results.length && results[0].preview) {
-        audioEl.src = results[0].preview;
+      var results = data.results || [];
+      if (results.length && results[0].previewUrl) {
+        audioEl.src = results[0].previewUrl;
         audioEl.play();
         btn.classList.add('playing');
         btn.textContent = '\u275A\u275A';
