@@ -12,15 +12,14 @@ function playPreview(artist, track, btn) {
     currentBtn = null;
     return;
   }
-  // Fetch a fresh preview URL from Deezer (signed URLs expire)
   btn.textContent = '\u00B7\u00B7\u00B7';
   var q = encodeURIComponent(artist + ' ' + track);
-  fetch('https://api.deezer.com/search?q=' + q + '&limit=1')
+  fetch('https://itunes.apple.com/search?term=' + q + '&limit=1&entity=song')
     .then(function(r) { return r.json(); })
     .then(function(data) {
-      var results = data.data || [];
-      if (results.length && results[0].preview) {
-        audioEl.src = results[0].preview;
+      var results = data.results || [];
+      if (results.length && results[0].previewUrl) {
+        audioEl.src = results[0].previewUrl;
         audioEl.play();
         btn.classList.add('playing');
         btn.textContent = '\u275A\u275A';
@@ -123,10 +122,11 @@ fetch('viz_data.json')
         titleDiv.textContent = a.input_album;
         info.appendChild(titleDiv);
 
-        if (a.preview) {
+        if (a.preview_track) {
           var btn = document.createElement('button');
           btn.className = 'ac-play';
-          btn.textContent = '\u25B6 ' + a.preview_track;
+          var trackName = a.preview_track.length > 30 ? a.preview_track.slice(0, 28) + '\u2026' : a.preview_track;
+          btn.textContent = '\u25B6 ' + trackName;
           btn.addEventListener('click', function() { playPreview(a.input_artist, a.preview_track, btn); });
           info.appendChild(btn);
         }
@@ -469,6 +469,49 @@ fetch('viz_data.json')
       });
     })();
 
+    // ── Across The Decades ──
+    (function() {
+      var grid = document.getElementById('decades-grid');
+      if (!DATA.musicDecades) return;
+      var allDecades = Object.keys(DATA.musicDecades).sort();
+      var maxPlays = Math.max.apply(null, allDecades.map(function(dec) { return DATA.musicDecades[dec].plays; }));
+
+      allDecades.forEach(function(dec) {
+        var ddata = DATA.musicDecades[dec];
+        var card = document.createElement('div');
+        card.className = 'decade-card';
+
+        var label = document.createElement('div');
+        label.className = 'dc-label';
+        label.textContent = dec;
+        card.appendChild(label);
+
+        var stats = document.createElement('div');
+        stats.className = 'dc-years';
+        stats.textContent = ddata.plays.toLocaleString() + ' plays \u00B7 ' + ddata.artist_count + ' artists';
+        card.appendChild(stats);
+
+        // Bar showing relative weight
+        var barRow = document.createElement('div');
+        barRow.className = 'dc-genre';
+        var bar = document.createElement('div');
+        bar.className = 'dc-bar';
+        bar.style.width = Math.round((ddata.plays / maxPlays) * 160) + 'px';
+        bar.style.background = '#ff6b35';
+        barRow.appendChild(bar);
+        card.appendChild(barRow);
+
+        // Sample artists
+        var sample = document.createElement('div');
+        sample.className = 'dc-years';
+        sample.style.marginTop = '0.5rem';
+        sample.textContent = ddata.sample_artists.join(', ');
+        card.appendChild(sample);
+
+        grid.appendChild(card);
+      });
+    })();
+
     // ── Fun Facts ──
     (function() {
       var grid = document.getElementById('facts-grid');
@@ -491,10 +534,18 @@ fetch('viz_data.json')
           label.textContent = 'Longest-running top 15 artist';
           value.textContent = fact.data.name;
           detail.textContent = fact.data.years + ' years (' + fact.data.span + ')';
-        } else if (fact.type === 'most_obscure') {
-          label.textContent = 'Most obscure top 15 artist';
+        } else if (fact.type === 'classical_outlier') {
+          label.textContent = 'The classical outlier';
           value.textContent = fact.data.name;
-          detail.textContent = fact.data.listeners.toLocaleString() + ' global listeners \u00B7 ' + fact.data.tags.slice(0,3).join(", ");
+          detail.textContent = fact.data.detail + ' (' + fact.data.plays + ' plays, ' + fact.data.year + ')';
+        } else if (fact.type === 'deepest_devotion') {
+          label.textContent = 'Deepest devotion';
+          value.textContent = fact.data.name;
+          detail.textContent = fact.data.your_plays + ' of your plays \u00B7 ' + fact.data.listeners.toLocaleString() + ' listeners worldwide';
+        } else if (fact.type === 'widest_year') {
+          label.textContent = 'Widest year';
+          value.textContent = fact.data.year;
+          detail.textContent = fact.data.families + ' genre families in your top 15';
         }
 
         card.appendChild(label);

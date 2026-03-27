@@ -243,6 +243,33 @@ section .lede {
 .vi-scrobbles { color: #ff6b35; }
 .vi-years { color: #4ecdc4; }
 
+/* ── Decades ── */
+.decades-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.decade-card {
+  background: #12121a; border: 1px solid #222;
+  border-radius: 8px; padding: 1.3rem;
+}
+.decade-card .dc-label {
+  font-family: 'JetBrains Mono', monospace;
+  color: #ff6b35; font-size: 1.4rem; font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+.decade-card .dc-years {
+  color: #555; font-size: 0.8rem; margin-bottom: 0.8rem;
+}
+.decade-card .dc-genre {
+  display: flex; align-items: center; gap: 0.5rem;
+  margin-bottom: 0.4rem; font-size: 0.85rem;
+}
+.decade-card .dc-bar {
+  height: 8px; border-radius: 4px; min-width: 4px;
+}
+.decade-card .dc-genre-name { color: #999; }
+
 /* ── Facts ── */
 .facts-grid {
   display: grid;
