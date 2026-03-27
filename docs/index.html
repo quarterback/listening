@@ -3,776 +3,128 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0a0f">
 <title>468,910 Scrobbles</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap');
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: 'IBM Plex Sans', -apple-system, sans-serif;
-    background: #0a0a0f;
-    color: #e8e8e8;
-    line-height: 1.5;
-    overflow-x: hidden;
-  }
-
-  .mono { font-family: 'IBM Plex Mono', monospace; }
-
-  a { color: #ff6b35; text-decoration: none; }
-  a:hover { text-decoration: underline; }
-
-  /* -- Hero -- */
-  .hero {
-    min-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 4rem 2rem;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-  .hero h1 {
-    font-size: clamp(3rem, 8vw, 6rem);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1.05;
-    margin-bottom: 1.5rem;
-  }
-  .hero h1 span.num { color: #ff6b35; }
-  .hero .sub {
-    font-size: 1.2rem;
-    font-weight: 300;
-    color: #888;
-    max-width: 540px;
-    line-height: 1.6;
-  }
-  .hero .sub strong { color: #ccc; font-weight: 400; }
-
-  /* -- Sections -- */
-  section {
-    padding: 6rem 2rem;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  section h2 {
-    font-size: 1.6rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-  section .lede {
-    color: #888;
-    margin-bottom: 3rem;
-    max-width: 600px;
-    font-size: 1.05rem;
-  }
-
-  /* -- Stats bar -- */
-  .stat-row {
-    display: flex;
-    gap: 3rem;
-    flex-wrap: wrap;
-    margin-bottom: 4rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid #1a1a1a;
-  }
-  .stat { display: flex; flex-direction: column; }
-  .stat .stat-num {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #ff6b35;
-    font-family: 'IBM Plex Mono', monospace;
-    line-height: 1;
-  }
-  .stat .stat-label {
-    font-size: 0.85rem;
-    color: #666;
-    margin-top: 0.3rem;
-  }
-
-  /* -- Stream chart -- */
-  #stream-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  #stream-chart { width: 100%; }
-  #stream-chart .area { opacity: 0.75; transition: opacity 0.2s; cursor: pointer; }
-  #stream-chart .area:hover { opacity: 1; }
-
-  .stream-legend {
-    display: flex; flex-wrap: wrap; gap: 0.5rem 1.2rem;
-    margin-top: 1.5rem; font-size: 0.85rem;
-  }
-  .stream-legend-item {
-    display: flex; align-items: center; gap: 0.4rem;
-    cursor: pointer; opacity: 0.7; transition: opacity 0.2s;
-  }
-  .stream-legend-item:hover { opacity: 1; }
-  .stream-legend-item .swatch { width: 14px; height: 14px; border-radius: 3px; }
-
-  /* -- Bump chart -- */
-  #bump-wrap { overflow-x: auto; }
-  #bump-chart { width: 100%; }
-  #bump-chart .bump-line { fill: none; stroke-width: 2.5; opacity: 0.6; transition: opacity 0.15s, stroke-width 0.15s; }
-  #bump-chart .bump-line:hover { opacity: 1; stroke-width: 4; }
-  #bump-chart .bump-dot { stroke: #0a0a0f; stroke-width: 2; cursor: pointer; }
-
-  /* -- Year detail cards -- */
-  .year-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.5rem;
-  }
-  .year-card {
-    background: #12121a;
-    border: 1px solid #222;
-    border-radius: 8px;
-    padding: 1.25rem;
-    transition: border-color 0.2s;
-  }
-  .year-card:hover { border-color: #444; }
-  .year-card .yc-year {
-    font-family: 'IBM Plex Mono', monospace;
-    color: #ff6b35;
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-  }
-  .yc-track {
-    display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
-    margin-bottom: 0.35rem;
-    font-size: 0.85rem;
-  }
-  .yc-track .yc-rank {
-    color: #444;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.75rem;
-    min-width: 18px;
-    text-align: right;
-  }
-  .yc-track .yc-artist { color: #999; }
-  .yc-track .yc-song { color: #e0e0e0; font-weight: 400; }
-  .yc-track .yc-plays {
-    margin-left: auto;
-    color: #555;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.75rem;
-  }
-  .yc-track a.yc-play {
-    color: #1DB954;
-    font-size: 0.7rem;
-    opacity: 0.6;
-    transition: opacity 0.2s;
-  }
-  .yc-track a.yc-play:hover { opacity: 1; text-decoration: none; }
-
-  /* -- Contrast cards -- */
-  .contrast-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-  }
-  .contrast-card {
-    background: #12121a;
-    border: 1px solid #222;
-    border-radius: 8px;
-    padding: 1.25rem;
-    transition: border-color 0.2s;
-  }
-  .contrast-card:hover { border-color: #444; }
-  .contrast-card .cc-year {
-    font-family: 'IBM Plex Mono', monospace;
-    color: #ff6b35;
-    font-size: 0.85rem;
-    margin-bottom: 0.75rem;
-  }
-  .contrast-card .cc-pair {
-    display: flex; justify-content: space-between; align-items: center; gap: 0.75rem;
-  }
-  .cc-artist { flex: 1; text-align: center; }
-  .cc-artist .cc-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.2rem; }
-  .cc-artist .cc-genre { font-size: 0.75rem; color: #666; }
-  .cc-vs { color: #333; font-weight: 700; font-size: 0.8rem; }
-
-  /* -- Obscurity table -- */
-  .obscure-list { list-style: none; }
-  .obscure-item {
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid #1a1a1a;
-    font-size: 0.9rem;
-  }
-  .obscure-item:last-child { border-bottom: none; }
-  .obscure-item .oi-name { font-weight: 600; min-width: 160px; }
-  .obscure-item .oi-listeners {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.8rem;
-    color: #666;
-    min-width: 120px;
-  }
-  .obscure-item .oi-plays {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.8rem;
-    color: #ff6b35;
-    min-width: 80px;
-  }
-  .obscure-item .oi-tags { color: #555; font-size: 0.8rem; }
-  .obscure-item .oi-years {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.75rem;
-    color: #444;
-    margin-left: auto;
-  }
-
-  /* -- Vinyl section -- */
-  .vinyl-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1rem;
-  }
-  .vinyl-item {
-    background: #12121a;
-    border: 1px solid #222;
-    border-radius: 8px;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-  .vinyl-item .vi-artist { font-weight: 600; font-size: 0.95rem; }
-  .vinyl-item .vi-album { color: #888; font-size: 0.85rem; }
-  .vinyl-item .vi-meta {
-    display: flex; gap: 0.75rem; font-size: 0.75rem;
-    font-family: 'IBM Plex Mono', monospace; color: #555;
-    margin-top: 0.3rem;
-  }
-  .vinyl-item .vi-scrobbles { color: #ff6b35; }
-  .vinyl-item .vi-years { color: #4ecdc4; }
-  .vinyl-item .vi-added { color: #666; }
-
-  /* -- Fun facts -- */
-  .facts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-  }
-  .fact-card {
-    background: #12121a;
-    border: 1px solid #222;
-    border-radius: 8px;
-    padding: 1.5rem;
-  }
-  .fact-card .fc-label { color: #666; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
-  .fact-card .fc-value {
-    font-size: 1.8rem; font-weight: 700; color: #ff6b35;
-    font-family: 'IBM Plex Mono', monospace; line-height: 1.2;
-  }
-  .fact-card .fc-detail { color: #888; font-size: 0.9rem; margin-top: 0.5rem; }
-
-  /* -- Tooltip -- */
-  .tooltip {
-    position: fixed; pointer-events: none;
-    background: #1a1a24; border: 1px solid #333; border-radius: 8px;
-    padding: 12px 16px; font-size: 0.85rem; z-index: 100;
-    max-width: 360px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-    opacity: 0; transition: opacity 0.15s;
-  }
-  .tooltip.show { opacity: 1; }
-  .tooltip .tt-name { font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
-  .tooltip .tt-tags { color: #888; font-size: 0.8rem; }
-  .tooltip .tt-years { color: #ff6b35; font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; margin-top: 4px; }
-  .tooltip .tt-plays { color: #4ecdc4; font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; margin-top: 2px; }
-  .tooltip .tt-vinyl { color: #fbbf24; font-size: 0.8rem; margin-top: 4px; }
-
-  /* -- Footer -- */
-  footer {
-    padding: 4rem 2rem;
-    text-align: center;
-    color: #444;
-    font-size: 0.85rem;
-    border-top: 1px solid #1a1a1a;
-  }
-  footer a { color: #666; }
-
-  /* mobile */
-  @media (max-width: 600px) {
-    .hero { padding: 2rem 1.5rem; }
-    section { padding: 3rem 1.5rem; }
-    .stat-row { gap: 1.5rem; }
-    .stat .stat-num { font-size: 1.8rem; }
-    .year-grid { grid-template-columns: 1fr; }
-    .obscure-item { flex-wrap: wrap; gap: 0.3rem; }
-    .obscure-item .oi-years { margin-left: 0; }
-  }
-</style>
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="hero">
+<!-- Sticky Nav -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="nav-brand mono">468,910</a>
+    <div class="nav-links">
+      <a href="#records">Records</a>
+      <a href="#palette">Palette</a>
+      <a href="#songs">Songs</a>
+      <a href="#stays">Who Stays</a>
+      <a href="#deep">Deep Cuts</a>
+      <a href="#universes">Universes</a>
+      <a href="#shelf">Shelf</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero" id="top">
   <h1><span class="num">468,910</span> scrobbles.</h1>
   <p class="sub">
-    <strong>21 years</strong> of listening data. <strong>45,647</strong> different artists.
-    From post-hardcore in 2005 to spiritual jazz in 2026. Not a journey from A to B &mdash; a map of
-    everything at once.
+    <strong>21 years</strong> of listening. <strong>45,647</strong> artists.
+    From post-hardcore in college to spiritual jazz now.
+    Not a journey from A&nbsp;to&nbsp;B&nbsp;&mdash; a map of everything at once.
   </p>
-</div>
+</header>
 
+<!-- Intro -->
+<section class="prose" id="intro">
+  <p>Music is a big part of my life. I started my Last.fm account back when I was in college. It was actually my second account &mdash; my original account is still out there somewhere, but I started using this one more and the rest was history.</p>
+  <p>When I started, it was all MP3s and scrobbling stuff I found online from all sorts of sources. I had MP3 players from the minute you could get one. I loved being able to take my tunes with me. I had a Zune. Every major streaming service from Zune Pass to Audiogalaxy to Rdio were all in my orbit too.</p>
+  <p>The thing that&rsquo;s changed over time is the range of my tastes. I&rsquo;ve always wanted to be into diverse music &mdash; it was just expensive, then it was hard to find or get introduced to. Having people connect me to their tastes has been my favorite part of the music journey over all of the years.</p>
+  <p>I wanted to use this retrospective as a chance to see what&rsquo;s been shared. The songs, the albums &mdash; when I play them they immediately take me back to moments I&rsquo;ve forgotten that immediately flood back.</p>
+  <p class="kicker">I wanted to look back so I could look forward.</p>
+</section>
+
+<!-- Memorable Records -->
+<section id="records">
+  <h2>The Records</h2>
+  <p class="lede">&ldquo;Picking your favorite records is too difficult for me because albums really do come at different times of life. I feel like it took me a while to get to the places I actually wanted to go.&rdquo;</p>
+  <div class="album-grid" id="album-grid"></div>
+</section>
+
+<!-- Stats -->
 <section>
   <div class="stat-row">
-    <div class="stat">
-      <span class="stat-num">45,647</span>
-      <span class="stat-label">unique artists</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num">21</span>
-      <span class="stat-label">years scrobbling</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num" id="stat-obscure">—</span>
-      <span class="stat-label">artists under 50k listeners</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num" id="stat-vinyl">—</span>
-      <span class="stat-label">vinyl records owned</span>
-    </div>
+    <div class="stat"><span class="stat-num mono">45,647</span><span class="stat-label">unique artists</span></div>
+    <div class="stat"><span class="stat-num mono">21</span><span class="stat-label">years scrobbling</span></div>
+    <div class="stat"><span class="stat-num mono" id="stat-obscure">&mdash;</span><span class="stat-label">artists under 50k listeners</span></div>
+    <div class="stat"><span class="stat-num mono" id="stat-vinyl">&mdash;</span><span class="stat-label">vinyl records</span></div>
   </div>
+</section>
 
+<!-- Palette -->
+<section id="palette">
   <h2>The Palette</h2>
-  <p class="lede">
-    Genre weight by year, based on the top 15 artists per year. Nothing gets replaced. It all just stacks.
-    Hover for the artists driving each genre.
-  </p>
-  <div id="stream-wrap">
-    <svg id="stream-chart"></svg>
-  </div>
+  <p class="lede">Genre weight by year based on the top 15 artists. Nothing gets replaced. It all just stacks. Hover for the artists driving each genre.</p>
+  <div id="stream-wrap"><svg id="stream-chart"></svg></div>
   <div class="stream-legend" id="stream-legend"></div>
 </section>
 
-<section>
-  <h2>Who Stays</h2>
-  <p class="lede">
-    Artists who appeared in your top 15 more than once across 21 years. Dot size = play count that year.
-    The lines that stretch widest are the ones that define you.
-  </p>
-  <div id="bump-wrap">
-    <svg id="bump-chart"></svg>
-  </div>
-</section>
-
-<section>
+<!-- Songs -->
+<section id="songs">
   <h2>The Songs</h2>
-  <p class="lede">
-    The most-played track each year. Not just artists — the specific songs that defined the moment.
-    Click the green arrow to find it on Spotify.
-  </p>
+  <p class="lede">The most-played tracks each year. Hit play for a 30-second preview.</p>
   <div class="year-grid" id="tracks-grid"></div>
 </section>
 
-<section>
+<!-- Who Stays -->
+<section id="stays">
+  <h2>Who Stays</h2>
+  <p class="lede">Artists who appeared in the top 15 more than once across 21 years. Dot size&nbsp;=&nbsp;play count. The lines that stretch widest are the ones that define you.</p>
+  <div id="bump-wrap"><svg id="bump-chart"></svg></div>
+</section>
+
+<!-- Deep Cuts -->
+<section id="deep">
   <h2>The Deep Cuts</h2>
-  <p class="lede">
-    Artists in your top 15 with fewer than 50,000 global listeners on Last.fm. The stuff most people
-    will never find. Sorted by obscurity.
-  </p>
+  <p class="lede">Artists in the top 15 with fewer than 50,000 global Last.fm listeners. The stuff most people will never find.</p>
   <ul class="obscure-list" id="obscure-list"></ul>
 </section>
 
-<section>
+<!-- Same Year Different Universe -->
+<section id="universes">
   <h2>Same Year, Different Universe</h2>
-  <p class="lede">
-    The most genre-distant pair of artists in your top 15 each year. This is the eclecticism
-    rendered visible — how far apart your simultaneous interests reach.
-  </p>
+  <p class="lede">The most genre-distant pair in the top 15 each year. How far apart simultaneous interests reach.</p>
   <div class="contrast-grid" id="contrast-grid"></div>
 </section>
 
-<section>
+<!-- The Shelf -->
+<section id="shelf">
   <h2>The Shelf</h2>
-  <p class="lede">
-    You started buying vinyl during the pandemic. Of 144 records, these are the ones whose artists
-    also appear in your top 15 scrobbles — the listening that became physical.
-  </p>
+  <p class="lede">I didn&rsquo;t start buying vinyl until the pandemic. Of 144 records, these are the ones whose artists also hit the top 15 &mdash; the listening that became physical.</p>
   <div class="vinyl-grid" id="vinyl-grid"></div>
 </section>
 
-<section>
-  <div class="facts-grid" id="facts-grid"></div>
-</section>
+<!-- Facts -->
+<section><div class="facts-grid" id="facts-grid"></div></section>
 
 <footer>
-  Data from <a href="https://last.fm/user/statechampion">Last.fm</a> and
+  Data from <a href="https://last.fm/user/statechampion">Last.fm</a> &amp;
   <a href="https://www.discogs.com/user/quarterback/collection">Discogs</a>.
-  Built with D3.js.
+  Find me on <a href="https://record.club/ron">Record Club</a> &amp;
+  <a href="https://open.spotify.com/user/ronbronson">Spotify</a>.
+  <br>Inspired by Joel Goodman&rsquo;s <a href="https://joelgoodman.co/timeline/">listening timeline</a>. Built with his Last.fm toolkit.
 </footer>
 
 <div class="tooltip" id="tooltip"></div>
 
+<!-- Audio player (global, reused) -->
+<audio id="global-audio" preload="none"></audio>
+
 <script src="https://d3js.org/d3.v7.min.js"></script>
-<script>
-fetch('viz_data.json').then(r => r.json()).then(DATA => {
-
-const COLORS = {
-  "indie rock": "#4ecdc4",
-  "post-hardcore / emo": "#ff6b6b",
-  "shoegaze / dream pop": "#a78bfa",
-  "post-punk / darkwave": "#c084fc",
-  "hip-hop / rap": "#fbbf24",
-  "jazz": "#34d399",
-  "folk / singer-songwriter": "#fb923c",
-  "metal / heavy": "#ef4444",
-  "soul / r&b": "#f472b6",
-  "electronic / ambient": "#38bdf8",
-  "post-rock": "#6ee7b7",
-  "punk / garage": "#f87171",
-  "other": "#555"
-};
-
-const FAMILIES = [
-  "indie rock", "post-hardcore / emo", "shoegaze / dream pop",
-  "post-punk / darkwave", "hip-hop / rap", "jazz",
-  "folk / singer-songwriter", "metal / heavy", "soul / r&b",
-  "electronic / ambient", "post-rock", "punk / garage", "other"
-];
-
-const years = Object.keys(DATA.yearGenres).sort();
-const tooltip = d3.select("#tooltip");
-
-// Update stat counters
-document.getElementById("stat-obscure").textContent = DATA.obscureGems.length;
-document.getElementById("stat-vinyl").textContent = DATA.vinyl.totalVinyl;
-
-function showTooltip(evt, html) {
-  const tt = document.getElementById('tooltip');
-  tt.innerHTML = html;
-  tt.classList.add('show');
-  const x = Math.min(evt.clientX + 15, window.innerWidth - 380);
-  const y = Math.min(evt.clientY - 10, window.innerHeight - 150);
-  tt.style.left = x + 'px';
-  tt.style.top = y + 'px';
-}
-function hideTooltip() {
-  document.getElementById('tooltip').classList.remove('show');
-}
-
-function spotifySearch(artist, track) {
-  const q = encodeURIComponent(artist + ' ' + track);
-  return `https://open.spotify.com/search/${q}`;
-}
-
-// ── 1. Stream Chart ──
-(function() {
-  const margin = {top: 30, right: 30, bottom: 40, left: 50};
-  const width = Math.max(900, years.length * 50);
-  const height = 420;
-
-  const svg = d3.select("#stream-chart")
-    .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
-    .append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
-
-  const tableData = years.map(y => {
-    const row = {year: y};
-    const g = DATA.yearGenres[y].genres;
-    const total = Object.values(g).reduce((a,b) => a+b, 0) || 1;
-    FAMILIES.forEach(f => { row[f] = (g[f] || 0) / total; });
-    return row;
-  });
-
-  const stack = d3.stack()
-    .keys(FAMILIES)
-    .offset(d3.stackOffsetWiggle)
-    .order(d3.stackOrderInsideOut);
-
-  const series = stack(tableData);
-
-  const x = d3.scalePoint().domain(years).range([0, width]).padding(0.5);
-  const yExtent = [
-    d3.min(series, s => d3.min(s, d => d[0])),
-    d3.max(series, s => d3.max(s, d => d[1]))
-  ];
-  const y = d3.scaleLinear().domain(yExtent).range([height, 0]);
-
-  const area = d3.area()
-    .x((d, i) => x(years[i]))
-    .y0(d => y(d[0]))
-    .y1(d => y(d[1]))
-    .curve(d3.curveBasis);
-
-  svg.selectAll(".area")
-    .data(series)
-    .join("path")
-    .attr("class", "area")
-    .attr("d", area)
-    .attr("fill", d => COLORS[d.key] || "#555")
-    .on("mousemove", function(evt, d) {
-      // Find nearest year
-      const [mx] = d3.pointer(evt);
-      let nearestYear = years[0];
-      let minDist = Infinity;
-      years.forEach(yr => {
-        const dist = Math.abs(x(yr) - mx);
-        if (dist < minDist) { minDist = dist; nearestYear = yr; }
-      });
-      // Get artists in this genre family for this year
-      const artistsInGenre = DATA.yearGenres[nearestYear].artists
-        .filter(a => a.f.includes(d.key))
-        .map(a => `${a.n} <span style="color:#666">(${a.p})</span>`)
-        .join('<br>');
-      showTooltip(evt, `
-        <div class="tt-name" style="color:${COLORS[d.key]}">${d.key}</div>
-        <div class="tt-years">${nearestYear}</div>
-        <div style="margin-top:6px;font-size:0.85rem;line-height:1.6">${artistsInGenre || 'none'}</div>
-      `);
-    })
-    .on("mouseleave", hideTooltip);
-
-  svg.append("g")
-    .attr("transform", `translate(0,${height + 8})`)
-    .selectAll("text")
-    .data(years)
-    .join("text")
-    .attr("x", d => x(d))
-    .attr("text-anchor", "middle")
-    .attr("dy", 12)
-    .style("fill", "#666")
-    .style("font-size", "11px")
-    .style("font-family", "'IBM Plex Mono', monospace")
-    .text(d => d.slice(-2));
-
-  const legend = d3.select("#stream-legend");
-  FAMILIES.filter(f => years.some(y => (DATA.yearGenres[y].genres[f] || 0) > 0))
-    .forEach(f => {
-      const item = legend.append("div").attr("class", "stream-legend-item");
-      item.append("div").attr("class", "swatch").style("background", COLORS[f]);
-      item.append("span").text(f);
-    });
-})();
-
-// ── 2. Bump Chart ──
-(function() {
-  const margin = {top: 20, right: 180, bottom: 40, left: 180};
-  const width = Math.max(900, years.length * 50);
-  const height = 700;
-
-  const svg = d3.select("#bump-chart")
-    .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
-    .append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
-
-  const multiYear = Object.entries(DATA.multiYear)
-    .filter(([_, d]) => Object.keys(d.y).length >= 2)
-    .sort((a, b) => {
-      const aYears = Object.keys(a[1].y);
-      const bYears = Object.keys(b[1].y);
-      return bYears.length - aYears.length || parseInt(aYears[0]) - parseInt(bYears[0]);
-    })
-    .slice(0, 30);
-
-  const artistNames = multiYear.map(d => d[0]);
-
-  const x = d3.scalePoint().domain(years).range([0, width]).padding(0.5);
-  const y = d3.scalePoint().domain(artistNames).range([0, height]).padding(0.5);
-
-  svg.append("g")
-    .attr("transform", `translate(0,${height + 8})`)
-    .selectAll("text")
-    .data(years)
-    .join("text")
-    .attr("x", d => x(d))
-    .attr("text-anchor", "middle")
-    .attr("dy", 12)
-    .style("fill", "#666")
-    .style("font-size", "11px")
-    .style("font-family", "'IBM Plex Mono', monospace")
-    .text(d => d.slice(-2));
-
-  multiYear.forEach(([name, data]) => {
-    const activeYears = Object.entries(data.y)
-      .map(([yr, plays]) => ({year: yr, plays}))
-      .sort((a, b) => a.year.localeCompare(b.year));
-
-    const color = COLORS[data.f[0]] || "#888";
-
-    const line = d3.line()
-      .x(d => x(d.year))
-      .y(() => y(name))
-      .curve(d3.curveMonotoneX);
-
-    svg.append("path")
-      .datum(activeYears)
-      .attr("class", "bump-line")
-      .attr("d", line)
-      .attr("stroke", color)
-      .on("mousemove", function(evt) {
-        const yrs = activeYears.map(d => `${d.year}: <strong>${d.plays}</strong> plays`).join('<br>');
-        const totalPlays = activeYears.reduce((s, d) => s + d.plays, 0);
-        showTooltip(evt, `
-          <div class="tt-name">${name}</div>
-          <div class="tt-tags">${(data.f || []).join(", ")}</div>
-          <div class="tt-plays">Total: ${totalPlays} plays across ${activeYears.length} years</div>
-          <div style="margin-top:6px;font-size:0.8rem;line-height:1.6">${yrs}</div>
-        `);
-        d3.select(this).attr("opacity", 1).attr("stroke-width", 4);
-      })
-      .on("mouseleave", function() {
-        hideTooltip();
-        d3.select(this).attr("opacity", 0.6).attr("stroke-width", 2.5);
-      });
-
-    svg.selectAll(null)
-      .data(activeYears)
-      .join("circle")
-      .attr("class", "bump-dot")
-      .attr("cx", d => x(d.year))
-      .attr("cy", y(name))
-      .attr("r", d => Math.max(3, Math.min(9, d.plays / 25)))
-      .attr("fill", color);
-
-    svg.append("text")
-      .attr("x", -12)
-      .attr("y", y(name))
-      .attr("text-anchor", "end")
-      .attr("dy", "0.35em")
-      .style("fill", color)
-      .style("font-size", "11px")
-      .style("font-family", "'IBM Plex Mono', monospace")
-      .text(name);
-  });
-})();
-
-// ── 3. Songs by Year ──
-(function() {
-  const grid = d3.select("#tracks-grid");
-
-  years.forEach(year => {
-    const tracks = DATA.tracks[year];
-    if (!tracks || tracks.length === 0) return;
-
-    const card = grid.append("div").attr("class", "year-card");
-    card.append("div").attr("class", "yc-year").text(year);
-
-    tracks.forEach((t, i) => {
-      const row = card.append("div").attr("class", "yc-track");
-      row.append("span").attr("class", "yc-rank mono").text(i + 1);
-      row.append("span").attr("class", "yc-artist").text(t.artist);
-      row.append("span").text(" — ");
-      row.append("span").attr("class", "yc-song").text(t.name);
-      row.append("span").attr("class", "yc-plays mono").text(t.plays);
-      row.append("a")
-        .attr("class", "yc-play")
-        .attr("href", spotifySearch(t.artist, t.name))
-        .attr("target", "_blank")
-        .attr("rel", "noopener")
-        .attr("title", "Find on Spotify")
-        .html("&#9654;");
-    });
-  });
-})();
-
-// ── 4. Deep Cuts (Obscurity) ──
-(function() {
-  const list = d3.select("#obscure-list");
-
-  DATA.obscureGems.forEach(gem => {
-    const item = list.append("li").attr("class", "obscure-item");
-    item.append("span").attr("class", "oi-name")
-      .style("color", COLORS[gem.families[0]] || "#ccc")
-      .text(gem.name);
-    item.append("span").attr("class", "oi-listeners")
-      .text(gem.listeners.toLocaleString() + " listeners globally");
-    item.append("span").attr("class", "oi-plays")
-      .text(gem.your_plays + " of your plays");
-    item.append("span").attr("class", "oi-tags").text(gem.tags.join(", "));
-    item.append("span").attr("class", "oi-years").text(gem.years.join(", "));
-  });
-})();
-
-// ── 5. Same Year, Different Universe ──
-(function() {
-  const grid = d3.select("#contrast-grid");
-
-  years.forEach(year => {
-    const artists = DATA.yearGenres[year].artists;
-    let maxDist = 0;
-    let bestPair = null;
-
-    for (let i = 0; i < artists.length; i++) {
-      for (let j = i + 1; j < artists.length; j++) {
-        const a = artists[i], b = artists[j];
-        const shared = a.f.filter(f => b.f.includes(f)).length;
-        const totalFamilies = new Set([...a.f, ...b.f]).size;
-        const dist = totalFamilies - shared;
-        if (dist > maxDist || (dist === maxDist && a.p + b.p > (bestPair ? bestPair[0].p + bestPair[1].p : 0))) {
-          maxDist = dist;
-          bestPair = [a, b];
-        }
-      }
-    }
-
-    if (bestPair && maxDist >= 2) {
-      const card = grid.append("div").attr("class", "contrast-card");
-      card.append("div").attr("class", "cc-year").text(year);
-      const pair = card.append("div").attr("class", "cc-pair");
-
-      const left = pair.append("div").attr("class", "cc-artist");
-      left.append("div").attr("class", "cc-name").style("color", COLORS[bestPair[0].f[0]] || "#ccc").text(bestPair[0].n);
-      left.append("div").attr("class", "cc-genre").text(bestPair[0].f.join(", "));
-      left.append("div").style("color", "#555").style("font-size", "0.75rem").style("font-family", "'IBM Plex Mono', monospace")
-        .text(bestPair[0].p + " plays");
-
-      pair.append("div").attr("class", "cc-vs").text("+");
-
-      const right = pair.append("div").attr("class", "cc-artist");
-      right.append("div").attr("class", "cc-name").style("color", COLORS[bestPair[1].f[0]] || "#ccc").text(bestPair[1].n);
-      right.append("div").attr("class", "cc-genre").text(bestPair[1].f.join(", "));
-      right.append("div").style("color", "#555").style("font-size", "0.75rem").style("font-family", "'IBM Plex Mono', monospace")
-        .text(bestPair[1].p + " plays");
-    }
-  });
-})();
-
-// ── 6. The Shelf (Vinyl) ──
-(function() {
-  const grid = d3.select("#vinyl-grid");
-
-  // Sort by total plays descending
-  const vinylItems = DATA.vinyl.inTop.sort((a, b) => b.total_plays - a.total_plays);
-
-  vinylItems.forEach(v => {
-    const item = grid.append("div").attr("class", "vinyl-item");
-    item.append("div").attr("class", "vi-artist").text(v.artist);
-    item.append("div").attr("class", "vi-album").text(v.album);
-    const meta = item.append("div").attr("class", "vi-meta");
-    meta.append("span").attr("class", "vi-scrobbles").text(v.total_plays + " scrobbles");
-    meta.append("span").attr("class", "vi-years").text("top 15 in " + v.years_in_top.join(", "));
-    meta.append("span").attr("class", "vi-added").text("bought " + v.date_added);
-  });
-})();
-
-// ── 7. Fun Facts ──
-(function() {
-  const grid = d3.select("#facts-grid");
-
-  DATA.funFacts.forEach(fact => {
-    const card = grid.append("div").attr("class", "fact-card");
-    if (fact.type === "biggest_obsession") {
-      card.append("div").attr("class", "fc-label").text("Biggest single-year obsession");
-      card.append("div").attr("class", "fc-value").text(fact.data.name);
-      card.append("div").attr("class", "fc-detail").text(`${fact.data.plays} plays in ${fact.data.year}`);
-    } else if (fact.type === "longest_running") {
-      card.append("div").attr("class", "fc-label").text("Longest-running top 15 artist");
-      card.append("div").attr("class", "fc-value").text(fact.data.name);
-      card.append("div").attr("class", "fc-detail").text(`${fact.data.years} years in your top 15 (${fact.data.span})`);
-    } else if (fact.type === "most_obscure") {
-      card.append("div").attr("class", "fc-label").text("Most obscure top 15 artist");
-      card.append("div").attr("class", "fc-value").text(fact.data.name);
-      card.append("div").attr("class", "fc-detail").text(`${fact.data.listeners.toLocaleString()} global listeners. ${fact.data.tags.slice(0,3).join(", ")}`);
-    }
-  });
-})();
-
-}); // end fetch
-</script>
+<script src="app.js"></script>
 </body>
 </html>
