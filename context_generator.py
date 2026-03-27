@@ -16,6 +16,7 @@ from listening_bio import (
     annotate_artist, annotate_album, relationship_summary,
     get_artist_context, get_era
 )
+from discogs_client import DiscogsClient
 
 
 def _fmt_playcount(count) -> str:
@@ -300,6 +301,144 @@ class ContextGenerator:
         if include_bio:
             lines.append("")
             lines.append(relationship_summary())
+
+        return "\n".join(lines)
+
+    def vinyl_crossref(self, discogs_username: str, period: str = "overall",
+                        limit: int = 50) -> str:
+        """
+        Cross-reference Last.fm listening with Discogs vinyl collection.
+        Surfaces the 'blind spot' — artists you own on vinyl but whose
+        scrobble counts underrepresent because vinyl doesn't scrobble.
+        Also shows which heavy-rotation artists you've invested in physically.
+        """
+        discogs = DiscogsClient(discogs_username)
+        collection_artists = discogs.get_collection_artists()
+        collection_releases = discogs.get_collection()
+        summary = discogs.get_collection_summary()
+
+        top_artists = self.client.get_top_artists(period=period, limit=limit)
+        lastfm_names = {a["name"].lower(): a for a in top_artists}
+
+        lines = []
+        lines.append(f"## Vinyl × Scrobble Cross-Reference")
+        lines.append(f"Discogs: {summary['total_releases']} releases, "
+                      f"{summary['unique_artists']} artists")
+        lines.append(f"Last.fm period: {_period_label(period)}")
+        lines.append("")
+
+        # Artists in both: you own vinyl AND scrobble them
+        both = []
+        for artist, releases in collection_artists.items():
+            key = artist.lower()
+            if key in lastfm_names:
+                lfm = lastfm_names[key]
+                both.append({
+                    "name": artist,
+                    "plays": int(lfm["playcount"]),
+                    "vinyl_count": len(releases),
+                    "releases": releases,
+                })
+        both.sort(key=lambda x: x["plays"], reverse=True)
+
+        if both:
+            lines.append(f"### In Your Collection AND Heavy Rotation ({len(both)} artists)")
+            lines.append("Artists you own physically and scrobble — the core.")
+            lines.append("")
+            for a in both:
+                titles = ", ".join(r["title"] for r in a["releases"])
+                lines.append(f"  {a['name']:<30} {a['plays']:>6} plays | "
+                              f"Own: {titles}")
+            lines.append("")
+
+        # Vinyl blind spot: own it but low/no scrobbles
+        blind_spot = []
+        for artist, releases in collection_artists.items():
+            key = artist.lower()
+            if key not in lastfm_names:
+                blind_spot.append({
+                    "name": artist,
+                    "releases": releases,
+                })
+        blind_spot.sort(key=lambda x: x["name"])
+
+        if blind_spot:
+            lines.append(f"### The Blind Spot ({len(blind_spot)} artists)")
+            lines.append(f"Own on vinyl but not in your Last.fm top {limit} — "
+                          "the relationship is deeper than scrobbles show.")
+            lines.append("")
+            for a in blind_spot:
+                titles = ", ".join(r["title"] for r in a["releases"])
+                formats = set()
+                for r in a["releases"]:
+                    formats.update(r["formats"])
+                fmt_str = "/".join(sorted(formats))
+                lines.append(f"  {a['name']:<30} [{fmt_str}] {titles}")
+            lines.append("")
+
+        # Digital-only: heavy scrobbles but no physical investment
+        digital_only = []
+        collection_lower = {a.lower() for a in collection_artists}
+        for a in top_artists[:25]:
+            if a["name"].lower() not in collection_lower:
+                digital_only.append({
+                    "name": a["name"],
+                    "plays": int(a["playcount"]),
+                })
+
+        if digital_only:
+            lines.append(f"### Digital Only ({len(digital_only)} of top 25)")
+            lines.append("Heavy scrobbles, no physical investment (yet).")
+            lines.append("")
+            for a in digital_only:
+                lines.append(f"  {a['name']:<30} {a['plays']:>6} plays")
+            lines.append("")
+
+        # Collection stats
+        if summary["formats"]:
+            lines.append("### Collection Breakdown")
+            for fmt, count in summary["formats"].items():
+                lines.append(f"  {fmt}: {count}")
+            lines.append("")
+
+        if summary["genres"]:
+            lines.append("### Genres in Collection")
+            for genre, count in list(summary["genres"].items())[:15]:
+                lines.append(f"  {genre}: {count}")
+            lines.append("")
+
+        return "\n".join(lines)
+
+    def collection_overview(self, discogs_username: str) -> str:
+        """Quick overview of the Discogs collection without Last.fm cross-ref."""
+        discogs = DiscogsClient(discogs_username)
+        releases = discogs.get_collection()
+        summary = discogs.get_collection_summary()
+
+        lines = []
+        lines.append(f"## Discogs Collection: {discogs_username}")
+        lines.append(f"{summary['total_releases']} releases, "
+                      f"{summary['unique_artists']} unique artists")
+        lines.append("")
+
+        if summary["formats"]:
+            lines.append("### Formats")
+            for fmt, count in summary["formats"].items():
+                lines.append(f"  {fmt}: {count}")
+            lines.append("")
+
+        if summary["genres"]:
+            lines.append("### Genres")
+            for genre, count in summary["genres"].items():
+                lines.append(f"  {genre}: {count}")
+            lines.append("")
+
+        lines.append("### Full Collection")
+        for r in sorted(releases, key=lambda x: x["artist_str"]):
+            fmt = "/".join(r["formats"])
+            year = f" ({r['year']})" if r["year"] else ""
+            lines.append(f"  {r['artist_str']} — {r['title']}{year} [{fmt}]")
+        lines.append("")
 
         return "\n".join(lines)
 
