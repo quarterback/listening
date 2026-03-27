@@ -126,7 +126,8 @@ fetch('viz_data.json')
         if (a.preview) {
           var btn = document.createElement('button');
           btn.className = 'ac-play';
-          btn.textContent = '\u25B6 ' + a.preview_track;
+          var trackName = a.preview_track.length > 30 ? a.preview_track.slice(0, 28) + '\u2026' : a.preview_track;
+          btn.textContent = '\u25B6 ' + trackName;
           btn.addEventListener('click', function() { playPreview(a.input_artist, a.preview_track, btn); });
           info.appendChild(btn);
         }
