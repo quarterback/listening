@@ -1,4 +1,4 @@
-# Ron's Listening Journey
+# A music retrospective
 
 I've done lots of random music analysis over the years — Spotify Wrapped, Last.fm charts, playlists for every occasion — but never anything quite like this.
 
