@@ -1,7 +1,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  font-family: 'Space Grotesk', -apple-system, sans-serif;
+  font-family: 'Instrument Sans', -apple-system, sans-serif;
   background: #0a0a0f;
   color: #e8e8e8;
   line-height: 1.6;
@@ -9,7 +9,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-.mono { font-family: 'Space Mono', monospace; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.serif { font-family: 'Instrument Serif', Georgia, serif; }
 a { color: #ff6b35; text-decoration: none; }
 a:hover { text-decoration: underline; }
 
@@ -58,12 +59,14 @@ a:hover { text-decoration: underline; }
   padding: 2rem 2rem 4rem;
 }
 .prose p {
-  color: #999; font-size: 1.05rem;
-  margin-bottom: 1.2rem; line-height: 1.7;
+  font-family: 'Instrument Serif', Georgia, serif;
+  color: #999; font-size: 1.1rem;
+  margin-bottom: 1.2rem; line-height: 1.8;
 }
 .prose .kicker {
-  color: #e8e8e8; font-weight: 600;
-  font-size: 1.15rem; margin-top: 2rem;
+  font-family: 'Instrument Serif', Georgia, serif;
+  color: #e8e8e8; font-weight: 400; font-style: italic;
+  font-size: 1.25rem; margin-top: 2rem;
 }
 
 /* ── Sections ── */
@@ -71,7 +74,9 @@ section {
   padding: 5rem 2rem; max-width: 1100px; margin: 0 auto;
 }
 section h2 {
-  font-size: 1.5rem; font-weight: 600; margin-bottom: 0.4rem;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 1.8rem; font-weight: 400; margin-bottom: 0.4rem;
+  font-style: italic;
 }
 section .lede {
   color: #888; margin-bottom: 2.5rem;
@@ -146,7 +151,7 @@ section .lede {
   border-radius: 8px; padding: 1rem 1.1rem;
 }
 .year-card .yc-year {
-  font-family: 'Space Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   color: #ff6b35; font-size: 1.2rem;
   font-weight: 600; margin-bottom: 0.6rem;
 }
@@ -170,7 +175,7 @@ section .lede {
 .yc-track .yc-song { color: #e0e0e0; }
 .yc-track .yc-plays {
   margin-left: auto; color: #444;
-  font-family: 'Space Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 0.7rem; flex-shrink: 0;
 }
 
@@ -194,8 +199,8 @@ section .lede {
 .obscure-item:last-child { border-bottom: none; }
 .oi-name { font-weight: 600; }
 .oi-detail { color: #666; font-size: 0.8rem; grid-column: 1 / -1; }
-.oi-listeners { font-family: 'Space Mono', monospace; font-size: 0.78rem; color: #555; text-align: right; }
-.oi-plays { font-family: 'Space Mono', monospace; font-size: 0.78rem; color: #ff6b35; text-align: right; }
+.oi-listeners { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: #555; text-align: right; }
+.oi-plays { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: #ff6b35; text-align: right; }
 
 /* ── Contrast cards ── */
 .contrast-grid {
@@ -208,14 +213,14 @@ section .lede {
   border-radius: 8px; padding: 1.1rem;
 }
 .contrast-card .cc-year {
-  font-family: 'Space Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   color: #ff6b35; font-size: 0.85rem; margin-bottom: 0.6rem;
 }
 .cc-pair { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
 .cc-artist { flex: 1; text-align: center; }
 .cc-artist .cc-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.15rem; }
 .cc-artist .cc-genre { font-size: 0.72rem; color: #555; }
-.cc-artist .cc-count { font-size: 0.7rem; color: #444; font-family: 'Space Mono', monospace; }
+.cc-artist .cc-count { font-size: 0.7rem; color: #444; font-family: 'JetBrains Mono', monospace; }
 .cc-vs { color: #2a2a2a; font-weight: 700; font-size: 0.75rem; }
 
 /* ── Vinyl ── */
@@ -232,7 +237,7 @@ section .lede {
 .vi-album { color: #777; font-size: 0.82rem; margin-top: 0.1rem; }
 .vi-meta {
   display: flex; gap: 0.6rem; font-size: 0.72rem;
-  font-family: 'Space Mono', monospace; color: #555;
+  font-family: 'JetBrains Mono', monospace; color: #555;
   margin-top: 0.4rem; flex-wrap: wrap;
 }
 .vi-scrobbles { color: #ff6b35; }
@@ -249,7 +254,7 @@ section .lede {
   border-radius: 8px; padding: 1.3rem;
 }
 .fc-label { color: #555; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
-.fc-value { font-size: 1.6rem; font-weight: 700; color: #ff6b35; font-family: 'Space Mono', monospace; line-height: 1.2; }
+.fc-value { font-size: 1.6rem; font-weight: 700; color: #ff6b35; font-family: 'JetBrains Mono', monospace; line-height: 1.2; }
 .fc-detail { color: #777; font-size: 0.85rem; margin-top: 0.4rem; }
 
 /* ── Tooltip ── */
