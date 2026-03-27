@@ -343,6 +343,69 @@ fetch('viz_data.json')
       });
     })();
 
+    // ── Before The Scrobbles (Eras) ──
+    (function() {
+      var container = document.getElementById('eras-list');
+      if (!DATA.eras || !container) return;
+
+      DATA.eras.forEach(function(era) {
+        var block = document.createElement('div');
+        block.className = 'era-block';
+
+        var title = document.createElement('div');
+        title.className = 'era-title';
+        title.textContent = era.title;
+        block.appendChild(title);
+
+        var text = document.createElement('div');
+        text.className = 'era-text';
+        text.textContent = era.text;
+        block.appendChild(text);
+
+        if (era.albums && era.albums.length > 0) {
+          var strip = document.createElement('div');
+          strip.className = 'era-albums';
+
+          era.albums.forEach(function(a) {
+            var card = document.createElement('div');
+            card.className = 'era-album';
+
+            if (a.cover) {
+              var img = document.createElement('img');
+              img.src = a.cover;
+              img.alt = a.artist + ' - ' + a.album;
+              img.loading = 'lazy';
+              card.appendChild(img);
+            }
+
+            var artist = document.createElement('div');
+            artist.className = 'ea-artist';
+            artist.textContent = a.artist;
+            card.appendChild(artist);
+
+            var albumTitle = document.createElement('div');
+            albumTitle.className = 'ea-title';
+            albumTitle.textContent = a.album;
+            card.appendChild(albumTitle);
+
+            if (a.preview_track) {
+              var btn = document.createElement('button');
+              btn.className = 'ea-play';
+              btn.textContent = '\u25B6 ' + (a.preview_track.length > 20 ? a.preview_track.slice(0, 18) + '\u2026' : a.preview_track);
+              btn.addEventListener('click', function() { playPreview(a.artist, a.preview_track, btn); });
+              card.appendChild(btn);
+            }
+
+            strip.appendChild(card);
+          });
+
+          block.appendChild(strip);
+        }
+
+        container.appendChild(block);
+      });
+    })();
+
     // ── Deep Cuts ──
     (function() {
       var list = document.getElementById('obscure-list');
