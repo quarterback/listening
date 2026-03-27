@@ -1,8 +1,8 @@
 // ── Audio Player ──
-const audioEl = document.getElementById('global-audio');
-let currentBtn = null;
+var audioEl = document.getElementById('global-audio');
+var currentBtn = null;
 
-function playPreview(url, btn) {
+function playPreview(artist, track, btn) {
   if (currentBtn) {
     currentBtn.classList.remove('playing');
     currentBtn.textContent = '\u25B6';
@@ -12,11 +12,24 @@ function playPreview(url, btn) {
     currentBtn = null;
     return;
   }
-  audioEl.src = url;
-  audioEl.play();
-  btn.classList.add('playing');
-  btn.textContent = '\u275A\u275A';
-  currentBtn = btn;
+  // Fetch a fresh preview URL from Deezer (signed URLs expire)
+  btn.textContent = '\u00B7\u00B7\u00B7';
+  var q = encodeURIComponent(artist + ' ' + track);
+  fetch('https://api.deezer.com/search?q=' + q + '&limit=1')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var results = data.data || [];
+      if (results.length && results[0].preview) {
+        audioEl.src = results[0].preview;
+        audioEl.play();
+        btn.classList.add('playing');
+        btn.textContent = '\u275A\u275A';
+        currentBtn = btn;
+      } else {
+        btn.textContent = '\u25B6';
+      }
+    })
+    .catch(function() { btn.textContent = '\u25B6'; });
 }
 
 audioEl.addEventListener('ended', function() {
@@ -114,7 +127,7 @@ fetch('viz_data.json')
           var btn = document.createElement('button');
           btn.className = 'ac-play';
           btn.textContent = '\u25B6 ' + a.preview_track;
-          btn.addEventListener('click', function() { playPreview(a.preview, btn); });
+          btn.addEventListener('click', function() { playPreview(a.input_artist, a.preview_track, btn); });
           info.appendChild(btn);
         }
 
@@ -221,11 +234,9 @@ fetch('viz_data.json')
           row.className = 'yc-track';
 
           var btn = document.createElement('button');
-          btn.className = t.preview ? 'yc-btn' : 'yc-btn no-preview';
+          btn.className = 'yc-btn';
           btn.textContent = '\u25B6';
-          if (t.preview) {
-            btn.addEventListener('click', function() { playPreview(t.preview, btn); });
-          }
+          btn.addEventListener('click', function() { playPreview(t.artist, t.name, btn); });
           row.appendChild(btn);
 
           var text = document.createElement('span');
