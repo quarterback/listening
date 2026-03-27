@@ -363,4 +363,3 @@ fetch('viz_data.json').then(r => r.json()).then(DATA => {
   })();
 
 }); // end fetch
-</script>
