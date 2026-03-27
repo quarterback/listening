@@ -150,7 +150,7 @@ fetch('viz_data.json').then(r => r.json()).then(DATA => {
           .map(a => `${a.n} <span style="color:#555">(${a.p})</span>`).join('<br>');
         showTooltip(evt, `
           <div style="font-weight:600;color:${COLORS[d.key]}">${d.key}</div>
-          <div style="color:#ff6b35;font-family:'IBM Plex Mono',monospace;font-size:0.8rem">${nearest}</div>
+          <div style="color:#ff6b35;font-family:'Space Mono',monospace;font-size:0.8rem">${nearest}</div>
           <div style="margin-top:5px;line-height:1.6">${artists || 'none'}</div>
         `);
       })
@@ -160,7 +160,7 @@ fetch('viz_data.json').then(r => r.json()).then(DATA => {
       .selectAll("text").data(years).join("text")
       .attr("x", d => x(d)).attr("text-anchor", "middle").attr("dy", 12)
       .style("fill", "#555").style("font-size", "11px")
-      .style("font-family", "'IBM Plex Mono', monospace")
+      .style("font-family", "'Space Mono', monospace")
       .text(d => "'" + d.slice(-2));
 
     const legend = d3.select("#stream-legend");
@@ -225,7 +225,7 @@ fetch('viz_data.json').then(r => r.json()).then(DATA => {
       .selectAll("text").data(years).join("text")
       .attr("x", d => x(d)).attr("text-anchor", "middle").attr("dy", 12)
       .style("fill", "#555").style("font-size", "11px")
-      .style("font-family", "'IBM Plex Mono', monospace")
+      .style("font-family", "'Space Mono', monospace")
       .text(d => "'" + d.slice(-2));
 
     multiYear.forEach(([name, data]) => {
@@ -245,7 +245,7 @@ fetch('viz_data.json').then(r => r.json()).then(DATA => {
           showTooltip(evt, `
             <div style="font-weight:600">${name}</div>
             <div style="color:#666;font-size:0.8rem">${(data.f || []).join(", ")}</div>
-            <div style="color:#4ecdc4;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;margin-top:3px">${total} total plays, ${active.length} years</div>
+            <div style="color:#4ecdc4;font-family:'Space Mono',monospace;font-size:0.8rem;margin-top:3px">${total} total plays, ${active.length} years</div>
             <div style="margin-top:5px;font-size:0.8rem;line-height:1.6">${yrs}</div>
           `);
           d3.select(this).attr("opacity", 1).attr("stroke-width", 4);
@@ -265,7 +265,7 @@ fetch('viz_data.json').then(r => r.json()).then(DATA => {
         .attr("x", -10).attr("y", y(name))
         .attr("text-anchor", "end").attr("dy", "0.35em")
         .style("fill", color).style("font-size", "10px")
-        .style("font-family", "'IBM Plex Mono', monospace")
+        .style("font-family", "'Space Mono', monospace")
         .text(name);
     });
   })();
