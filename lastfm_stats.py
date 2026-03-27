@@ -210,6 +210,24 @@ def cmd_year(args):
         print()
 
 
+def cmd_collection(args):
+    """Discogs collection overview."""
+    client = get_client()
+    gen = ContextGenerator(client)
+    print(gen.collection_overview(args.discogs_user))
+
+
+def cmd_crossref(args):
+    """Cross-reference Last.fm scrobbles with Discogs vinyl collection."""
+    client = get_client()
+    gen = ContextGenerator(client)
+    print(gen.vinyl_crossref(
+        discogs_username=args.discogs_user,
+        period=args.period,
+        limit=args.limit,
+    ))
+
+
 def cmd_years(args):
     """Summary of all years with top artist per year."""
     client = get_client()
@@ -296,6 +314,20 @@ def main():
     # years
     p = sub.add_parser("years", help="Summary of all years")
     p.set_defaults(func=cmd_years)
+
+    # collection (Discogs)
+    p = sub.add_parser("collection", help="Discogs collection overview")
+    p.add_argument("--discogs-user", default=os.environ.get("DISCOGS_USER", ""),
+                    help="Discogs username (or set DISCOGS_USER env var)")
+    p.set_defaults(func=cmd_collection)
+
+    # crossref (Last.fm × Discogs)
+    p = sub.add_parser("crossref", help="Cross-reference Last.fm with Discogs vinyl")
+    p.add_argument("--discogs-user", default=os.environ.get("DISCOGS_USER", ""),
+                    help="Discogs username (or set DISCOGS_USER env var)")
+    p.add_argument("--period", default="overall", choices=VALID_PERIODS)
+    p.add_argument("--limit", type=int, default=50)
+    p.set_defaults(func=cmd_crossref)
 
     # raw (for debugging)
     p = sub.add_parser("raw", help="Raw API JSON output")
