@@ -23,10 +23,13 @@
 </head>
 <body>
 
+<!-- Skip to content -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
 <!-- Sticky Nav -->
-<nav id="nav">
+<nav id="nav" aria-label="Main navigation">
   <div class="nav-inner">
-    <a href="#top" class="nav-brand mono">468,910</a>
+    <a href="#top" class="nav-brand mono" aria-label="468,910 scrobbles — go to top">468,910</a>
     <div class="nav-links">
       <a href="#records">Records</a>
       <a href="#before">Foundation</a>
@@ -41,6 +44,7 @@
 </nav>
 
 <!-- Hero -->
+<main id="main-content">
 <header class="hero" id="top">
   <h1><span class="num">468,910</span> scrobbles.</h1>
   <p class="sub">
@@ -48,7 +52,7 @@
     From post-hardcore in college to spiritual jazz now.
     A map of everything at once.
   </p>
-  <div class="last-scrobble" id="last-scrobble"></div>
+  <div class="last-scrobble" id="last-scrobble" aria-live="polite"></div>
 </header>
 
 <!-- Intro -->
@@ -131,6 +135,8 @@
   <ul class="obscure-list" id="obscure-list"></ul>
 </section>
 
+</main>
+
 <footer>
   Data from <a href="https://last.fm/user/statechampion">Last.fm</a> &amp;
   <a href="https://www.discogs.com/user/quarterback/collection">Discogs</a>.
@@ -143,7 +149,7 @@
   <br><span class="colophon">Python &middot; Last.fm API &middot; Discogs API &middot; D3.js &middot; iTunes Search API &middot; Deezer &middot; GitHub Pages</span>
 </footer>
 
-<div class="tooltip" id="tooltip"></div>
+<div class="tooltip" id="tooltip" role="tooltip"></div>
 
 <!-- Audio player (global, reused) -->
 <audio id="global-audio" preload="none"></audio>
