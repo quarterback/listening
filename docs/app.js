@@ -558,7 +558,7 @@ fetch('viz_data.json')
       });
     })();
 
-    // ── Vinyl ──
+    // ── The Shelf ──
     (function() {
       var grid = document.getElementById('vinyl-grid');
       var items = DATA.vinyl.inTop.slice().sort(function(a, b) { return b.total_plays - a.total_plays; });
@@ -578,14 +578,26 @@ fetch('viz_data.json')
 
         var meta = document.createElement('div');
         meta.className = 'vi-meta';
-        var scrobbles = document.createElement('span');
-        scrobbles.className = 'vi-scrobbles';
-        scrobbles.textContent = v.total_plays + ' scrobbles';
-        meta.appendChild(scrobbles);
-        var yrs = document.createElement('span');
-        yrs.className = 'vi-years';
-        yrs.textContent = 'top 15 in ' + v.years_in_top.join(", ");
-        meta.appendChild(yrs);
+
+        // Format label
+        var fmt = v.format || (v.date_added === 'bandcamp' ? 'digital' : v.date_added === 'cd' ? 'cd' : 'vinyl');
+        var fmtSpan = document.createElement('span');
+        fmtSpan.style.color = fmt === 'digital' ? '#38bdf8' : fmt === 'cd' ? '#a78bfa' : '#666';
+        fmtSpan.textContent = fmt;
+        meta.appendChild(fmtSpan);
+
+        if (v.total_plays > 0) {
+          var scrobbles = document.createElement('span');
+          scrobbles.className = 'vi-scrobbles';
+          scrobbles.textContent = v.total_plays + ' scrobbles';
+          meta.appendChild(scrobbles);
+        }
+        if (v.years_in_top && v.years_in_top.length > 0) {
+          var yrs = document.createElement('span');
+          yrs.className = 'vi-years';
+          yrs.textContent = 'top 15 in ' + v.years_in_top.join(", ");
+          meta.appendChild(yrs);
+        }
         item.appendChild(meta);
 
         grid.appendChild(item);
