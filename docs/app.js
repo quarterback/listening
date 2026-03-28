@@ -131,6 +131,7 @@ fetch('viz_data.json')
           info.appendChild(artist);
 
           container.appendChild(info);
+          container.classList.add('loaded');
         })
         .catch(function() {});
     })();
