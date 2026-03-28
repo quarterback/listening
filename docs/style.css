@@ -55,20 +55,26 @@ a:hover { text-decoration: underline; }
 
 /* ── Last Scrobble ── */
 .last-scrobble {
+  margin-top: 2rem;
+  display: none; align-items: center; gap: 0.75rem;
+  background: #12121a; border: 1px solid #222;
+  border-radius: 8px; padding: 0.6rem 1rem;
+  font-size: 0.82rem;
+  transition: box-shadow 0.3s;
+}
+.last-scrobble.loaded { display: inline-flex; }
+.last-scrobble.sticky {
   position: fixed;
   bottom: 1.5rem;
   right: 1.5rem;
-  z-index: 40;
-  display: none; align-items: center; gap: 0.75rem;
+  margin: 0; z-index: 40;
   background: rgba(18,18,26,0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid #222;
-  border-radius: 10px; padding: 0.6rem 1rem;
-  font-size: 0.82rem;
   box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  font-size: 0.78rem;
 }
-.last-scrobble.loaded { display: flex; }
+.last-scrobble.sticky img { width: 32px; height: 32px; }
 .last-scrobble img {
   width: 40px; height: 40px; border-radius: 4px;
   object-fit: cover; background: #1a1a24;
@@ -83,9 +89,10 @@ a:hover { text-decoration: underline; }
 .last-scrobble .ls-now { color: #1DB954; }
 
 @media (max-width: 700px) {
-  .last-scrobble {
-    bottom: 1rem; right: 1rem; left: 1rem;
-    font-size: 0.78rem;
+  .last-scrobble.sticky {
+    bottom: 1rem; right: 1rem;
+    font-size: 0.72rem;
+    padding: 0.5rem 0.8rem;
   }
 }
 

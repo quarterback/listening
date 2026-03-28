@@ -132,6 +132,19 @@ fetch('viz_data.json')
 
           container.appendChild(info);
           container.classList.add('loaded');
+
+          // Sticky on scroll: detach when scrolled past hero
+          var hero = document.querySelector('.hero');
+          if (hero && window.IntersectionObserver) {
+            var observer = new IntersectionObserver(function(entries) {
+              if (entries[0].isIntersecting) {
+                container.classList.remove('sticky');
+              } else {
+                container.classList.add('sticky');
+              }
+            }, {threshold: 0});
+            observer.observe(hero);
+          }
         })
         .catch(function() {});
     })();
