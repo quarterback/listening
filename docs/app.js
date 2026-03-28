@@ -89,6 +89,52 @@ fetch('viz_data.json')
     document.getElementById('stat-obscure').textContent = DATA.obscureGems.length;
     document.getElementById('stat-vinyl').textContent = DATA.vinyl.totalVinyl;
 
+    // ── Last Scrobble ──
+    (function() {
+      var container = document.getElementById('last-scrobble');
+      if (!container) return;
+      fetch('https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=statechampion&limit=1&api_key=4f1d49f394a1567717e2c9049947d004&format=json')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          var tracks = (data.recenttracks || {}).track || [];
+          if (!tracks.length) return;
+          var t = tracks[0];
+          var nowPlaying = t['@attr'] && t['@attr'].nowplaying === 'true';
+          var images = t.image || [];
+          var imgUrl = '';
+          for (var i = 0; i < images.length; i++) {
+            if (images[i].size === 'large' && images[i]['#text']) imgUrl = images[i]['#text'];
+          }
+
+          if (imgUrl) {
+            var img = document.createElement('img');
+            img.src = imgUrl;
+            img.alt = t.artist['#text'] + ' - ' + t.name;
+            container.appendChild(img);
+          }
+
+          var info = document.createElement('div');
+          var label = document.createElement('div');
+          label.className = 'ls-label';
+          label.textContent = nowPlaying ? 'Now playing' : 'Last scrobble';
+          if (nowPlaying) label.classList.add('ls-now');
+          info.appendChild(label);
+
+          var track = document.createElement('div');
+          track.className = 'ls-track';
+          track.textContent = t.name;
+          info.appendChild(track);
+
+          var artist = document.createElement('div');
+          artist.className = 'ls-artist';
+          artist.textContent = t.artist['#text'];
+          info.appendChild(artist);
+
+          container.appendChild(info);
+        })
+        .catch(function() {});
+    })();
+
     // ── Memorable Albums ──
     var albumGrid = document.getElementById('album-grid');
     if (DATA.memorableAlbums && albumGrid) {
