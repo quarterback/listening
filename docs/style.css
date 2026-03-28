@@ -1,5 +1,25 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* ── Skip Link ── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 100;
+  padding: 0.6rem 1.2rem;
+  background: #ff6b35;
+  color: #0a0a0f;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 0 0 6px 6px;
+  text-decoration: none;
+}
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
 body {
   font-family: 'Instrument Sans', -apple-system, sans-serif;
   background: #0a0a0f;
@@ -13,6 +33,10 @@ body {
 .serif { font-family: 'Instrument Serif', Georgia, serif; }
 a { color: #ff6b35; text-decoration: none; }
 a:hover { text-decoration: underline; }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid #ff6b35;
+  outline-offset: 2px;
+}
 
 /* ── Nav ── */
 #nav {
@@ -428,4 +452,14 @@ footer a { color: #666; }
 @media (max-width: 400px) {
   .album-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
   .hero h1 { font-size: 2.2rem; }
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

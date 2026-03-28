@@ -5,6 +5,7 @@ var currentBtn = null;
 function playPreview(artist, track, btn) {
   if (currentBtn) {
     currentBtn.classList.remove('playing');
+    currentBtn.setAttribute('aria-pressed', 'false');
     currentBtn.textContent = '\u25B6';
   }
   if (currentBtn === btn) {
@@ -22,18 +23,21 @@ function playPreview(artist, track, btn) {
         audioEl.src = results[0].previewUrl;
         audioEl.play();
         btn.classList.add('playing');
+        btn.setAttribute('aria-pressed', 'true');
         btn.textContent = '\u275A\u275A';
         currentBtn = btn;
       } else {
         btn.textContent = '\u25B6';
+        btn.setAttribute('aria-pressed', 'false');
       }
     })
-    .catch(function() { btn.textContent = '\u25B6'; });
+    .catch(function() { btn.textContent = '\u25B6'; btn.setAttribute('aria-pressed', 'false'); });
 }
 
 audioEl.addEventListener('ended', function() {
   if (currentBtn) {
     currentBtn.classList.remove('playing');
+    currentBtn.setAttribute('aria-pressed', 'false');
     currentBtn.textContent = '\u25B6';
     currentBtn = null;
   }
@@ -48,9 +52,12 @@ function showTooltip(evt, html) {
   var y = Math.min(evt.clientY - 8, window.innerHeight - 140);
   tt.style.left = x + 'px';
   tt.style.top = y + 'px';
+  if (evt.target) evt.target.setAttribute('aria-describedby', 'tooltip');
 }
 function hideTooltip() {
   document.getElementById('tooltip').classList.remove('show');
+  var described = document.querySelector('[aria-describedby="tooltip"]');
+  if (described) described.removeAttribute('aria-describedby');
 }
 
 // ── Escape for safe HTML insertion ──
@@ -185,6 +192,8 @@ fetch('viz_data.json')
         if (a.preview_track) {
           var btn = document.createElement('button');
           btn.className = 'ac-play';
+          btn.setAttribute('aria-label', 'Play preview of ' + a.preview_track + ' by ' + a.input_artist);
+          btn.setAttribute('aria-pressed', 'false');
           var trackName = a.preview_track.length > 30 ? a.preview_track.slice(0, 28) + '\u2026' : a.preview_track;
           btn.textContent = '\u25B6 ' + trackName;
           btn.addEventListener('click', function() { playPreview(a.input_artist, a.preview_track, btn); });
@@ -203,6 +212,8 @@ fetch('viz_data.json')
       var height = 400;
 
       var svg = d3.select("#stream-chart")
+        .attr("role", "img")
+        .attr("aria-label", "Stream chart showing genre distribution by year")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .attr("viewBox", "0 0 " + (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom))
@@ -296,6 +307,8 @@ fetch('viz_data.json')
           var btn = document.createElement('button');
           btn.className = 'yc-btn';
           btn.textContent = '\u25B6';
+          btn.setAttribute('aria-label', 'Play preview of ' + t.name + ' by ' + t.artist);
+          btn.setAttribute('aria-pressed', 'false');
           btn.addEventListener('click', function() { playPreview(t.artist, t.name, btn); });
           row.appendChild(btn);
 
@@ -331,6 +344,8 @@ fetch('viz_data.json')
       var height = 650;
 
       var svg = d3.select("#bump-chart")
+        .attr("role", "img")
+        .attr("aria-label", "Bump chart showing artist ranking changes over the years")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .attr("viewBox", "0 0 " + (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom))
@@ -451,6 +466,8 @@ fetch('viz_data.json')
             if (a.preview_track) {
               var btn = document.createElement('button');
               btn.className = 'ea-play';
+              btn.setAttribute('aria-label', 'Play preview of ' + a.preview_track + ' by ' + a.artist);
+              btn.setAttribute('aria-pressed', 'false');
               btn.textContent = '\u25B6 ' + (a.preview_track.length > 20 ? a.preview_track.slice(0, 18) + '\u2026' : a.preview_track);
               btn.addEventListener('click', function() { playPreview(a.artist, a.preview_track, btn); });
               card.appendChild(btn);
