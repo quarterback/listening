@@ -73,6 +73,14 @@ var Game = (function() {
   // ── Load Game Data ──
   function loadGame() {
     d3.json('questions.json').then(function(data) {
+      // Randomly pick 6 categories from the pool
+      var allCats = data.categories.slice();
+      var picked = [];
+      while (picked.length < 6 && allCats.length > 0) {
+        var idx = Math.floor(Math.random() * allCats.length);
+        picked.push(allCats.splice(idx, 1)[0]);
+      }
+      data.categories = picked;
       state.data = data;
       state.questionsRemaining = data.categories.length * data.categories[0].clues.length;
 
