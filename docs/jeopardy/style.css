@@ -84,33 +84,162 @@ body {
 /* ── Pixel Font Utility ── */
 .pixel { font-family: var(--pixel-font); }
 
+/* ── TITLE SCREEN (Arcade Cabinet) ── */
+.title-screen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, #12121a 0%, #0a0a0f 70%);
+}
+
+.title-characters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 5vw, 4rem);
+}
+
+.title-char {
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 8px rgba(255,107,53,0.4));
+}
+.char-left { animation: char-bounce 2s ease-in-out infinite; }
+.char-right { animation: char-bounce 2s ease-in-out infinite 0.5s; }
+@keyframes char-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.title-logo-area {
+  text-align: center;
+}
+
+.title-insert-coin {
+  font-family: var(--pixel-font);
+  font-size: 0.5rem;
+  color: var(--dim);
+  letter-spacing: 0.3em;
+  margin-bottom: 0.5rem;
+  animation: blink 1.2s step-end infinite;
+}
+
+.title-main {
+  font-family: var(--pixel-font);
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+.title-out {
+  display: block;
+  font-size: clamp(2rem, 8vw, 5rem);
+  color: var(--red);
+  text-shadow: 4px 4px 0 #990000, 0 0 30px rgba(255,51,51,0.4);
+  animation: title-glitch 4s infinite;
+}
+.title-of {
+  display: block;
+  font-size: clamp(0.8rem, 2vw, 1.2rem);
+  color: var(--dim);
+  margin: 0.2rem 0;
+}
+.title-service {
+  display: block;
+  font-size: clamp(1.5rem, 6vw, 3.5rem);
+  color: var(--cyan);
+  text-shadow: 3px 3px 0 #007777, 0 0 20px rgba(0,255,247,0.3);
+}
+
+@keyframes title-glitch {
+  0%, 85%, 100% { transform: translate(0); text-shadow: 4px 4px 0 #990000, 0 0 30px rgba(255,51,51,0.4); }
+  86% { transform: translate(-3px, 1px); text-shadow: 6px 4px 0 #990000, -3px 0 var(--cyan); }
+  88% { transform: translate(3px, -1px); text-shadow: 2px 4px 0 #990000, 3px 0 var(--magenta); }
+  90% { transform: translate(-1px, -2px); text-shadow: 4px 6px 0 #990000, -1px 0 var(--cyan); }
+  92% { transform: translate(0); text-shadow: 4px 4px 0 #990000, 0 0 30px rgba(255,51,51,0.4); }
+}
+
+.title-sub-arcade {
+  font-family: var(--pixel-font);
+  font-size: clamp(0.4rem, 1.2vw, 0.6rem);
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  margin-bottom: 0.3rem;
+}
+.title-course {
+  font-family: var(--pixel-font);
+  font-size: 0.45rem;
+  color: var(--dim);
+  letter-spacing: 0.15em;
+  margin-bottom: 1.5rem;
+}
+
+.title-credits {
+  margin-bottom: 1rem;
+}
+.blink-text {
+  font-family: var(--pixel-font);
+  font-size: clamp(0.5rem, 1.5vw, 0.8rem);
+  color: var(--gold);
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.arcade-start {
+  border-color: var(--gold);
+  color: var(--gold);
+  font-size: clamp(0.8rem, 2vw, 1.2rem) !important;
+  padding: 0.8rem 3rem !important;
+}
+.arcade-start:hover {
+  background: var(--gold);
+  color: var(--bg);
+}
+
+/* Title skyline */
+.title-skyline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0.7;
+}
+.title-skyline svg { image-rendering: pixelated; display: block; }
+.window-blink { animation: window-flicker 3s ease-in-out infinite; }
+@keyframes window-flicker {
+  0%, 40%, 100% { opacity: 1; }
+  50%, 60% { opacity: 0.2; }
+}
+
 /* ── SETUP SCREEN ── */
 .setup-inner {
   text-align: center;
   padding: 2rem;
 }
-.title-glitch {
+.setup-heading {
   font-family: var(--pixel-font);
-  font-size: clamp(1.2rem, 4vw, 2.8rem);
+  font-size: clamp(0.8rem, 2.5vw, 1.5rem);
   color: var(--cyan);
-  text-shadow: 3px 3px 0 var(--magenta), -1px -1px 0 var(--blue);
-  animation: glitch 3s infinite;
-  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
 }
-.title-sub {
-  font-family: var(--pixel-font);
-  font-size: clamp(1.5rem, 5vw, 3.5rem);
-  color: var(--gold);
-  margin: 0.5rem 0;
-  text-shadow: 2px 2px 0 #b8860b;
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-.title-tagline {
-  font-family: var(--pixel-font);
-  font-size: 0.7rem;
+.setup-hint {
+  font-size: 0.85rem;
   color: var(--dim);
-  margin-bottom: 2rem;
-  letter-spacing: 0.2em;
+  max-width: 500px;
+  margin: 0 auto 1.5rem;
+  line-height: 1.5;
+}
+.host-hint {
+  font-family: var(--pixel-font);
+  font-size: 0.4rem;
+  color: var(--dim);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.1em;
 }
 
 @keyframes glitch {

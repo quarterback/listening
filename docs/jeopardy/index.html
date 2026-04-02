@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0a0a0f">
-<title>UT360 Service Design Jeopardy</title>
+<title>OUT OF SERVICE</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
@@ -12,15 +12,119 @@
 
 <div id="game" class="game-container">
 
-  <!-- SETUP SCREEN -->
-  <div id="screen-setup" class="screen active scroll-screen">
+  <!-- TITLE SCREEN (arcade cabinet intro) -->
+  <div id="screen-title" class="screen active">
+    <div class="title-screen">
+      <!-- Pixel art characters flanking the logo -->
+      <div class="title-characters">
+        <svg class="title-char char-left" viewBox="0 0 16 24" width="80" height="120">
+          <!-- Wreck-It Ralph inspired blocky character 1: the Bureaucrat -->
+          <rect x="5" y="0" width="6" height="2" fill="#ff6b35"/>
+          <rect x="4" y="2" width="8" height="2" fill="#ff6b35"/>
+          <rect x="3" y="4" width="10" height="3" fill="#ffb380"/>
+          <rect x="5" y="5" width="2" height="1" fill="#0a0a0f"/>
+          <rect x="9" y="5" width="2" height="1" fill="#0a0a0f"/>
+          <rect x="6" y="7" width="4" height="1" fill="#0a0a0f"/>
+          <rect x="4" y="8" width="8" height="2" fill="#4466ff"/>
+          <rect x="3" y="10" width="10" height="4" fill="#4466ff"/>
+          <rect x="6" y="11" width="4" height="1" fill="#ffd700"/>
+          <rect x="2" y="10" width="2" height="5" fill="#ffb380"/>
+          <rect x="12" y="10" width="2" height="5" fill="#ffb380"/>
+          <rect x="4" y="14" width="3" height="4" fill="#333"/>
+          <rect x="9" y="14" width="3" height="4" fill="#333"/>
+          <rect x="4" y="18" width="3" height="2" fill="#8B4513"/>
+          <rect x="9" y="18" width="3" height="2" fill="#8B4513"/>
+        </svg>
+
+        <div class="title-logo-area">
+          <div class="title-insert-coin">INSERT COIN</div>
+          <h1 class="title-main">
+            <span class="title-out">OUT</span>
+            <span class="title-of">of</span>
+            <span class="title-service">SERVICE</span>
+          </h1>
+          <p class="title-sub-arcade">A SERVICE DESIGN GAME</p>
+          <p class="title-course">UT360 &middot; WINTER 2026</p>
+          <div class="title-credits">
+            <span class="blink-text">PRESS START</span>
+          </div>
+          <button id="btn-title-start" class="pixel-btn big arcade-start">START</button>
+        </div>
+
+        <svg class="title-char char-right" viewBox="0 0 16 24" width="80" height="120">
+          <!-- Character 2: the Designer -->
+          <rect x="4" y="0" width="8" height="3" fill="#ff00ff"/>
+          <rect x="3" y="3" width="10" height="3" fill="#ffb380"/>
+          <rect x="5" y="4" width="2" height="1" fill="#0a0a0f"/>
+          <rect x="9" y="4" width="2" height="1" fill="#0a0a0f"/>
+          <rect x="6" y="6" width="4" height="1" fill="#ff6b6b"/>
+          <rect x="4" y="7" width="8" height="2" fill="#00fff7"/>
+          <rect x="3" y="9" width="10" height="4" fill="#00fff7"/>
+          <rect x="2" y="9" width="2" height="5" fill="#ffb380"/>
+          <rect x="12" y="9" width="2" height="5" fill="#ffb380"/>
+          <rect x="1" y="13" width="3" height="2" fill="#ffb380"/>
+          <rect x="12" y="13" width="3" height="2" fill="#ffb380"/>
+          <rect x="4" y="13" width="3" height="4" fill="#333"/>
+          <rect x="9" y="13" width="3" height="4" fill="#333"/>
+          <rect x="4" y="17" width="3" height="2" fill="#ff3333"/>
+          <rect x="9" y="17" width="3" height="2" fill="#ff3333"/>
+        </svg>
+      </div>
+
+      <!-- Animated pixel cityscape at bottom -->
+      <div class="title-skyline">
+        <svg viewBox="0 0 320 40" preserveAspectRatio="none" width="100%" height="60">
+          <rect x="0" y="20" width="320" height="20" fill="#0a0a0f"/>
+          <rect x="10" y="12" width="15" height="28" fill="#1a1a2e"/>
+          <rect x="12" y="14" width="3" height="3" fill="#ffd700" class="window-blink"/>
+          <rect x="17" y="18" width="3" height="3" fill="#ffd700" class="window-blink" style="animation-delay:0.5s"/>
+          <rect x="30" y="5" width="20" height="35" fill="#1a1a2e"/>
+          <rect x="33" y="8" width="3" height="3" fill="#00fff7" class="window-blink" style="animation-delay:1s"/>
+          <rect x="42" y="12" width="3" height="3" fill="#ffd700" class="window-blink" style="animation-delay:1.5s"/>
+          <rect x="33" y="18" width="3" height="3" fill="#ff00ff" class="window-blink" style="animation-delay:0.3s"/>
+          <rect x="55" y="15" width="12" height="25" fill="#1a1a2e"/>
+          <rect x="57" y="17" width="3" height="3" fill="#ffd700" class="window-blink" style="animation-delay:0.8s"/>
+          <rect x="75" y="8" width="25" height="32" fill="#1a1a2e"/>
+          <rect x="78" y="10" width="3" height="3" fill="#00fff7" class="window-blink" style="animation-delay:1.2s"/>
+          <rect x="88" y="14" width="3" height="3" fill="#ffd700" class="window-blink" style="animation-delay:0.6s"/>
+          <rect x="78" y="20" width="3" height="3" fill="#ff6b35" class="window-blink" style="animation-delay:2s"/>
+          <rect x="110" y="10" width="18" height="30" fill="#1a1a2e"/>
+          <rect x="113" y="13" width="3" height="3" fill="#ff00ff" class="window-blink" style="animation-delay:0.9s"/>
+          <rect x="120" y="17" width="3" height="3" fill="#ffd700" class="window-blink" style="animation-delay:1.8s"/>
+          <rect x="135" y="3" width="22" height="37" fill="#1a1a2e"/>
+          <rect x="138" y="6" width="3" height="3" fill="#00fff7" class="window-blink" style="animation-delay:0.4s"/>
+          <rect x="148" y="10" width="3" height="3" fill="#ffd700" class="window-blink" style="animation-delay:1.1s"/>
+          <rect x="138" y="16" width="3" height="3" fill="#ff6b35" class="window-blink" style="animation-delay:1.7s"/>
+          <rect x="165" y="14" width="14" height="26" fill="#1a1a2e"/>
+          <rect x="168" y="16" width="3" height="3" fill="#ffd700" class="window-blink" style="animation-delay:0.7s"/>
+          <rect x="185" y="6" width="20" height="34" fill="#1a1a2e"/>
+          <rect x="188" y="9" width="3" height="3" fill="#ff00ff" class="window-blink" style="animation-delay:1.4s"/>
+          <rect x="196" y="14" width="3" height="3" fill="#00fff7" class="window-blink" style="animation-delay:0.2s"/>
+          <rect x="210" y="12" width="16" height="28" fill="#1a1a2e"/>
+          <rect x="213" y="15" width="3" height="3" fill="#ffd700" class="window-blink" style="animation-delay:1.6s"/>
+          <rect x="232" y="8" width="24" height="32" fill="#1a1a2e"/>
+          <rect x="235" y="11" width="3" height="3" fill="#00fff7" class="window-blink" style="animation-delay:0.5s"/>
+          <rect x="245" y="15" width="3" height="3" fill="#ffd700" class="window-blink" style="animation-delay:1.3s"/>
+          <rect x="235" y="21" width="3" height="3" fill="#ff6b35" class="window-blink" style="animation-delay:1.9s"/>
+          <rect x="262" y="15" width="14" height="25" fill="#1a1a2e"/>
+          <rect x="265" y="18" width="3" height="3" fill="#ff00ff" class="window-blink" style="animation-delay:0.8s"/>
+          <rect x="282" y="4" width="18" height="36" fill="#1a1a2e"/>
+          <rect x="285" y="7" width="3" height="3" fill="#ffd700" class="window-blink" style="animation-delay:1s"/>
+          <rect x="291" y="12" width="3" height="3" fill="#00fff7" class="window-blink" style="animation-delay:0.3s"/>
+          <rect x="305" y="11" width="15" height="29" fill="#1a1a2e"/>
+          <rect x="308" y="14" width="3" height="3" fill="#ffd700" class="window-blink" style="animation-delay:1.5s"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM SETUP SCREEN -->
+  <div id="screen-setup" class="screen scroll-screen">
     <div class="setup-inner">
-      <h1 class="title-glitch" data-text="SERVICE DESIGN">SERVICE DESIGN</h1>
-      <h2 class="title-sub">JEOPARDY!</h2>
-      <p class="title-tagline">UT360 &middot; Winter 2026</p>
+      <h2 class="setup-heading">CHOOSE YOUR PLAYERS</h2>
+      <p class="setup-hint">Enter team names below. You'll read questions aloud, teams shout answers on Zoom, you judge.</p>
 
       <div class="team-setup">
-        <label class="pixel-label">ENTER TEAM NAMES</label>
         <div id="team-inputs">
           <input type="text" class="pixel-input" placeholder="Team 1" maxlength="20">
           <input type="text" class="pixel-input" placeholder="Team 2" maxlength="20">
@@ -31,12 +135,12 @@
           <button id="btn-add-team" class="pixel-btn small">+ ADD TEAM</button>
           <button id="btn-remove-team" class="pixel-btn small danger">- REMOVE</button>
         </div>
-        <button id="btn-start" class="pixel-btn big pulse">START GAME</button>
+        <button id="btn-start" class="pixel-btn big pulse">LET'S GO!</button>
       </div>
     </div>
   </div>
 
-  <!-- JEOPARDY BOARD SCREEN -->
+  <!-- GAME BOARD SCREEN -->
   <div id="screen-board" class="screen">
     <div id="scorebar"></div>
     <div id="board"></div>
@@ -56,6 +160,7 @@
       <!-- Host-only answer preview (tiny text, only visible up close) -->
       <div id="host-answer" class="host-answer"></div>
       <div id="answer-text" class="answer-text hidden"></div>
+      <p class="host-hint" id="host-hint">Teams answer on Zoom. Tap who got it right:</p>
       <div id="team-buzzers" class="team-buzzers"></div>
       <div class="question-actions">
         <button id="btn-reveal" class="pixel-btn">REVEAL ANSWER</button>
@@ -67,7 +172,7 @@
   <!-- DAILY DOUBLE SCREEN -->
   <div id="screen-daily-double" class="screen">
     <div class="dd-container">
-      <h2 class="dd-title glitch-text" data-text="DAILY DOUBLE!">DAILY DOUBLE!</h2>
+      <h2 class="dd-title glitch-text" data-text="BONUS ROUND!">BONUS ROUND!</h2>
       <div id="dd-team-name" class="dd-team"></div>
       <div class="dd-wager">
         <label class="pixel-label">WAGER (max: <span id="dd-max">0</span>)</label>
@@ -80,8 +185,8 @@
   <!-- PRESS YOUR LUCK SCREEN -->
   <div id="screen-pyl" class="screen">
     <div class="pyl-container">
-      <h2 class="pyl-title">PRESS YOUR LUCK!</h2>
-      <p class="pyl-subtitle"><span id="pyl-team-name"></span> &mdash; <span id="pyl-points-at-stake"></span> pts banked</p>
+      <h2 class="pyl-title">RISK IT!</h2>
+      <p class="pyl-subtitle"><span id="pyl-team-name"></span> &mdash; $<span id="pyl-points-at-stake"></span> banked</p>
       <div id="pyl-board"></div>
       <div class="pyl-actions">
         <button id="btn-pyl-stop" class="pixel-btn big danger pulse">STOP!</button>
@@ -91,7 +196,7 @@
     </div>
   </div>
 
-  <!-- SCOREBOARD SCREEN (show to class) -->
+  <!-- SCOREBOARD SCREEN -->
   <div id="screen-scoreboard" class="screen">
     <div class="scoreboard-container">
       <h2 class="scoreboard-title">SCOREBOARD</h2>
