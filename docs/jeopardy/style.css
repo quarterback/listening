@@ -376,6 +376,8 @@ body {
 }
 .pixel-btn.correct { border-color: var(--green); }
 .pixel-btn.correct:hover { background: var(--green); }
+.pixel-btn.gold { border-color: var(--gold); color: var(--gold); }
+.pixel-btn.gold:hover { background: var(--gold); color: var(--bg); }
 
 /* ── SCOREBAR ── */
 #scorebar {

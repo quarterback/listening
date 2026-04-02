@@ -853,6 +853,12 @@ var Game = (function() {
         }
       }
 
+      // G = go to Final Round (from board)
+      if ((e.key === 'g' || e.key === 'G') && state.screen === 'board') {
+        startFinalJeopardy();
+        return;
+      }
+
       if (state.screen === 'question') {
         // Space = reveal answer
         if (e.code === 'Space') {
@@ -935,7 +941,8 @@ var Game = (function() {
       showScreen('board');
       Board.render(state.data, state.board, state.teams);
     });
-    document.getElementById('btn-end-game').addEventListener('click', startFinalJeopardy);
+    document.getElementById('btn-final-round').addEventListener('click', startFinalJeopardy);
+    document.getElementById('btn-end-game').addEventListener('click', endGame);
     document.getElementById('btn-skip-to-end').addEventListener('click', function() {
       stopTimer();
       startFinalJeopardy();
