@@ -131,6 +131,7 @@ var Game = (function() {
       value: clue.value,
       question: clue.question,
       answer: clue.answer,
+      image: clue.image || null,
       dailyDouble: cell.dailyDouble
     };
 
@@ -190,7 +191,27 @@ var Game = (function() {
 
     document.getElementById('category-label').textContent = state.data.categories[clue.catIdx].name;
     document.getElementById('value-label').textContent = '$' + clue.value;
-    document.getElementById('question-text').textContent = clue.question;
+
+    var questionEl = document.getElementById('question-text');
+    questionEl.innerHTML = '';
+
+    // If clue has an image, show it
+    var rawClue = state.data.categories[clue.catIdx].clues[clue.clueIdx];
+    if (rawClue.image) {
+      var img = document.createElement('img');
+      img.src = rawClue.image;
+      img.alt = 'Identify this';
+      img.className = 'clue-image';
+      questionEl.appendChild(img);
+      if (clue.question) {
+        var txt = document.createElement('div');
+        txt.textContent = clue.question;
+        txt.style.marginTop = '0.75rem';
+        questionEl.appendChild(txt);
+      }
+    } else {
+      questionEl.textContent = clue.question;
+    }
 
 
     var answerEl = document.getElementById('answer-text');

@@ -360,6 +360,41 @@
           "answer": "Who is Mehrsa Baradaran?"
         }
       ]
+    },
+    {
+      "name": "PLACES, PEOPLE & THINGS",
+      "clues": [
+        {
+          "value": 200,
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Bollard_Quay_Wharf.jpg/640px-Bollard_Quay_Wharf.jpg",
+          "question": "Name this common piece of street infrastructure designed to protect pedestrians from vehicles.",
+          "answer": "What is a bollard?"
+        },
+        {
+          "value": 400,
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Woonerf_Rotterdam.jpg/640px-Woonerf_Rotterdam.jpg",
+          "question": "This Dutch street design concept puts pedestrians, cyclists, and cars on equal footing — with no curbs or traffic signs.",
+          "answer": "What is a woonerf (or shared space)?"
+        },
+        {
+          "value": 600,
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Tactile_paving.JPG/640px-Tactile_paving.JPG",
+          "question": "These textured ground surfaces at crosswalks and transit platforms help people with visual impairments navigate safely.",
+          "answer": "What are tactile pavers (or truncated domes/detectable warning surfaces)?"
+        },
+        {
+          "value": 800,
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Bioswale_Portland.jpg/640px-Bioswale_Portland.jpg",
+          "question": "This green infrastructure feature channels and filters stormwater runoff using plants and soil, often found along streets in Portland.",
+          "answer": "What is a bioswale?"
+        },
+        {
+          "value": 1000,
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Superkilen_park_Copenhagen.jpg/640px-Superkilen_park_Copenhagen.jpg",
+          "question": "This Copenhagen park, designed by BIG architects, celebrates diversity by embedding objects from 60 countries into its landscape.",
+          "answer": "What is Superkilen?"
+        }
+      ]
     }
   ],
   "dailyDoubles": 2,
