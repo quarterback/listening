@@ -184,9 +184,6 @@ var Game = (function() {
     document.getElementById('value-label').textContent = '$' + clue.value;
     document.getElementById('question-text').textContent = clue.question;
 
-    // Host-only answer preview (tiny, nearly invisible on screen share)
-    var hostAnswer = document.getElementById('host-answer');
-    hostAnswer.textContent = 'HOST: ' + clue.answer;
 
     var answerEl = document.getElementById('answer-text');
     answerEl.textContent = clue.answer;

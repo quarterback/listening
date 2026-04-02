@@ -550,26 +550,6 @@ body {
 }
 
 /* ── Host Answer Preview (only visible up close, not on Zoom) ── */
-/* Host answer: visible up close on your screen, too small/dim to read on Zoom screenshare */
-.host-answer {
-  font-size: 0.6rem;
-  color: #444;
-  font-family: var(--body-font);
-  padding: 0.4rem 0.8rem;
-  margin-bottom: 0.8rem;
-  border: 1px dashed #333;
-  background: rgba(14,14,18,0.9);
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  user-select: none;
-  line-height: 1.4;
-  text-align: left;
-}
-.host-answer:hover {
-  color: #888;
-  border-color: #555;
-}
 
 .hidden { display: none !important; }
 
