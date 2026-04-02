@@ -454,89 +454,125 @@ var Game = (function() {
     showScreen('gameover');
     SFX.play('fanfare');
 
-    // Find winner
-    var maxScore = -Infinity;
-    var winner = '';
-    state.teams.forEach(function(t) {
-      if (t.score > maxScore) {
-        maxScore = t.score;
-        winner = t.name;
-      }
-    });
+    // Sort teams by score descending
+    var ranked = state.teams.map(function(t, i) {
+      return { name: t.name, score: t.score, idx: i };
+    }).sort(function(a, b) { return b.score - a.score; });
 
-    document.getElementById('winner-announce').textContent = winner + ' WINS WITH $' + maxScore + '!';
-
-    // D3 bar chart
-    renderFinalChart();
+    renderPodium(ranked);
+    renderRankings(ranked);
     launchConfetti();
   }
 
-  function renderFinalChart() {
-    var svg = d3.select('#final-chart');
-    svg.selectAll('*').remove();
+  function renderPodium(ranked) {
+    var area = document.getElementById('podium-area');
+    area.innerHTML = '';
 
-    var container = svg.node().parentElement;
-    var width = Math.min(container.offsetWidth - 40, 700);
-    var height = 280;
-    svg.attr('width', width).attr('height', height);
+    // Podium order: 2nd, 1st, 3rd (like Mario Kart)
+    var podiumOrder = [];
+    if (ranked.length >= 2) podiumOrder.push({ team: ranked[1], place: 2, height: 100 });
+    if (ranked.length >= 1) podiumOrder.push({ team: ranked[0], place: 1, height: 140 });
+    if (ranked.length >= 3) podiumOrder.push({ team: ranked[2], place: 3, height: 70 });
 
-    var margin = { top: 20, right: 20, bottom: 50, left: 20 };
-    var w = width - margin.left - margin.right;
-    var h = height - margin.top - margin.bottom;
+    var podium = document.createElement('div');
+    podium.className = 'podium';
 
-    var g = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+    podiumOrder.forEach(function(p, i) {
+      var col = document.createElement('div');
+      col.className = 'podium-col';
+      col.style.animationDelay = (i * 0.3) + 's';
 
-    var x = d3.scaleBand().domain(state.teams.map(function(t) { return t.name; })).range([0, w]).padding(0.3);
-    var maxVal = d3.max(state.teams, function(t) { return Math.max(t.score, 100); });
-    var y = d3.scaleLinear().domain([0, maxVal]).range([h, 0]);
+      // Character (bouncing on 1st place)
+      var charWrap = document.createElement('div');
+      charWrap.className = 'podium-char';
+      if (p.place === 1) charWrap.classList.add('winner-bounce');
 
-    var colors = ['#00fff7', '#ff00ff', '#ffd700', '#33ff66', '#ff6b35', '#4466ff'];
+      var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      Board.drawAvatar(svg, p.team.idx, Board.TEAM_COLORS[p.team.idx % Board.TEAM_COLORS.length], 56);
+      charWrap.appendChild(svg);
 
-    g.selectAll('.bar')
-      .data(state.teams)
-      .enter()
-      .append('rect')
-      .attr('class', 'bar')
-      .attr('x', function(t) { return x(t.name); })
-      .attr('y', h)
-      .attr('width', x.bandwidth())
-      .attr('height', 0)
-      .attr('fill', function(_, i) { return colors[i % colors.length]; })
-      .transition()
-      .delay(function(_, i) { return i * 300; })
-      .duration(800)
-      .ease(d3.easeBounceOut)
-      .attr('y', function(t) { return y(Math.max(0, t.score)); })
-      .attr('height', function(t) { return h - y(Math.max(0, t.score)); });
+      // Crown on 1st place
+      if (p.place === 1) {
+        var crown = document.createElement('div');
+        crown.className = 'podium-crown';
+        crown.textContent = '\u{1f451}';
+        charWrap.appendChild(crown);
+      }
 
-    g.selectAll('.bar-label')
-      .data(state.teams)
-      .enter()
-      .append('text')
-      .attr('text-anchor', 'middle')
-      .attr('x', function(t) { return x(t.name) + x.bandwidth() / 2; })
-      .attr('y', function(t) { return y(Math.max(0, t.score)) - 8; })
-      .attr('fill', '#e8e8e8')
-      .attr('font-family', "'Press Start 2P', monospace")
-      .attr('font-size', '0.6rem')
-      .text(function(t) { return '$' + t.score; })
-      .attr('opacity', 0)
-      .transition()
-      .delay(function(_, i) { return i * 300 + 800; })
-      .duration(300)
-      .attr('opacity', 1);
+      col.appendChild(charWrap);
 
-    g.selectAll('.name-label')
-      .data(state.teams)
-      .enter()
-      .append('text')
-      .attr('text-anchor', 'middle')
-      .attr('x', function(t) { return x(t.name) + x.bandwidth() / 2; })
-      .attr('y', h + 20)
-      .attr('fill', '#888')
-      .attr('font-family', "'Press Start 2P', monospace")
-      .attr('font-size', '0.4rem')
-      .text(function(t) { return t.name; });
+      // Name
+      var name = document.createElement('div');
+      name.className = 'podium-name';
+      name.textContent = p.team.name;
+      col.appendChild(name);
+
+      // Score
+      var score = document.createElement('div');
+      score.className = 'podium-score';
+      score.textContent = '$' + p.team.score;
+      col.appendChild(score);
+
+      // Platform
+      var platform = document.createElement('div');
+      platform.className = 'podium-platform podium-place-' + p.place;
+      platform.style.height = p.height + 'px';
+
+      var placeLabel = document.createElement('div');
+      placeLabel.className = 'podium-place-label';
+      placeLabel.textContent = p.place === 1 ? '1ST' : p.place === 2 ? '2ND' : '3RD';
+      platform.appendChild(placeLabel);
+
+      col.appendChild(platform);
+      podium.appendChild(col);
+    });
+
+    area.appendChild(podium);
+  }
+
+  function renderRankings(ranked) {
+    var list = document.getElementById('rankings-list');
+    list.innerHTML = '';
+
+    // Show 4th place and below as a simple list
+    if (ranked.length <= 3) return;
+
+    for (var i = 3; i < ranked.length; i++) {
+      var row = document.createElement('div');
+      row.className = 'ranking-row';
+      row.style.animationDelay = (0.9 + i * 0.15) + 's';
+
+      var place = document.createElement('span');
+      place.className = 'ranking-place';
+      place.textContent = (i + 1) + getSuffix(i + 1);
+
+      var charSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      Board.drawAvatar(charSvg, ranked[i].idx, Board.TEAM_COLORS[ranked[i].idx % Board.TEAM_COLORS.length], 24);
+      charSvg.style.verticalAlign = 'middle';
+
+      var name = document.createElement('span');
+      name.className = 'ranking-name';
+      name.textContent = ranked[i].name;
+
+      var score = document.createElement('span');
+      score.className = 'ranking-score';
+      score.textContent = '$' + ranked[i].score;
+
+      row.appendChild(place);
+      row.appendChild(charSvg);
+      row.appendChild(name);
+      row.appendChild(score);
+      list.appendChild(row);
+    }
+  }
+
+  function getSuffix(n) {
+    if (n === 11 || n === 12 || n === 13) return 'TH';
+    var last = n % 10;
+    if (last === 1) return 'ST';
+    if (last === 2) return 'ND';
+    if (last === 3) return 'RD';
+    return 'TH';
   }
 
   function launchConfetti() {
@@ -704,6 +740,10 @@ var Game = (function() {
       Board.render(state.data, state.board, state.teams);
     });
     document.getElementById('btn-end-game').addEventListener('click', endGame);
+    document.getElementById('btn-skip-to-end').addEventListener('click', function() {
+      stopTimer();
+      endGame();
+    });
     document.getElementById('btn-play-again').addEventListener('click', function() {
       window.location.reload();
     });
