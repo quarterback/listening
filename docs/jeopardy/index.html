@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0a0f">
+<title>UT360 Service Design Jeopardy</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="game" class="game-container">
+
+  <!-- SETUP SCREEN -->
+  <div id="screen-setup" class="screen active">
+    <div class="setup-inner">
+      <h1 class="title-glitch" data-text="SERVICE DESIGN">SERVICE DESIGN</h1>
+      <h2 class="title-sub">JEOPARDY!</h2>
+      <p class="title-tagline">UT360 &middot; Winter 2026</p>
+
+      <div class="team-setup">
+        <label class="pixel-label">ENTER TEAM NAMES</label>
+        <div id="team-inputs">
+          <input type="text" class="pixel-input" placeholder="Team 1" maxlength="20">
+          <input type="text" class="pixel-input" placeholder="Team 2" maxlength="20">
+          <input type="text" class="pixel-input" placeholder="Team 3" maxlength="20">
+          <input type="text" class="pixel-input" placeholder="Team 4" maxlength="20">
+        </div>
+        <div class="team-buttons">
+          <button id="btn-add-team" class="pixel-btn small">+ ADD TEAM</button>
+          <button id="btn-remove-team" class="pixel-btn small danger">- REMOVE</button>
+        </div>
+        <button id="btn-start" class="pixel-btn big pulse">START GAME</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JEOPARDY BOARD SCREEN -->
+  <div id="screen-board" class="screen">
+    <div id="scorebar"></div>
+    <div id="board"></div>
+    <div class="board-footer">
+      <button id="btn-scoreboard" class="pixel-btn small">SCOREBOARD</button>
+      <button id="btn-end-game" class="pixel-btn small">END GAME</button>
+    </div>
+  </div>
+
+  <!-- QUESTION SCREEN -->
+  <div id="screen-question" class="screen">
+    <div class="question-container">
+      <div id="category-label" class="category-label"></div>
+      <div id="value-label" class="value-label"></div>
+      <div id="timer-bar" class="timer-bar"><div id="timer-fill" class="timer-fill"></div></div>
+      <div id="question-text" class="question-text"></div>
+      <!-- Host-only answer preview (tiny text, only visible up close) -->
+      <div id="host-answer" class="host-answer"></div>
+      <div id="answer-text" class="answer-text hidden"></div>
+      <div id="team-buzzers" class="team-buzzers"></div>
+      <div class="question-actions">
+        <button id="btn-reveal" class="pixel-btn">REVEAL ANSWER</button>
+        <button id="btn-no-answer" class="pixel-btn small danger">NO ONE GOT IT</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAILY DOUBLE SCREEN -->
+  <div id="screen-daily-double" class="screen">
+    <div class="dd-container">
+      <h2 class="dd-title glitch-text" data-text="DAILY DOUBLE!">DAILY DOUBLE!</h2>
+      <div id="dd-team-name" class="dd-team"></div>
+      <div class="dd-wager">
+        <label class="pixel-label">WAGER (max: <span id="dd-max">0</span>)</label>
+        <input type="number" id="dd-wager-input" class="pixel-input" min="0" value="0">
+        <button id="btn-dd-confirm" class="pixel-btn">LOCK IT IN</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRESS YOUR LUCK SCREEN -->
+  <div id="screen-pyl" class="screen">
+    <div class="pyl-container">
+      <h2 class="pyl-title">PRESS YOUR LUCK!</h2>
+      <p class="pyl-subtitle"><span id="pyl-team-name"></span> &mdash; <span id="pyl-points-at-stake"></span> pts banked</p>
+      <div id="pyl-board"></div>
+      <div class="pyl-actions">
+        <button id="btn-pyl-stop" class="pixel-btn big danger pulse">STOP!</button>
+        <button id="btn-pyl-bank" class="pixel-btn">BANK IT</button>
+      </div>
+      <div id="pyl-result" class="pyl-result hidden"></div>
+    </div>
+  </div>
+
+  <!-- SCOREBOARD SCREEN (show to class) -->
+  <div id="screen-scoreboard" class="screen">
+    <div class="scoreboard-container">
+      <h2 class="scoreboard-title">SCOREBOARD</h2>
+      <div id="scoreboard-teams"></div>
+      <button id="btn-back-to-board" class="pixel-btn">BACK TO BOARD</button>
+    </div>
+  </div>
+
+  <!-- GAME OVER SCREEN -->
+  <div id="screen-gameover" class="screen">
+    <div class="gameover-container">
+      <h2 class="gameover-title glitch-text" data-text="GAME OVER">GAME OVER</h2>
+      <div id="winner-announce" class="winner-announce"></div>
+      <svg id="final-chart"></svg>
+      <div id="confetti-container"></div>
+      <button id="btn-play-again" class="pixel-btn big">PLAY AGAIN</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- CRT Overlay -->
+<div class="crt-overlay"></div>
+
+<!-- Global Controls -->
+<div class="global-controls">
+  <button id="btn-mute" class="icon-btn" aria-label="Toggle sound" title="Mute (M)">&#x1f50a;</button>
+  <button id="btn-fullscreen" class="icon-btn" aria-label="Fullscreen" title="Fullscreen (F)">&#x26F6;</button>
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="audio.js"></script>
+<script src="game.js"></script>
+<script src="board.js"></script>
+<script src="spinner.js"></script>
+
+</body>
+</html>
