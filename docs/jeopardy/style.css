@@ -739,30 +739,149 @@ body {
   animation: whammy-shake 0.5s ease-in-out 2;
 }
 
-/* ── GAME OVER ── */
+/* ── GAME OVER — Mario Kart Podium ── */
 .gameover-container {
   text-align: center;
-  padding: 2rem;
+  padding: 1rem 2rem;
   width: 100%;
 }
 .gameover-title {
   font-family: var(--pixel-font);
   font-size: clamp(1.5rem, 5vw, 3rem);
   color: var(--gold);
-  margin-bottom: 1rem;
-}
-.winner-announce {
-  font-family: var(--pixel-font);
-  font-size: clamp(0.6rem, 1.5vw, 1rem);
-  color: var(--cyan);
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
+  text-shadow: 3px 3px 0 #b8860b, 0 0 20px rgba(255,215,0,0.4);
 }
 
-#final-chart {
-  width: 100%;
-  max-width: 700px;
-  height: 300px;
-  margin: 0 auto;
+/* Podium layout: 2nd | 1st | 3rd */
+.podium {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.3rem;
+  margin: 0 auto 1rem;
+  max-width: 600px;
+}
+
+.podium-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: podium-rise 0.6s ease-out both;
+}
+@keyframes podium-rise {
+  from { transform: translateY(60px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.podium-char {
+  position: relative;
+  margin-bottom: 0.3rem;
+}
+.podium-char svg {
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.2));
+}
+.podium-char.winner-bounce {
+  animation: winner-jump 0.6s ease-in-out infinite;
+}
+@keyframes winner-jump {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-18px); }
+  60% { transform: translateY(-18px); }
+}
+
+.podium-crown {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.2rem;
+  animation: crown-bob 1s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px rgba(255,215,0,0.6));
+}
+@keyframes crown-bob {
+  0%, 100% { transform: translateX(-50%) translateY(0) rotate(-5deg); }
+  50% { transform: translateX(-50%) translateY(-4px) rotate(5deg); }
+}
+
+.podium-name {
+  font-family: var(--pixel-font);
+  font-size: clamp(0.4rem, 1vw, 0.6rem);
+  color: var(--white);
+  margin-bottom: 0.2rem;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.podium-score {
+  font-family: var(--pixel-font);
+  font-size: clamp(0.5rem, 1.2vw, 0.8rem);
+  color: var(--gold);
+  margin-bottom: 0.3rem;
+}
+
+.podium-platform {
+  width: clamp(80px, 15vw, 140px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.podium-place-1 {
+  background: linear-gradient(180deg, #ffd700 0%, #b8860b 100%);
+  border: 2px solid #ffd700;
+  box-shadow: 0 0 20px rgba(255,215,0,0.3);
+}
+.podium-place-2 {
+  background: linear-gradient(180deg, #c0c0c0 0%, #808080 100%);
+  border: 2px solid #c0c0c0;
+}
+.podium-place-3 {
+  background: linear-gradient(180deg, #cd7f32 0%, #8B4513 100%);
+  border: 2px solid #cd7f32;
+}
+
+.podium-place-label {
+  font-family: var(--pixel-font);
+  font-size: clamp(0.8rem, 2vw, 1.5rem);
+  color: rgba(0,0,0,0.4);
+  font-weight: bold;
+}
+
+/* Rankings below podium (4th+ places) */
+#rankings-list {
+  max-width: 400px;
+  margin: 0 auto 1rem;
+}
+
+.ranking-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.5rem;
+  border-bottom: 1px solid #1a1a2e;
+  animation: podium-rise 0.4s ease-out both;
+}
+
+.ranking-place {
+  font-family: var(--pixel-font);
+  font-size: 0.5rem;
+  color: var(--dim);
+  min-width: 30px;
+}
+.ranking-name {
+  font-family: var(--pixel-font);
+  font-size: 0.45rem;
+  color: var(--white);
+  flex: 1;
+}
+.ranking-score {
+  font-family: var(--pixel-font);
+  font-size: 0.5rem;
+  color: var(--gold);
 }
 
 /* Confetti */
