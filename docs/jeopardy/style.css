@@ -422,9 +422,13 @@ body {
 }
 
 .board-footer {
-  padding: 0.5rem;
-  text-align: center;
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
   flex-shrink: 0;
+  background: rgba(10,10,15,0.8);
+  border-top: 1px solid #1a1a2e;
 }
 
 /* ── QUESTION SCREEN ── */
@@ -492,24 +496,25 @@ body {
 }
 
 /* ── Host Answer Preview (only visible up close, not on Zoom) ── */
+/* Host answer: visible up close on your screen, too small/dim to read on Zoom screenshare */
 .host-answer {
-  font-size: 0.45rem;
-  color: #2a2a2e;
+  font-size: 0.6rem;
+  color: #444;
   font-family: var(--body-font);
-  padding: 0.3rem;
-  margin-bottom: 0.5rem;
-  border: 1px solid #1a1a1e;
-  background: #0e0e12;
+  padding: 0.4rem 0.8rem;
+  margin-bottom: 0.8rem;
+  border: 1px dashed #333;
+  background: rgba(14,14,18,0.9);
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
   user-select: none;
-  transition: color 0.2s;
-  letter-spacing: 0;
-  line-height: 1.3;
+  line-height: 1.4;
+  text-align: left;
 }
 .host-answer:hover {
-  color: #555;
+  color: #888;
+  border-color: #555;
 }
 
 .hidden { display: none !important; }

@@ -704,6 +704,10 @@ var Game = (function() {
       Board.render(state.data, state.board, state.teams);
     });
     document.getElementById('btn-end-game').addEventListener('click', endGame);
+    document.getElementById('btn-skip-to-end').addEventListener('click', function() {
+      stopTimer();
+      endGame();
+    });
     document.getElementById('btn-play-again').addEventListener('click', function() {
       window.location.reload();
     });
