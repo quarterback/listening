@@ -218,6 +218,36 @@
     </div>
   </div>
 
+  <!-- FINAL JEOPARDY SCREEN -->
+  <div id="screen-final" class="screen">
+    <div class="final-container">
+      <h2 class="final-title glitch-text" data-text="FINAL ROUND">FINAL ROUND</h2>
+      <div id="final-category" class="final-category"></div>
+
+      <!-- Phase 1: Wagers -->
+      <div id="final-wager-phase" class="final-phase">
+        <p class="final-instructions">Each team: wager up to your current score (minimum $0)</p>
+        <div id="final-wager-inputs" class="final-wager-grid"></div>
+        <button id="btn-final-lock-wagers" class="pixel-btn big pulse">LOCK ALL WAGERS</button>
+      </div>
+
+      <!-- Phase 2: Clue + Think -->
+      <div id="final-clue-phase" class="final-phase" style="display:none">
+        <div id="final-question-text" class="question-text"></div>
+        <div id="final-timer-bar" class="timer-bar"><div id="final-timer-fill" class="timer-fill"></div></div>
+        <p class="final-think-label pixel">THINK...</p>
+        <button id="btn-final-reveal" class="pixel-btn big">REVEAL ANSWER &amp; JUDGE</button>
+      </div>
+
+      <!-- Phase 3: Judging -->
+      <div id="final-judge-phase" class="final-phase" style="display:none">
+        <div id="final-answer-text" class="answer-text"></div>
+        <div id="final-judge-teams"></div>
+        <button id="btn-final-finish" class="pixel-btn big pulse">FINISH GAME</button>
+      </div>
+    </div>
+  </div>
+
   <!-- GAME OVER SCREEN -->
   <div id="screen-gameover" class="screen">
     <div class="gameover-container">
