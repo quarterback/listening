@@ -35,16 +35,13 @@ body {
   height: 100%;
 }
 
-/* On large screens, letterbox to 16:9 */
+/* On large screens, use full viewport — no letterbox clipping */
 @media (min-width: 769px) {
   .game-container {
     width: 100vw;
     height: 100vh;
-    max-width: 177.78vh;
-    max-height: 56.25vw;
-    margin: auto;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
+    margin: 0;
+    top: 0; left: 0;
   }
 }
 
@@ -424,19 +421,20 @@ body {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: minmax(40px, auto) repeat(5, 1fr);
-  gap: 4px;
-  padding: 0.5rem;
+  grid-template-rows: auto repeat(5, 1fr);
+  gap: 3px;
+  padding: 0.3rem;
   width: 100%;
+  min-height: 0; /* allow grid to shrink within flex */
   overflow: hidden;
 }
 
 .board-header {
   font-family: var(--pixel-font);
-  font-size: clamp(0.4rem, 1.1vw, 0.65rem);
+  font-size: clamp(0.5rem, 1.2vw, 0.85rem);
   color: var(--white);
   background: var(--blue);
-  padding: 0.4rem 0.3rem;
+  padding: 0.6rem 0.4rem;
   text-align: center;
   display: flex;
   align-items: center;
@@ -448,7 +446,7 @@ body {
 
 .board-cell {
   font-family: var(--pixel-font);
-  font-size: clamp(0.8rem, 2.5vw, 1.6rem);
+  font-size: clamp(1rem, 2.5vw, 2rem);
   color: var(--gold);
   background: var(--blue);
   border: 2px solid #5577ff;
@@ -478,7 +476,7 @@ body {
 }
 
 .board-footer {
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 1rem;
   display: flex;
   justify-content: center;
   gap: 1rem;
@@ -552,26 +550,6 @@ body {
 }
 
 /* ── Host Answer Preview (only visible up close, not on Zoom) ── */
-/* Host answer: visible up close on your screen, too small/dim to read on Zoom screenshare */
-.host-answer {
-  font-size: 0.6rem;
-  color: #444;
-  font-family: var(--body-font);
-  padding: 0.4rem 0.8rem;
-  margin-bottom: 0.8rem;
-  border: 1px dashed #333;
-  background: rgba(14,14,18,0.9);
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  user-select: none;
-  line-height: 1.4;
-  text-align: left;
-}
-.host-answer:hover {
-  color: #888;
-  border-color: #555;
-}
 
 .hidden { display: none !important; }
 
