@@ -468,11 +468,181 @@ var Game = (function() {
     state.wrongTeams = [];
 
     if (state.questionsRemaining <= 0) {
-      endGame();
+      startFinalJeopardy();
     } else {
       showScreen('board');
       Board.render(state.data, state.board, state.teams);
     }
+  }
+
+  // ── Final Jeopardy ──
+  function startFinalJeopardy() {
+    var finals = state.data.finalJeopardy;
+    if (!finals || finals.length === 0) {
+      endGame();
+      return;
+    }
+
+    // Pick a random Final Jeopardy clue
+    var fj = finals[Math.floor(Math.random() * finals.length)];
+    state.finalClue = fj;
+    state.finalWagers = [];
+
+    showScreen('final');
+    SFX.play('dailyDouble');
+
+    document.getElementById('final-category').textContent = fj.category;
+
+    // Show wager phase
+    document.getElementById('final-wager-phase').style.display = '';
+    document.getElementById('final-clue-phase').style.display = 'none';
+    document.getElementById('final-judge-phase').style.display = 'none';
+
+    // Build wager inputs for each team
+    var grid = document.getElementById('final-wager-inputs');
+    grid.innerHTML = '';
+    state.teams.forEach(function(team, i) {
+      var card = document.createElement('div');
+      card.className = 'final-wager-card';
+
+      var name = document.createElement('div');
+      name.className = 'fw-name';
+      name.textContent = team.name;
+      card.appendChild(name);
+
+      var score = document.createElement('div');
+      score.className = 'fw-score';
+      score.textContent = 'Score: $' + team.score;
+      card.appendChild(score);
+
+      var input = document.createElement('input');
+      input.type = 'number';
+      input.className = 'pixel-input';
+      input.min = 0;
+      input.max = Math.max(team.score, 0);
+      input.value = 0;
+      input.dataset.teamIdx = i;
+      card.appendChild(input);
+
+      grid.appendChild(card);
+    });
+  }
+
+  function lockFinalWagers() {
+    var inputs = document.querySelectorAll('#final-wager-inputs input');
+    state.finalWagers = [];
+    inputs.forEach(function(inp, i) {
+      var maxW = Math.max(state.teams[i].score, 0);
+      var wager = Math.max(0, Math.min(parseInt(inp.value) || 0, maxW));
+      state.finalWagers.push(wager);
+    });
+
+    // Move to clue phase
+    document.getElementById('final-wager-phase').style.display = 'none';
+    document.getElementById('final-clue-phase').style.display = '';
+    document.getElementById('final-question-text').textContent = state.finalClue.question;
+    SFX.play('clueReveal');
+
+    // Start a 60-second timer for Final Jeopardy
+    startFinalTimer();
+  }
+
+  function startFinalTimer() {
+    var seconds = 60;
+    var fill = document.getElementById('final-timer-fill');
+    fill.style.width = '100%';
+    fill.className = 'timer-fill';
+    clearInterval(state.timerInterval);
+    var elapsed = 0;
+    state.timerInterval = setInterval(function() {
+      elapsed++;
+      var pct = Math.max(0, 100 - (elapsed / seconds * 100));
+      fill.style.width = pct + '%';
+      if (pct < 20) fill.className = 'timer-fill danger';
+      else if (pct < 40) fill.className = 'timer-fill warning';
+      if (elapsed >= seconds) {
+        clearInterval(state.timerInterval);
+        SFX.play('timeUp');
+      }
+    }, 1000);
+  }
+
+  function revealFinalAndJudge() {
+    clearInterval(state.timerInterval);
+
+    document.getElementById('final-clue-phase').style.display = 'none';
+    document.getElementById('final-judge-phase').style.display = '';
+    document.getElementById('final-answer-text').textContent = state.finalClue.answer;
+
+    var container = document.getElementById('final-judge-teams');
+    container.innerHTML = '';
+
+    state.teams.forEach(function(team, i) {
+      var card = document.createElement('div');
+      card.className = 'fj-team-card';
+      card.id = 'fj-card-' + i;
+
+      var name = document.createElement('div');
+      name.className = 'fj-name';
+      name.textContent = team.name;
+      card.appendChild(name);
+
+      var wager = document.createElement('div');
+      wager.className = 'fj-wager';
+      wager.textContent = 'Wagered: $' + state.finalWagers[i];
+      card.appendChild(wager);
+
+      var buttons = document.createElement('div');
+      buttons.className = 'fj-buttons';
+
+      var correctBtn = document.createElement('button');
+      correctBtn.className = 'pixel-btn correct';
+      correctBtn.textContent = 'CORRECT';
+      correctBtn.addEventListener('click', function() {
+        judgeFinalTeam(i, true);
+      });
+
+      var wrongBtn = document.createElement('button');
+      wrongBtn.className = 'pixel-btn danger';
+      wrongBtn.textContent = 'WRONG';
+      wrongBtn.addEventListener('click', function() {
+        judgeFinalTeam(i, false);
+      });
+
+      buttons.appendChild(correctBtn);
+      buttons.appendChild(wrongBtn);
+      card.appendChild(buttons);
+
+      container.appendChild(card);
+    });
+  }
+
+  function judgeFinalTeam(teamIdx, correct) {
+    var card = document.getElementById('fj-card-' + teamIdx);
+    var wager = state.finalWagers[teamIdx];
+
+    // Remove buttons
+    var btns = card.querySelector('.fj-buttons');
+    if (btns) btns.remove();
+
+    var result = document.createElement('div');
+    result.className = 'fj-result';
+
+    if (correct) {
+      state.teams[teamIdx].score += wager;
+      card.classList.add('fj-correct');
+      result.style.color = 'var(--green)';
+      result.textContent = '+$' + wager;
+      SFX.play('correct');
+    } else {
+      state.teams[teamIdx].score -= wager;
+      card.classList.add('fj-wrong');
+      result.style.color = 'var(--red)';
+      result.textContent = '-$' + wager;
+      SFX.play('wrong');
+    }
+
+    card.appendChild(result);
   }
 
   // ── End Game ──
@@ -765,11 +935,14 @@ var Game = (function() {
       showScreen('board');
       Board.render(state.data, state.board, state.teams);
     });
-    document.getElementById('btn-end-game').addEventListener('click', endGame);
+    document.getElementById('btn-end-game').addEventListener('click', startFinalJeopardy);
     document.getElementById('btn-skip-to-end').addEventListener('click', function() {
       stopTimer();
-      endGame();
+      startFinalJeopardy();
     });
+    document.getElementById('btn-final-lock-wagers').addEventListener('click', lockFinalWagers);
+    document.getElementById('btn-final-reveal').addEventListener('click', revealFinalAndJudge);
+    document.getElementById('btn-final-finish').addEventListener('click', endGame);
     document.getElementById('btn-play-again').addEventListener('click', function() {
       window.location.reload();
     });

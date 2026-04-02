@@ -789,6 +789,115 @@ body {
   animation: whammy-shake 0.5s ease-in-out 2;
 }
 
+/* ── FINAL JEOPARDY ── */
+.final-container {
+  text-align: center;
+  padding: 1.5rem 2rem;
+  width: 100%;
+  max-width: 900px;
+}
+.final-title {
+  font-family: var(--pixel-font);
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  color: var(--gold);
+  text-shadow: 3px 3px 0 #b8860b;
+  margin-bottom: 0.5rem;
+  animation: dd-flash 0.5s ease-in-out 3;
+}
+.final-category {
+  font-family: var(--pixel-font);
+  font-size: clamp(0.7rem, 2vw, 1.2rem);
+  color: var(--cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 10px rgba(0,255,247,0.3);
+}
+.final-instructions {
+  font-size: 0.85rem;
+  color: var(--dim);
+  margin-bottom: 1rem;
+}
+.final-phase { margin-top: 1rem; }
+.final-wager-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.final-wager-card {
+  background: var(--bg-light);
+  border: 2px solid var(--dim);
+  border-radius: 4px;
+  padding: 0.8rem;
+  text-align: center;
+}
+.final-wager-card .fw-name {
+  font-family: var(--pixel-font);
+  font-size: 0.6rem;
+  color: var(--white);
+  margin-bottom: 0.3rem;
+}
+.final-wager-card .fw-score {
+  font-size: 0.75rem;
+  color: var(--dim);
+  margin-bottom: 0.5rem;
+}
+.final-wager-card input {
+  width: 100%;
+  text-align: center;
+}
+.final-think-label {
+  font-size: clamp(0.8rem, 2vw, 1.2rem);
+  color: var(--magenta);
+  animation: blink 1s step-end infinite;
+  margin-bottom: 1rem;
+}
+.final-judge-teams {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.8rem;
+  margin: 1rem 0 1.5rem;
+}
+.fj-team-card {
+  background: var(--bg-light);
+  border: 2px solid var(--dim);
+  border-radius: 4px;
+  padding: 0.8rem;
+  text-align: center;
+  transition: all 0.3s;
+}
+.fj-team-card .fj-name {
+  font-family: var(--pixel-font);
+  font-size: 0.55rem;
+  color: var(--white);
+  margin-bottom: 0.3rem;
+}
+.fj-team-card .fj-wager {
+  font-size: 0.7rem;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.fj-team-card .fj-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+.fj-team-card .fj-buttons button { font-size: 0.55rem; padding: 0.3rem 0.6rem; }
+.fj-team-card.fj-correct {
+  border-color: var(--green);
+  background: rgba(51,255,102,0.08);
+}
+.fj-team-card.fj-wrong {
+  border-color: var(--red);
+  background: rgba(255,51,51,0.08);
+}
+.fj-team-card .fj-result {
+  font-family: var(--pixel-font);
+  font-size: 0.5rem;
+  margin-top: 0.4rem;
+}
+
 /* ── GAME OVER — Mario Kart Podium ── */
 .gameover-container {
   text-align: center;

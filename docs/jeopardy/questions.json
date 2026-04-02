@@ -397,6 +397,33 @@
       ]
     }
   ],
+  "finalJeopardy": [
+    {
+      "category": "THE FUTURE OF CITIES",
+      "question": "This concept, championed by urbanist Carlos Moreno, proposes that all essential services — work, shopping, healthcare, education, and entertainment — should be reachable within a short walk or bike ride from home.",
+      "answer": "What is the 15-minute city?"
+    },
+    {
+      "category": "SERVICE DESIGN PRINCIPLES",
+      "question": "In service design, this term describes the complete end-to-end experience a person has with a service across all touchpoints and channels over time — from first awareness through post-service follow-up.",
+      "answer": "What is a customer (or user) journey?"
+    },
+    {
+      "category": "DESIGN & JUSTICE",
+      "question": "Architect and educator Bryan Lee Jr. coined this term to describe a practice that uses design to actively resist and dismantle systems of oppression, rather than merely accommodating them.",
+      "answer": "What is Design Justice (or design as protest)?"
+    },
+    {
+      "category": "INFRASTRUCTURE",
+      "question": "Deb Chachra argues in 'How Infrastructure Works' that these large-scale shared systems are fundamentally about this — transforming individual consumption into collective capacity and care.",
+      "answer": "What is collective provision (or mutual aid / shared abundance)?"
+    },
+    {
+      "category": "GOVERNMENT SERVICES",
+      "question": "This U.S. federal agency, created in 2014, works to improve government websites and digital services by applying user-centered design and agile development practices, famously helping rescue HealthCare.gov.",
+      "answer": "What is the U.S. Digital Service (USDS)?"
+    }
+  ],
   "dailyDoubles": 2,
   "pylSquares": [
     { "label": "+250", "type": "bonus", "weight": 4 },
