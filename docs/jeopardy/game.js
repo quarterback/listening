@@ -65,7 +65,7 @@ var Game = (function() {
       });
       if (teams.length < 2) return;
       state.teams = teams;
-      Audio.init();
+      SFX.init();
       loadGame();
     });
   }
@@ -99,7 +99,7 @@ var Game = (function() {
 
       showScreen('board');
       Board.render(state.data, state.board, state.teams);
-      Audio.play('boardReveal');
+      SFX.play('boardReveal');
     }).catch(function(err) {
       alert('Error loading questions.json — check for JSON syntax errors.\n\n' + err);
     });
@@ -129,7 +129,7 @@ var Game = (function() {
     Board.markUsed(catIdx, clueIdx);
 
     if (cell.dailyDouble) {
-      Audio.play('dailyDouble');
+      SFX.play('dailyDouble');
       showDailyDouble();
     } else {
       showQuestion();
@@ -223,7 +223,7 @@ var Game = (function() {
     }
 
     startTimer();
-    Audio.play('clueReveal');
+    SFX.play('clueReveal');
   }
 
   // ── Timer ──
@@ -248,7 +248,7 @@ var Game = (function() {
 
       if (elapsed >= seconds) {
         clearInterval(state.timerInterval);
-        Audio.play('timeUp');
+        SFX.play('timeUp');
       }
     }, 1000);
   }
@@ -310,7 +310,7 @@ var Game = (function() {
     if (correct) {
       state.teams[teamIdx].score += clue.value;
       Board.updateScores(state.teams);
-      Audio.play('correct');
+      SFX.play('correct');
       revealAnswer();
 
       // Offer Press Your Luck (not on daily doubles to keep it simpler)
@@ -326,7 +326,7 @@ var Game = (function() {
       var penalty = Math.floor(clue.value / 2);
       state.teams[teamIdx].score -= penalty;
       Board.updateScores(state.teams);
-      Audio.play('wrong');
+      SFX.play('wrong');
 
       // Mark team as wrong
       state.wrongTeams.push(teamIdx);
@@ -356,7 +356,7 @@ var Game = (function() {
   function noAnswer() {
     stopTimer();
     revealAnswer();
-    Audio.play('timeUp');
+    SFX.play('timeUp');
     setTimeout(returnToBoard, 2500);
   }
 
@@ -397,7 +397,7 @@ var Game = (function() {
     resultEl.className = 'pyl-result bonus-result';
     resultEl.classList.remove('hidden');
 
-    Audio.play('correct');
+    SFX.play('correct');
     setTimeout(returnToBoard, 1500);
   }
 
@@ -411,7 +411,7 @@ var Game = (function() {
       team.score -= lost;
       resultEl.textContent = 'WHAMMY! Lost $' + lost + '!';
       resultEl.className = 'pyl-result whammy-result';
-      Audio.play('whammy');
+      SFX.play('whammy');
 
       // Screen shake
       var container = document.querySelector('.game-container');
@@ -422,13 +422,13 @@ var Game = (function() {
       team.score *= 2;
       resultEl.textContent = '2x SCORE! +$' + bonus + '!';
       resultEl.className = 'pyl-result bonus-result';
-      Audio.play('bigWin');
+      SFX.play('bigWin');
     } else {
       var pts = parseInt(square.label.replace('+', ''));
       team.score += pts;
       resultEl.textContent = square.label + ' BONUS!';
       resultEl.className = 'pyl-result bonus-result';
-      Audio.play('correct');
+      SFX.play('correct');
     }
 
     Board.updateScores(state.teams);
@@ -452,7 +452,7 @@ var Game = (function() {
   // ── End Game ──
   function endGame() {
     showScreen('gameover');
-    Audio.play('fanfare');
+    SFX.play('fanfare');
 
     // Find winner
     var maxScore = -Infinity;
@@ -692,7 +692,7 @@ var Game = (function() {
 
   function toggleMute() {
     state.muted = !state.muted;
-    Audio.setMute(state.muted);
+    SFX.setMute(state.muted);
     var btn = document.getElementById('btn-mute');
     btn.textContent = state.muted ? '\u{1f507}' : '\u{1f50a}';
     btn.classList.toggle('muted', state.muted);
