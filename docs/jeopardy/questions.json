@@ -1,0 +1,196 @@
+{
+  "title": "UT360 Service Design Jeopardy",
+  "categories": [
+    {
+      "name": "MAP THAT SERVICE",
+      "clues": [
+        {
+          "value": 200,
+          "question": "This diagram separates what users see from what happens behind the scenes, using a 'line of visibility.'",
+          "answer": "What is a service blueprint?"
+        },
+        {
+          "value": 400,
+          "question": "In service blueprints, these are the employee actions that happen where the customer CAN see them.",
+          "answer": "What are frontstage actions?"
+        },
+        {
+          "value": 600,
+          "question": "This type of map shows all the actors, organizations, and systems that interact in a service ecosystem — not just the user's path.",
+          "answer": "What is an ecosystem map?"
+        },
+        {
+          "value": 800,
+          "question": "A moment in a journey map where the user's emotional state shifts dramatically — often where the biggest design opportunities live.",
+          "answer": "What is a pain point (or moment of truth)?"
+        },
+        {
+          "value": 1000,
+          "question": "Lynn Shostack published the foundational 1984 article in Harvard Business Review that introduced the concept of blueprinting services. She argued services needed this kind of rigor, borrowed from manufacturing.",
+          "answer": "What is 'Designing Services That Deliver'?"
+        }
+      ]
+    },
+    {
+      "name": "PLAIN LANGUAGE",
+      "clues": [
+        {
+          "value": 200,
+          "question": "This 2010 U.S. federal law requires government agencies to write documents in language the public can understand.",
+          "answer": "What is the Plain Writing Act?"
+        },
+        {
+          "value": 400,
+          "question": "This readability metric, commonly used in gov content, measures reading ease on a scale of 0-100 — higher is easier.",
+          "answer": "What is the Flesch Reading Ease score?"
+        },
+        {
+          "value": 600,
+          "question": "When a court form says 'hereinafter referred to as the petitioner,' plain language practitioners would replace it with this.",
+          "answer": "What is 'you' (or the person's name)?"
+        },
+        {
+          "value": 800,
+          "question": "This content strategy principle says you should structure information with the most important point first, not buried at the end — especially critical for legal instructions.",
+          "answer": "What is front-loading (or inverted pyramid)?"
+        },
+        {
+          "value": 1000,
+          "question": "The UK Government Digital Service established these as their core content design principles: this many, starting with 'Start with user needs.'",
+          "answer": "What are the 10 GDS Design Principles?"
+        }
+      ]
+    },
+    {
+      "name": "POTPOURRI",
+      "clues": [
+        {
+          "value": 200,
+          "question": "This research method involves watching real users attempt tasks with a product while thinking aloud.",
+          "answer": "What is usability testing (or think-aloud testing)?"
+        },
+        {
+          "value": 400,
+          "question": "The perceived quality of a clickable element that suggests how it should be used — a door handle that looks like it should be pulled, for example.",
+          "answer": "What is an affordance?"
+        },
+        {
+          "value": 600,
+          "question": "Card sorting, tree testing, and site maps are all tools used to design this aspect of a digital product.",
+          "answer": "What is information architecture?"
+        },
+        {
+          "value": 800,
+          "question": "This UX research concept describes the gap between what users SAY they do and what they ACTUALLY do, which is why observation matters.",
+          "answer": "What is the say-do gap (or attitudinal vs. behavioral data)?"
+        },
+        {
+          "value": 1000,
+          "question": "Jared Spool argued that this is the 'last great frontier' of design — the cumulative effect of every interaction a person has with an organization over time, not just a single screen.",
+          "answer": "What is experience rot (or accumulated UX debt)?"
+        }
+      ]
+    },
+    {
+      "name": "FRICTION & SLUDGE",
+      "clues": [
+        {
+          "value": 200,
+          "question": "This term from behavioral economics describes unnecessary friction deliberately placed in a process to discourage people from completing it.",
+          "answer": "What is sludge?"
+        },
+        {
+          "value": 400,
+          "question": "A design that tricks users into doing things they didn't intend — like signing up for a subscription or sharing data — named by Harry Brignull.",
+          "answer": "What is a dark pattern (or deceptive design)?"
+        },
+        {
+          "value": 600,
+          "question": "When a court form gets rejected because a user checked Box 3 instead of Box 3a, this design principle — which should have prevented the mistake — has failed.",
+          "answer": "What is error prevention?"
+        },
+        {
+          "value": 800,
+          "question": "Pamela Herd and Donald Moynihan's book 'Administrative Burden' identifies three types of costs citizens face: learning costs, compliance costs, and this third type involving shame or stigma.",
+          "answer": "What are psychological costs?"
+        },
+        {
+          "value": 1000,
+          "question": "This paradox describes how adding more choices or features to a system — like a government benefits portal — can actually make it harder to use and reduce uptake.",
+          "answer": "What is the paradox of choice (or Hick's Law / choice overload)?"
+        }
+      ]
+    },
+    {
+      "name": "STAKEHOLDERS & POWER",
+      "clues": [
+        {
+          "value": 200,
+          "question": "This 2x2 matrix plots stakeholders by their level of interest and their level of influence to help prioritize engagement.",
+          "answer": "What is a power-interest grid (or stakeholder matrix)?"
+        },
+        {
+          "value": 400,
+          "question": "In the court system, these users navigate legal proceedings without a lawyer — they are the primary audience for form redesign.",
+          "answer": "Who are pro se (or self-represented) litigants?"
+        },
+        {
+          "value": 600,
+          "question": "This design approach centers the people most marginalized by a system in the design process, rather than designing 'for' them.",
+          "answer": "What is participatory design (or co-design)?"
+        },
+        {
+          "value": 800,
+          "question": "When court clerks say 'we can't change the form because the statute requires this language,' they are expressing this type of constraint that designers must navigate.",
+          "answer": "What are legal or regulatory constraints?"
+        },
+        {
+          "value": 1000,
+          "question": "Donella Meadows identified 12 of these in a system where interventions can create change — the most powerful being the power to change the paradigm of the system itself.",
+          "answer": "What are leverage points?"
+        }
+      ]
+    },
+    {
+      "name": "SYSTEMS & SCALE",
+      "clues": [
+        {
+          "value": 200,
+          "question": "This occurs when the output of a system loops back to amplify the input — like when poor court experiences lead to distrust, leading to fewer people seeking legal help.",
+          "answer": "What is a (positive/reinforcing) feedback loop?"
+        },
+        {
+          "value": 400,
+          "question": "Horst Rittel coined this term for problems that are difficult to define, have no clear solution, and where every attempt to solve them changes the problem itself.",
+          "answer": "What is a wicked problem?"
+        },
+        {
+          "value": 600,
+          "question": "When designing digital court services, this approach means the digital version is built first and optimized, but paper/in-person options remain available.",
+          "answer": "What is digital-first (not digital-only)?"
+        },
+        {
+          "value": 800,
+          "question": "This U.S. federal digital service team, created in 2014 inside the White House, was formed after the Healthcare.gov crisis to bring tech talent into government.",
+          "answer": "What is the U.S. Digital Service (USDS)?"
+        },
+        {
+          "value": 1000,
+          "question": "This systems thinking concept — sometimes called 'the iceberg model' — says that visible events are driven by patterns, which are driven by structures, which are driven by mental models.",
+          "answer": "What are levels of perspective (or the iceberg model of systems thinking)?"
+        }
+      ]
+    }
+  ],
+  "dailyDoubles": 2,
+  "pylSquares": [
+    { "label": "+250", "type": "bonus", "weight": 4 },
+    { "label": "+500", "type": "bonus", "weight": 3 },
+    { "label": "+750", "type": "bonus", "weight": 2 },
+    { "label": "+1000", "type": "bonus", "weight": 1 },
+    { "label": "WHAMMY!", "type": "whammy", "weight": 2 },
+    { "label": "2x SCORE", "type": "multiplier", "weight": 1 },
+    { "label": "+100", "type": "bonus", "weight": 4 },
+    { "label": "WHAMMY!", "type": "whammy", "weight": 1 }
+  ]
+}
