@@ -1,10 +1,10 @@
-// ── UT360 Service Design Jeopardy — Game Engine ──
+// ── OUT OF SERVICE — Game Engine ──
 
 var Game = (function() {
   'use strict';
 
   var state = {
-    screen: 'setup',
+    screen: 'title',
     teams: [],
     data: null,
     board: [],          // 2D array of {used, dailyDouble}
@@ -65,7 +65,7 @@ var Game = (function() {
       });
       if (teams.length < 2) return;
       state.teams = teams;
-      Audio.init();
+      SFX.init();
       loadGame();
     });
   }
@@ -99,7 +99,7 @@ var Game = (function() {
 
       showScreen('board');
       Board.render(state.data, state.board, state.teams);
-      Audio.play('boardReveal');
+      SFX.play('boardReveal');
     }).catch(function(err) {
       alert('Error loading questions.json — check for JSON syntax errors.\n\n' + err);
     });
@@ -129,7 +129,7 @@ var Game = (function() {
     Board.markUsed(catIdx, clueIdx);
 
     if (cell.dailyDouble) {
-      Audio.play('dailyDouble');
+      SFX.play('dailyDouble');
       showDailyDouble();
     } else {
       showQuestion();
@@ -223,7 +223,7 @@ var Game = (function() {
     }
 
     startTimer();
-    Audio.play('clueReveal');
+    SFX.play('clueReveal');
   }
 
   // ── Timer ──
@@ -248,7 +248,7 @@ var Game = (function() {
 
       if (elapsed >= seconds) {
         clearInterval(state.timerInterval);
-        Audio.play('timeUp');
+        SFX.play('timeUp');
       }
     }, 1000);
   }
@@ -310,7 +310,7 @@ var Game = (function() {
     if (correct) {
       state.teams[teamIdx].score += clue.value;
       Board.updateScores(state.teams);
-      Audio.play('correct');
+      SFX.play('correct');
       revealAnswer();
 
       // Offer Press Your Luck (not on daily doubles to keep it simpler)
@@ -326,7 +326,7 @@ var Game = (function() {
       var penalty = Math.floor(clue.value / 2);
       state.teams[teamIdx].score -= penalty;
       Board.updateScores(state.teams);
-      Audio.play('wrong');
+      SFX.play('wrong');
 
       // Mark team as wrong
       state.wrongTeams.push(teamIdx);
@@ -356,7 +356,7 @@ var Game = (function() {
   function noAnswer() {
     stopTimer();
     revealAnswer();
-    Audio.play('timeUp');
+    SFX.play('timeUp');
     setTimeout(returnToBoard, 2500);
   }
 
@@ -397,7 +397,7 @@ var Game = (function() {
     resultEl.className = 'pyl-result bonus-result';
     resultEl.classList.remove('hidden');
 
-    Audio.play('correct');
+    SFX.play('correct');
     setTimeout(returnToBoard, 1500);
   }
 
@@ -411,7 +411,7 @@ var Game = (function() {
       team.score -= lost;
       resultEl.textContent = 'WHAMMY! Lost $' + lost + '!';
       resultEl.className = 'pyl-result whammy-result';
-      Audio.play('whammy');
+      SFX.play('whammy');
 
       // Screen shake
       var container = document.querySelector('.game-container');
@@ -422,13 +422,13 @@ var Game = (function() {
       team.score *= 2;
       resultEl.textContent = '2x SCORE! +$' + bonus + '!';
       resultEl.className = 'pyl-result bonus-result';
-      Audio.play('bigWin');
+      SFX.play('bigWin');
     } else {
       var pts = parseInt(square.label.replace('+', ''));
       team.score += pts;
       resultEl.textContent = square.label + ' BONUS!';
       resultEl.className = 'pyl-result bonus-result';
-      Audio.play('correct');
+      SFX.play('correct');
     }
 
     Board.updateScores(state.teams);
@@ -452,7 +452,7 @@ var Game = (function() {
   // ── End Game ──
   function endGame() {
     showScreen('gameover');
-    Audio.play('fanfare');
+    SFX.play('fanfare');
 
     // Find winner
     var maxScore = -Infinity;
@@ -566,16 +566,6 @@ var Game = (function() {
     var container = document.getElementById('scoreboard-teams');
     container.innerHTML = '';
 
-    var TEAM_COLORS = ['#00fff7', '#ff00ff', '#ffd700', '#33ff66', '#ff6b35', '#4466ff'];
-    var AVATARS = [
-      'M4,2h4v1h1v3h-1v1h-2v1h-2v-1h-2v-1h-1v-3h1v-1z',
-      'M3,2h6v1h1v2h-1v1h-1v1h-4v-1h-1v-1h-1v-2h1v-1z',
-      'M4,1h4v1h1v1h1v2h-1v1h-1v1h-4v-1h-1v-1h-1v-2h1v-1h1v-1z',
-      'M3,3h1v-1h1v-1h2v1h1v1h1v2h-1v1h-1v1h-2v-1h-1v-1h-1v-2z',
-      'M2,3h2v-2h4v2h2v2h-2v2h-4v-2h-2v-2z',
-      'M4,1h4v2h1v2h-1v2h-2v1h-2v-1h-2v-2h-1v-2h1v-2z'
-    ];
-
     var maxScore = -Infinity;
     state.teams.forEach(function(t) { if (t.score > maxScore) maxScore = t.score; });
 
@@ -584,30 +574,10 @@ var Game = (function() {
       card.className = 'sb-team';
       if (team.score === maxScore && maxScore > 0) card.classList.add('leader');
 
-      // Big pixel avatar
+      // Big pixel avatar using shared drawAvatar
       var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      svg.setAttribute('width', '64');
-      svg.setAttribute('height', '56');
-      svg.setAttribute('viewBox', '0 0 12 10');
       svg.setAttribute('class', 'sb-avatar');
-
-      var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      path.setAttribute('d', AVATARS[i % AVATARS.length]);
-      path.setAttribute('fill', TEAM_COLORS[i % TEAM_COLORS.length]);
-      svg.appendChild(path);
-
-      var eye1 = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-      eye1.setAttribute('x', '4'); eye1.setAttribute('y', '3');
-      eye1.setAttribute('width', '1'); eye1.setAttribute('height', '1');
-      eye1.setAttribute('fill', '#0a0a0f');
-      svg.appendChild(eye1);
-
-      var eye2 = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-      eye2.setAttribute('x', '7'); eye2.setAttribute('y', '3');
-      eye2.setAttribute('width', '1'); eye2.setAttribute('height', '1');
-      eye2.setAttribute('fill', '#0a0a0f');
-      svg.appendChild(eye2);
-
+      Board.drawAvatar(svg, i, Board.TEAM_COLORS[i % Board.TEAM_COLORS.length], 64);
       card.appendChild(svg);
 
       var name = document.createElement('div');
@@ -692,7 +662,7 @@ var Game = (function() {
 
   function toggleMute() {
     state.muted = !state.muted;
-    Audio.setMute(state.muted);
+    SFX.setMute(state.muted);
     var btn = document.getElementById('btn-mute');
     btn.textContent = state.muted ? '\u{1f507}' : '\u{1f50a}';
     btn.classList.toggle('muted', state.muted);
@@ -710,6 +680,13 @@ var Game = (function() {
   function init() {
     initSetup();
     initKeyboard();
+
+    // Title screen → Setup screen
+    document.getElementById('btn-title-start').addEventListener('click', function() {
+      SFX.init();
+      SFX.play('fanfare');
+      showScreen('setup');
+    });
 
     document.getElementById('btn-reveal').addEventListener('click', function() {
       revealAnswer();

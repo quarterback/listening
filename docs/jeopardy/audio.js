@@ -1,6 +1,7 @@
 // ── UT360 Service Design Jeopardy — Audio Engine (Web Audio API) ──
+// Named SFX to avoid shadowing the native Audio constructor
 
-var Audio = (function() {
+var SFX = (function() {
   'use strict';
 
   var ctx = null;
@@ -11,9 +12,19 @@ var Audio = (function() {
     if (initialized) return;
     try {
       ctx = new (window.AudioContext || window.webkitAudioContext)();
+      // Resume context — required by mobile browsers after user gesture
+      if (ctx.state === 'suspended') {
+        ctx.resume();
+      }
       initialized = true;
     } catch(e) {
       console.warn('Web Audio API not available');
+    }
+  }
+
+  function ensureResumed() {
+    if (ctx && ctx.state === 'suspended') {
+      ctx.resume();
     }
   }
 
@@ -21,6 +32,7 @@ var Audio = (function() {
 
   function playTone(freq, duration, type, gain, delay) {
     if (!ctx || muted) return;
+    ensureResumed();
     type = type || 'square';
     gain = gain || 0.15;
     delay = delay || 0;
@@ -39,6 +51,7 @@ var Audio = (function() {
 
   function playNoise(duration, gain, delay) {
     if (!ctx || muted) return;
+    ensureResumed();
     delay = delay || 0;
     gain = gain || 0.1;
 
@@ -61,7 +74,6 @@ var Audio = (function() {
 
   var sounds = {
     boardReveal: function() {
-      // Ascending arpeggio
       [261, 329, 392, 523].forEach(function(f, i) {
         playTone(f, 0.15, 'square', 0.12, i * 0.08);
       });
@@ -73,20 +85,17 @@ var Audio = (function() {
     },
 
     correct: function() {
-      // Happy chord
       playTone(523, 0.3, 'square', 0.1);
       playTone(659, 0.3, 'square', 0.08, 0.05);
       playTone(784, 0.4, 'square', 0.1, 0.1);
     },
 
     wrong: function() {
-      // Descending buzz
       playTone(200, 0.3, 'sawtooth', 0.12);
       playTone(150, 0.4, 'sawtooth', 0.1, 0.15);
     },
 
     dailyDouble: function() {
-      // Dramatic drum roll (noise bursts) + rising tone
       for (var i = 0; i < 8; i++) {
         playNoise(0.05, 0.15, i * 0.07);
       }
@@ -111,7 +120,6 @@ var Audio = (function() {
     },
 
     whammy: function() {
-      // Sad descending
       playTone(400, 0.2, 'sawtooth', 0.15);
       playTone(350, 0.2, 'sawtooth', 0.12, 0.2);
       playTone(300, 0.2, 'sawtooth', 0.1, 0.4);
@@ -120,7 +128,6 @@ var Audio = (function() {
     },
 
     bigWin: function() {
-      // Fanfare
       [523, 659, 784, 1047].forEach(function(f, i) {
         playTone(f, 0.3, 'square', 0.1, i * 0.12);
       });
@@ -128,7 +135,6 @@ var Audio = (function() {
     },
 
     fanfare: function() {
-      // Victory fanfare
       var notes = [523, 523, 523, 698, 880, 784, 880, 1047];
       var durs = [0.15, 0.15, 0.15, 0.3, 0.15, 0.15, 0.15, 0.6];
       var time = 0;

@@ -73,7 +73,7 @@ var Spinner = (function() {
 
     clearAllHighlights();
     cycle();
-    Audio.play('pylStart');
+    SFX.play('pylStart');
   }
 
   function cycle() {
@@ -85,7 +85,7 @@ var Spinner = (function() {
     var el = document.getElementById('pyl-sq-' + currentHighlight);
     if (el) el.classList.add('highlight');
 
-    Audio.play('pylTick');
+    SFX.play('pylTick');
 
     if (stopping) {
       speed += 15;
