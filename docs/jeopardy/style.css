@@ -331,10 +331,10 @@ body {
 /* ── SCOREBAR ── */
 #scorebar {
   width: 100%;
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 1rem;
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1rem;
   background: rgba(10,10,15,0.9);
   border-bottom: 2px solid #1a1a2e;
   flex-shrink: 0;
@@ -364,23 +364,27 @@ body {
 }
 
 /* ── JEOPARDY BOARD ── */
+#screen-board.active {
+  justify-content: stretch;
+}
+
 #board {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: auto repeat(5, 1fr);
+  grid-template-rows: minmax(40px, auto) repeat(5, 1fr);
   gap: 4px;
   padding: 0.5rem;
   width: 100%;
-  max-width: 100%;
+  overflow: hidden;
 }
 
 .board-header {
   font-family: var(--pixel-font);
-  font-size: clamp(0.35rem, 1.2vw, 0.65rem);
+  font-size: clamp(0.4rem, 1.1vw, 0.65rem);
   color: var(--white);
   background: var(--blue);
-  padding: 0.5rem 0.3rem;
+  padding: 0.4rem 0.3rem;
   text-align: center;
   display: flex;
   align-items: center;
