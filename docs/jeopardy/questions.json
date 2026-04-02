@@ -2,182 +2,397 @@
   "title": "OUT OF SERVICE",
   "categories": [
     {
-      "name": "MAP THAT SERVICE",
+      "name": "SERVICE FAILS & FIXES",
       "clues": [
         {
           "value": 200,
-          "question": "This diagram separates what users see from what happens behind the scenes, using a 'line of visibility.'",
-          "answer": "What is a service blueprint?"
+          "question": "This happens when a city bus app only shows arrival times for half the lines, making riders guess at the rest.",
+          "answer": "What is incomplete information (or poor user experience)?"
         },
         {
           "value": 400,
-          "question": "In service blueprints, these are the employee actions that happen where the customer CAN see them.",
-          "answer": "What are frontstage actions?"
+          "question": "This quick service fix helps customers at a coffee shop avoid long lines and crowded waiting spaces, using technology many already have.",
+          "answer": "What is mobile ordering (or a pickup app)?"
         },
         {
           "value": 600,
-          "question": "This type of map shows all the actors, organizations, and systems that interact in a service ecosystem — not just the user's path.",
-          "answer": "What is an ecosystem map?"
+          "question": "When a laundromat's payment kiosk prints confusing error messages, it's violating this design principle — meant to make services easier, not harder.",
+          "answer": "What is clarity (or usability/error prevention)?"
         },
         {
           "value": 800,
-          "question": "A moment in a journey map where the user's emotional state shifts dramatically — often where the biggest design opportunities live.",
-          "answer": "What is a pain point (or moment of truth)?"
+          "question": "This kind of accessible city service helps people with low vision cross the street safely, often using audible cues.",
+          "answer": "What is an accessible crosswalk (or audible pedestrian signal)?"
         },
         {
           "value": 1000,
-          "question": "Lynn Shostack published the foundational 1984 article in Harvard Business Review that introduced the concept of blueprinting services. She argued services needed this kind of rigor, borrowed from manufacturing.",
-          "answer": "What is 'Designing Services That Deliver'?"
+          "question": "When public bike docks are always full at one spot and empty at another, planners use data about this to rebalance and improve the system.",
+          "answer": "What is usage patterns (or station demand data)?"
         }
       ]
     },
     {
-      "name": "PLAIN LANGUAGE",
+      "name": "UX EVERYWHERE",
       "clues": [
         {
           "value": 200,
-          "question": "This 2010 U.S. federal law requires government agencies to write documents in language the public can understand.",
-          "answer": "What is the Plain Writing Act?"
+          "question": "This type of online menu — usually found by clicking three stacked lines — helps people navigate apps and websites.",
+          "answer": "What is a hamburger menu?"
         },
         {
           "value": 400,
-          "question": "This readability metric, commonly used in gov content, measures reading ease on a scale of 0-100 — higher is easier.",
-          "answer": "What is the Flesch Reading Ease score?"
+          "question": "When a website allows users to undo mistakes easily — like restoring a deleted file — it's prioritizing this aspect of user experience.",
+          "answer": "What is error recovery (or undo functionality)?"
         },
         {
           "value": 600,
-          "question": "When a court form says 'hereinafter referred to as the petitioner,' plain language practitioners would replace it with this.",
-          "answer": "What is 'you' (or the person's name)?"
+          "question": "In a library's self-checkout, this design principle is at work when steps are so clear that first-timers don't need instructions to borrow a book.",
+          "answer": "What is intuitive design (or simplicity)?"
         },
         {
           "value": 800,
-          "question": "This content strategy principle says you should structure information with the most important point first, not buried at the end — especially critical for legal instructions.",
-          "answer": "What is front-loading (or inverted pyramid)?"
+          "question": "This approach means designing digital tools so that everyone, including people with disabilities, can use them.",
+          "answer": "What is accessibility (or inclusive design)?"
         },
         {
           "value": 1000,
-          "question": "The UK Government Digital Service established these as their core content design principles: this many, starting with 'Start with user needs.'",
-          "answer": "What are the 10 GDS Design Principles?"
+          "question": "Using fun loading animations or estimated wait times, food delivery apps try to reduce this negative feeling while users wait.",
+          "answer": "What is perceived wait time (or boredom/impatience)?"
         }
       ]
     },
     {
-      "name": "POTPOURRI",
+      "name": "URBAN PLANNING",
       "clues": [
         {
           "value": 200,
-          "question": "This research method involves watching real users attempt tasks with a product while thinking aloud.",
-          "answer": "What is usability testing (or think-aloud testing)?"
+          "question": "Sidewalks, street trees, and benches are grouped together under this type of urban design feature, making public spaces more inviting.",
+          "answer": "What are amenities (or streetscape elements)?"
         },
         {
           "value": 400,
-          "question": "The perceived quality of a clickable element that suggests how it should be used — a door handle that looks like it should be pulled, for example.",
-          "answer": "What is an affordance?"
+          "question": "This term describes dividing a city into different areas for homes, shops, factories, and parks.",
+          "answer": "What is zoning?"
         },
         {
           "value": 600,
-          "question": "Card sorting, tree testing, and site maps are all tools used to design this aspect of a digital product.",
-          "answer": "What is information architecture?"
+          "question": "This word describes a temporary event where a city street is closed to vehicles and open to walking, biking, and playing.",
+          "answer": "What is Open Streets (or a pedestrianization event)?"
         },
         {
           "value": 800,
-          "question": "This UX research concept describes the gap between what users SAY they do and what they ACTUALLY do, which is why observation matters.",
-          "answer": "What is the say-do gap (or attitudinal vs. behavioral data)?"
+          "question": "When planners give residents a voice about projects in their neighborhood, they are practicing this foundation of good planning.",
+          "answer": "What is public participation (or community engagement)?"
         },
         {
           "value": 1000,
-          "question": "Jared Spool argued that this is the 'last great frontier' of design — the cumulative effect of every interaction a person has with an organization over time, not just a single screen.",
-          "answer": "What is experience rot (or accumulated UX debt)?"
+          "question": "This digital mapping tool lets city leaders visualize data about things like traffic, pollution, and public services all in one place.",
+          "answer": "What is a GIS (Geographic Information System)?"
         }
       ]
     },
     {
-      "name": "FRICTION & SLUDGE",
+      "name": "SUSTAINABILITY",
       "clues": [
         {
           "value": 200,
-          "question": "This term from behavioral economics describes unnecessary friction deliberately placed in a process to discourage people from completing it.",
-          "answer": "What is sludge?"
+          "question": "Bringing your own cup to a coffee shop is an example of this waste-limiting environmental practice.",
+          "answer": "What is reuse (or waste reduction)?"
         },
         {
           "value": 400,
-          "question": "A design that tricks users into doing things they didn't intend — like signing up for a subscription or sharing data — named by Harry Brignull.",
-          "answer": "What is a dark pattern (or deceptive design)?"
+          "question": "This renewable energy source, visible on the roofs of many city buildings, uses sunlight to generate power.",
+          "answer": "What is solar energy (or solar panels)?"
         },
         {
           "value": 600,
-          "question": "When a court form gets rejected because a user checked Box 3 instead of Box 3a, this design principle — which should have prevented the mistake — has failed.",
-          "answer": "What is error prevention?"
+          "question": "These city park features — also called rain gardens — help soak up stormwater and fight flooding.",
+          "answer": "What are bioswales?"
         },
         {
           "value": 800,
-          "question": "Pamela Herd and Donald Moynihan's book 'Administrative Burden' identifies three types of costs citizens face: learning costs, compliance costs, and this third type involving shame or stigma.",
-          "answer": "What are psychological costs?"
+          "question": "Bike- and scooter-sharing programs are urban strategies to reduce this negative effect caused by car trips.",
+          "answer": "What are carbon emissions (or traffic congestion)?"
         },
         {
           "value": 1000,
-          "question": "This paradox describes how adding more choices or features to a system — like a government benefits portal — can actually make it harder to use and reduce uptake.",
-          "answer": "What is the paradox of choice (or Hick's Law / choice overload)?"
+          "question": "This worldwide agreement, adopted in 2015, commits countries to take action on climate change and limit global warming.",
+          "answer": "What is the Paris Agreement?"
         }
       ]
     },
     {
-      "name": "STAKEHOLDERS & POWER",
+      "name": "SERVICE DESIGN 101",
       "clues": [
         {
           "value": 200,
-          "question": "This 2x2 matrix plots stakeholders by their level of interest and their level of influence to help prioritize engagement.",
-          "answer": "What is a power-interest grid (or stakeholder matrix)?"
+          "question": "In service design, the actions a customer can see — like a barista making your drink — happen on this 'stage.'",
+          "answer": "What is frontstage?"
         },
         {
           "value": 400,
-          "question": "In the court system, these users navigate legal proceedings without a lawyer — they are the primary audience for form redesign.",
-          "answer": "Who are pro se (or self-represented) litigants?"
+          "question": "The inventory system that reorders coffee beans before the shop runs out happens here — invisible to customers but essential.",
+          "answer": "What is backstage?"
         },
         {
           "value": 600,
-          "question": "This design approach centers the people most marginalized by a system in the design process, rather than designing 'for' them.",
-          "answer": "What is participatory design (or co-design)?"
+          "question": "Every time a student interacts with their university — the website, the registrar's office, an email — each one of these is called this.",
+          "answer": "What is a touchpoint?"
         },
         {
           "value": 800,
-          "question": "When court clerks say 'we can't change the form because the statute requires this language,' they are expressing this type of constraint that designers must navigate.",
-          "answer": "What are legal or regulatory constraints?"
+          "question": "'This Is Service Design Doing' describes five core principles. The first one says services should always be designed from this person's point of view.",
+          "answer": "What is the user (or human-centered)?"
         },
         {
           "value": 1000,
-          "question": "Donella Meadows identified 12 of these in a system where interventions can create change — the most powerful being the power to change the paradigm of the system itself.",
-          "answer": "What are leverage points?"
+          "question": "This diagram — central to 'This Is Service Design Doing' — maps the full timeline of a service from a user's emotional highs to their frustration lows.",
+          "answer": "What is a journey map?"
         }
       ]
     },
     {
-      "name": "SYSTEMS & SCALE",
+      "name": "BIG THINKERS",
       "clues": [
         {
           "value": 200,
-          "question": "This occurs when the output of a system loops back to amplify the input — like when poor court experiences lead to distrust, leading to fewer people seeking legal help.",
-          "answer": "What is a (positive/reinforcing) feedback loop?"
+          "question": "This author of 'The Death and Life of Great American Cities' argued that mixed-use neighborhoods and 'eyes on the street' make cities safer.",
+          "answer": "Who is Jane Jacobs?"
         },
         {
           "value": 400,
-          "question": "Horst Rittel coined this term for problems that are difficult to define, have no clear solution, and where every attempt to solve them changes the problem itself.",
-          "answer": "What is a wicked problem?"
+          "question": "In 'Design for the Real World,' this designer argued that most industrial design was wasteful and called on designers to serve human needs first.",
+          "answer": "Who is Victor Papanek?"
         },
         {
           "value": 600,
-          "question": "When designing digital court services, this approach means the digital version is built first and optimized, but paper/in-person options remain available.",
-          "answer": "What is digital-first (not digital-only)?"
+          "question": "Richard Rothstein's 'The Color of Law' documents how this level of government deliberately created racial segregation through housing policy.",
+          "answer": "What is the federal government?"
         },
         {
           "value": 800,
-          "question": "This U.S. federal digital service team, created in 2014 inside the White House, was formed after the Healthcare.gov crisis to bring tech talent into government.",
-          "answer": "What is the U.S. Digital Service (USDS)?"
+          "question": "In 'The Color of Money,' Mehrsa Baradaran traces how Black communities were systematically excluded from this essential institution for building wealth.",
+          "answer": "What are banks (or the banking system)?"
         },
         {
           "value": 1000,
-          "question": "This systems thinking concept — sometimes called 'the iceberg model' — says that visible events are driven by patterns, which are driven by structures, which are driven by mental models.",
-          "answer": "What are levels of perspective (or the iceberg model of systems thinking)?"
+          "question": "Mariana Mazzucato's 'The Entrepreneurial State' argues that the iPhone, GPS, and the internet all depended on early investment from this source — not Silicon Valley alone.",
+          "answer": "What is public funding (or government research)?"
+        }
+      ]
+    },
+    {
+      "name": "INFRASTRUCTURE",
+      "clues": [
+        {
+          "value": 200,
+          "question": "Roads, bridges, water pipes, and power lines are all examples of this category of shared public systems.",
+          "answer": "What is infrastructure?"
+        },
+        {
+          "value": 400,
+          "question": "In 'How Infrastructure Works,' Deb Chachra argues infrastructure should be understood not as an investment but as this — something we maintain for everyone.",
+          "answer": "What is a gift (or public good)?"
+        },
+        {
+          "value": 600,
+          "question": "Chachra points out that most infrastructure converts one form of this into another — solar to electricity, reservoirs to tap water.",
+          "answer": "What is energy?"
+        },
+        {
+          "value": 800,
+          "question": "This Flint, Michigan crisis became a national symbol of what happens when infrastructure maintenance is neglected in low-income communities.",
+          "answer": "What is the Flint water crisis?"
+        },
+        {
+          "value": 1000,
+          "question": "Chachra argues that wealthy nations have an obligation to help build infrastructure globally because the climate crisis was caused by this group's historical consumption.",
+          "answer": "Who are industrialized nations (or the Global North)?"
+        }
+      ]
+    },
+    {
+      "name": "DESIGN THINKING",
+      "clues": [
+        {
+          "value": 200,
+          "question": "Design thinking starts with this phase — spending time understanding the people you're designing for before jumping to solutions.",
+          "answer": "What is empathize?"
+        },
+        {
+          "value": 400,
+          "question": "This fast, cheap version of a product lets you test ideas with real people before building the expensive final version.",
+          "answer": "What is a prototype?"
+        },
+        {
+          "value": 600,
+          "question": "In the 'define' phase, teams write one of these — a short statement that frames the user's core need and insight.",
+          "answer": "What is a problem statement (or How Might We)?"
+        },
+        {
+          "value": 800,
+          "question": "This brainstorming rule from IDEO says you should build on others' ideas rather than shutting them down.",
+          "answer": "What is 'yes, and' (or defer judgment)?"
+        },
+        {
+          "value": 1000,
+          "question": "The Design Thinking Playbook describes this mindset shift: moving from designing FOR users to designing WITH them as co-creators.",
+          "answer": "What is co-design (or participatory design)?"
+        }
+      ]
+    },
+    {
+      "name": "BUILT ENVIRONMENT",
+      "clues": [
+        {
+          "value": 200,
+          "question": "Jane Jacobs championed this type of neighborhood where homes, shops, and offices share the same streets — the opposite of single-use zoning.",
+          "answer": "What is mixed-use?"
+        },
+        {
+          "value": 400,
+          "question": "Robert Moses built highways through neighborhoods in New York, famously prioritizing cars over this group of city residents.",
+          "answer": "Who are pedestrians (or communities of color)?"
+        },
+        {
+          "value": 600,
+          "question": "This term describes hostile design features — like armrests in the middle of benches — meant to prevent people from sleeping in public spaces.",
+          "answer": "What is hostile architecture (or defensive design)?"
+        },
+        {
+          "value": 800,
+          "question": "The practice of lining up government offices, transit stops, and social services along the same corridor is an example of designing for this.",
+          "answer": "What is access (or service proximity)?"
+        },
+        {
+          "value": 1000,
+          "question": "Architect and theorist Christopher Alexander's 'A Pattern Language' proposed that good design comes from reusable solutions to recurring problems — he called these this.",
+          "answer": "What are patterns?"
+        }
+      ]
+    },
+    {
+      "name": "EQUITY BY DESIGN",
+      "clues": [
+        {
+          "value": 200,
+          "question": "When a government form is only available in English in a multilingual city, this group of residents is effectively excluded from the service.",
+          "answer": "Who are non-English speakers (or LEP residents)?"
+        },
+        {
+          "value": 400,
+          "question": "In 'The Color of Law,' Rothstein shows that the FHA refused to insure mortgages in Black neighborhoods — a practice known by this name.",
+          "answer": "What is redlining?"
+        },
+        {
+          "value": 600,
+          "question": "Baradaran's 'The Color of Money' explains that without access to mainstream banks, Black communities relied on these expensive alternatives for basic financial services.",
+          "answer": "What are check cashers (or payday lenders/fringe banking)?"
+        },
+        {
+          "value": 800,
+          "question": "This term describes the extra time, hassle, and confusion that government services impose on the people who need them most.",
+          "answer": "What is administrative burden (or sludge)?"
+        },
+        {
+          "value": 1000,
+          "question": "Mazzucato argues that when government funds risky early research and private companies profit, the public deserves this in return.",
+          "answer": "What is a return on investment (or shared rewards)?"
+        }
+      ]
+    },
+    {
+      "name": "DIGITAL SERVICES",
+      "clues": [
+        {
+          "value": 200,
+          "question": "Most people interact with government services through this first — typing a question into Google rather than visiting an office.",
+          "answer": "What is a search engine (or online search)?"
+        },
+        {
+          "value": 400,
+          "question": "The UK's GOV.UK was a pioneer in this approach: one website for all government services, written in plain language.",
+          "answer": "What is digital government (or a single-domain strategy)?"
+        },
+        {
+          "value": 600,
+          "question": "When you fill out half a form and your session expires, losing all your work, the service has failed at this basic principle.",
+          "answer": "What is saving progress (or session persistence)?"
+        },
+        {
+          "value": 800,
+          "question": "This design principle says a digital service should work for users on old phones, slow internet, and small screens — not just the latest devices.",
+          "answer": "What is progressive enhancement (or designing for constraints)?"
+        },
+        {
+          "value": 1000,
+          "question": "Estonia lets citizens vote, pay taxes, and access health records online through a single digital identity — a model for this kind of government.",
+          "answer": "What is e-government (or digital-first government)?"
+        }
+      ]
+    },
+    {
+      "name": "WHO SAID IT?",
+      "clues": [
+        {
+          "value": 200,
+          "question": "'There is no logic that can be superimposed on the city; people make it, and it is to them, not buildings, that we must fit our plans.'",
+          "answer": "Who is Jane Jacobs?"
+        },
+        {
+          "value": 400,
+          "question": "'There are professions more harmful than industrial design, but only a very few of them.'",
+          "answer": "Who is Victor Papanek?"
+        },
+        {
+          "value": 600,
+          "question": "'Infrastructure is the foundation of collective life and shared prosperity.'",
+          "answer": "Who is Deb Chachra?"
+        },
+        {
+          "value": 800,
+          "question": "'The entrepreneurial state has been behind the bold, uncertain investments that led to technologies like the internet, GPS, and touchscreens.'",
+          "answer": "Who is Mariana Mazzucato?"
+        },
+        {
+          "value": 1000,
+          "question": "'The racial wealth gap is not about poor individual choices; it's about a system that was built to exclude.'",
+          "answer": "Who is Mehrsa Baradaran?"
+        }
+      ]
+    },
+    {
+      "name": "PLACES, PEOPLE & THINGS",
+      "clues": [
+        {
+          "value": 200,
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Bollard_Quay_Wharf.jpg/640px-Bollard_Quay_Wharf.jpg",
+          "question": "Name this common piece of street infrastructure designed to protect pedestrians from vehicles.",
+          "answer": "What is a bollard?"
+        },
+        {
+          "value": 400,
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Woonerf_Rotterdam.jpg/640px-Woonerf_Rotterdam.jpg",
+          "question": "This Dutch street design concept puts pedestrians, cyclists, and cars on equal footing — with no curbs or traffic signs.",
+          "answer": "What is a woonerf (or shared space)?"
+        },
+        {
+          "value": 600,
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Tactile_paving.JPG/640px-Tactile_paving.JPG",
+          "question": "These textured ground surfaces at crosswalks and transit platforms help people with visual impairments navigate safely.",
+          "answer": "What are tactile pavers (or truncated domes/detectable warning surfaces)?"
+        },
+        {
+          "value": 800,
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Bioswale_Portland.jpg/640px-Bioswale_Portland.jpg",
+          "question": "This green infrastructure feature channels and filters stormwater runoff using plants and soil, often found along streets in Portland.",
+          "answer": "What is a bioswale?"
+        },
+        {
+          "value": 1000,
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Superkilen_park_Copenhagen.jpg/640px-Superkilen_park_Copenhagen.jpg",
+          "question": "This Copenhagen park, designed by BIG architects, celebrates diversity by embedding objects from 60 countries into its landscape.",
+          "answer": "What is Superkilen?"
         }
       ]
     }

@@ -530,8 +530,18 @@ body {
   margin-bottom: 1.5rem;
   min-height: 120px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.clue-image {
+  max-width: min(90%, 500px);
+  max-height: 40vh;
+  border: 3px solid var(--cyan);
+  border-radius: 4px;
+  box-shadow: 0 0 20px rgba(0,255,247,0.2);
+  image-rendering: auto;
 }
 
 .answer-text {
