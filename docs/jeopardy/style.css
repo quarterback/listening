@@ -214,6 +214,58 @@ body {
   50%, 60% { opacity: 0.2; }
 }
 
+/* ── Colophon / Credits ── */
+.colophon {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: 90%;
+  max-width: 500px;
+  z-index: 2;
+}
+.colophon-built {
+  font-size: 0.6rem;
+  color: #666;
+  margin-bottom: 0.15rem;
+}
+.colophon-built strong {
+  color: #888;
+}
+.colophon-school {
+  font-size: 0.5rem;
+  color: #555;
+  margin-bottom: 0.1rem;
+}
+.colophon-taught {
+  font-size: 0.5rem;
+  color: #555;
+  margin-bottom: 0.6rem;
+}
+.colophon-taught a {
+  color: #666;
+  text-decoration: underline;
+  text-decoration-color: #444;
+}
+.colophon-taught a:hover {
+  color: var(--cyan);
+}
+.colophon-stack {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.3rem;
+}
+.stack-tag {
+  font-family: var(--pixel-font);
+  font-size: 0.35rem;
+  color: #555;
+  border: 1px solid #2a2a2e;
+  padding: 0.15rem 0.4rem;
+  letter-spacing: 0.05em;
+}
+
 /* ── SETUP SCREEN ── */
 .setup-inner {
   text-align: center;
@@ -331,10 +383,10 @@ body {
 /* ── SCOREBAR ── */
 #scorebar {
   width: 100%;
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 1rem;
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1rem;
   background: rgba(10,10,15,0.9);
   border-bottom: 2px solid #1a1a2e;
   flex-shrink: 0;
@@ -364,23 +416,27 @@ body {
 }
 
 /* ── JEOPARDY BOARD ── */
+#screen-board.active {
+  justify-content: stretch;
+}
+
 #board {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: auto repeat(5, 1fr);
+  grid-template-rows: minmax(40px, auto) repeat(5, 1fr);
   gap: 4px;
   padding: 0.5rem;
   width: 100%;
-  max-width: 100%;
+  overflow: hidden;
 }
 
 .board-header {
   font-family: var(--pixel-font);
-  font-size: clamp(0.35rem, 1.2vw, 0.65rem);
+  font-size: clamp(0.4rem, 1.1vw, 0.65rem);
   color: var(--white);
   background: var(--blue);
-  padding: 0.5rem 0.3rem;
+  padding: 0.4rem 0.3rem;
   text-align: center;
   display: flex;
   align-items: center;
