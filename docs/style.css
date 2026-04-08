@@ -365,6 +365,95 @@ section .lede {
   .era-album img { width: 120px; height: 120px; }
 }
 
+/* ── Era Tabs ── */
+.era-tabs {
+  display: flex; flex-wrap: wrap; gap: 0.4rem;
+  margin-bottom: 2rem;
+  position: sticky; top: 3rem; z-index: 10;
+  background: rgba(10,10,15,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0.6rem 0;
+}
+.era-tab {
+  padding: 0.35rem 0.8rem;
+  background: #12121a; border: 1px solid #222;
+  border-radius: 20px; color: #666;
+  font-size: 0.72rem; cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+.era-tab:hover { color: #ccc; border-color: #444; }
+.era-tab.active {
+  color: #ff6b35; border-color: rgba(255,107,53,0.4);
+  background: rgba(255,107,53,0.1);
+}
+
+/* ── Lifers Callout ── */
+.lifers-callout {
+  margin-top: 3rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid #1a1a1a;
+}
+.lifers-heading {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-size: 1.3rem; color: #e8e8e8;
+  margin-bottom: 0.3rem;
+}
+.lifers-sub {
+  color: #666; font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+.lifers-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.8rem;
+}
+.lifer-item {
+  display: flex; flex-direction: column;
+  background: #12121a; border: 1px solid #222;
+  border-radius: 8px; padding: 0.8rem 1rem;
+}
+.lifer-name { font-weight: 600; font-size: 0.92rem; }
+.lifer-span {
+  font-size: 0.75rem; color: #ff6b35;
+  margin-top: 0.2rem;
+}
+.lifer-range {
+  font-size: 0.72rem; color: #555;
+  margin-top: 0.15rem;
+}
+
+/* ── Fallen Off ── */
+.fallen-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+.fallen-card {
+  background: #12121a; border: 1px solid #222;
+  border-radius: 8px; padding: 1rem 1.1rem;
+}
+.fo-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.15rem; }
+.fo-genre { font-size: 0.72rem; color: #555; margin-bottom: 0.5rem; }
+.fo-stats { font-size: 0.78rem; color: #ff6b35; }
+.fo-last { font-size: 0.72rem; color: #444; margin-top: 0.3rem; }
+
+/* ── One-Song Artists ── */
+.one-song-list { max-width: 640px; }
+.one-song-item {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.6rem; padding: 0.6rem 0;
+  border-bottom: 1px solid #151518;
+}
+.one-song-item:last-child { border-bottom: none; }
+.os-left { display: flex; align-items: center; gap: 0.5rem; min-width: 0; }
+.os-text { min-width: 0; }
+.os-artist { font-weight: 600; font-size: 0.88rem; }
+.os-song { font-size: 0.8rem; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.os-plays { font-size: 0.75rem; color: #ff6b35; flex-shrink: 0; }
+
 /* ── Decades ── */
 .decades-grid {
   display: grid;
@@ -453,6 +542,10 @@ footer a { color: #666; }
   .nav-links a { font-size: 0.72rem; }
   .obscure-item { grid-template-columns: 1fr; gap: 0.2rem; }
   .oi-listeners, .oi-plays { text-align: left; }
+  .fallen-grid { grid-template-columns: 1fr; }
+  .lifers-list { grid-template-columns: 1fr; }
+  .era-tabs { top: 2.6rem; gap: 0.3rem; }
+  .os-song { max-width: 180px; }
 }
 
 @media (max-width: 400px) {
