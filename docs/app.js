@@ -418,14 +418,18 @@ fetch('viz_data.json')
       });
     })();
 
-    // ── Before The Scrobbles (Eras) ──
+    // ── Before The Scrobbles (Eras) with Tab Navigation ──
     (function() {
       var container = document.getElementById('eras-list');
+      var tabContainer = document.getElementById('era-tabs');
       if (!DATA.eras || !container) return;
 
-      DATA.eras.forEach(function(era) {
+      var blocks = [];
+
+      DATA.eras.forEach(function(era, idx) {
         var block = document.createElement('div');
         block.className = 'era-block';
+        block.id = 'era-' + idx;
 
         var title = document.createElement('div');
         title.className = 'era-title';
@@ -480,6 +484,267 @@ fetch('viz_data.json')
         }
 
         container.appendChild(block);
+        blocks.push(block);
+      });
+
+      // Era tab navigation
+      if (tabContainer && DATA.eras.length > 3) {
+        DATA.eras.forEach(function(era, idx) {
+          var tab = document.createElement('button');
+          tab.className = 'era-tab';
+          tab.textContent = era.title;
+          tab.addEventListener('click', function() {
+            blocks[idx].scrollIntoView({behavior: 'smooth', block: 'start'});
+            // Update active tab
+            var allTabs = tabContainer.querySelectorAll('.era-tab');
+            for (var i = 0; i < allTabs.length; i++) allTabs[i].classList.remove('active');
+            tab.classList.add('active');
+          });
+          tabContainer.appendChild(tab);
+        });
+
+        // Highlight active tab on scroll
+        if (window.IntersectionObserver) {
+          blocks.forEach(function(block, idx) {
+            var observer = new IntersectionObserver(function(entries) {
+              if (entries[0].isIntersecting) {
+                var allTabs = tabContainer.querySelectorAll('.era-tab');
+                for (var i = 0; i < allTabs.length; i++) allTabs[i].classList.remove('active');
+                if (allTabs[idx]) allTabs[idx].classList.add('active');
+              }
+            }, {threshold: 0.3});
+            observer.observe(block);
+          });
+        }
+      }
+    })();
+
+    // ── Lifers Callout ──
+    (function() {
+      var callout = document.getElementById('lifers-callout');
+      if (!callout || !DATA.multiYear) return;
+
+      var lifers = Object.entries(DATA.multiYear)
+        .map(function(e) {
+          var yearKeys = Object.keys(e[1].y);
+          var total = 0;
+          for (var k in e[1].y) total += e[1].y[k];
+          return {
+            name: e[0],
+            yearCount: yearKeys.length,
+            total: total,
+            first: yearKeys.sort()[0],
+            last: yearKeys.sort()[yearKeys.length - 1],
+            families: e[1].f
+          };
+        })
+        .filter(function(a) { return a.yearCount >= 4; })
+        .sort(function(a, b) { return b.yearCount - a.yearCount || b.total - a.total; })
+        .slice(0, 8);
+
+      if (lifers.length === 0) return;
+
+      var heading = document.createElement('div');
+      heading.className = 'lifers-heading';
+      heading.textContent = 'The Lifers';
+      callout.appendChild(heading);
+
+      var sub = document.createElement('div');
+      sub.className = 'lifers-sub';
+      sub.textContent = 'Artists who keep coming back, year after year.';
+      callout.appendChild(sub);
+
+      var list = document.createElement('div');
+      list.className = 'lifers-list';
+
+      lifers.forEach(function(a) {
+        var item = document.createElement('div');
+        item.className = 'lifer-item';
+
+        var name = document.createElement('span');
+        name.className = 'lifer-name';
+        name.style.color = COLORS[a.families[0]] || '#ccc';
+        name.textContent = a.name;
+        item.appendChild(name);
+
+        var span = document.createElement('span');
+        span.className = 'lifer-span mono';
+        span.textContent = a.yearCount + ' years';
+        item.appendChild(span);
+
+        var range = document.createElement('span');
+        range.className = 'lifer-range';
+        range.textContent = a.first + '\u2013' + a.last + ' \u00B7 ' + a.total.toLocaleString() + ' plays';
+        item.appendChild(range);
+
+        list.appendChild(item);
+      });
+
+      callout.appendChild(list);
+    })();
+
+    // ── Fallen Off ──
+    (function() {
+      var grid = document.getElementById('fallen-grid');
+      if (!grid) return;
+
+      // Build per-artist year-play mapping from yearGenres
+      var artistYears = {};
+      years.forEach(function(year) {
+        var artists = DATA.yearGenres[year].artists;
+        artists.forEach(function(a) {
+          if (!artistYears[a.n]) artistYears[a.n] = {plays: {}, families: a.f};
+          artistYears[a.n].plays[year] = a.p;
+        });
+      });
+
+      var recentYears = years.slice(-3);
+      var fallen = [];
+
+      Object.keys(artistYears).forEach(function(name) {
+        var data = artistYears[name];
+        var allPlays = data.plays;
+        var totalPlays = 0;
+        var recentPlays = 0;
+        var peakYear = null;
+        var peakPlays = 0;
+        var lastYear = null;
+
+        Object.keys(allPlays).forEach(function(y) {
+          totalPlays += allPlays[y];
+          if (recentYears.indexOf(y) !== -1) recentPlays += allPlays[y];
+          if (allPlays[y] > peakPlays) { peakPlays = allPlays[y]; peakYear = y; }
+          if (!lastYear || y > lastYear) lastYear = y;
+        });
+
+        if (totalPlays >= 150 && recentPlays === 0 && peakPlays >= 50) {
+          fallen.push({
+            name: name,
+            peakYear: peakYear,
+            peakPlays: peakPlays,
+            lastYear: lastYear,
+            totalPlays: totalPlays,
+            families: data.families
+          });
+        }
+      });
+
+      fallen.sort(function(a, b) { return b.totalPlays - a.totalPlays; });
+      fallen = fallen.slice(0, 12);
+
+      fallen.forEach(function(a) {
+        var card = document.createElement('div');
+        card.className = 'fallen-card';
+
+        var name = document.createElement('div');
+        name.className = 'fo-name';
+        name.style.color = COLORS[a.families[0]] || '#ccc';
+        name.textContent = a.name;
+        card.appendChild(name);
+
+        var genre = document.createElement('div');
+        genre.className = 'fo-genre';
+        genre.textContent = a.families.join(', ');
+        card.appendChild(genre);
+
+        var stats = document.createElement('div');
+        stats.className = 'fo-stats mono';
+
+        var peak = document.createElement('span');
+        peak.textContent = a.peakPlays + ' plays in ' + a.peakYear;
+        stats.appendChild(peak);
+
+        card.appendChild(stats);
+
+        var last = document.createElement('div');
+        last.className = 'fo-last';
+        last.textContent = 'Last heard ' + a.lastYear + ' \u00B7 ' + a.totalPlays + ' total plays';
+        card.appendChild(last);
+
+        grid.appendChild(card);
+      });
+    })();
+
+    // ── One-Song Artists ──
+    (function() {
+      var list = document.getElementById('one-song-list');
+      if (!list) return;
+
+      // Build per-artist track mapping from tracks data
+      var artistTracks = {};
+      var artistTotalPlays = {};
+
+      years.forEach(function(year) {
+        // Total plays from yearGenres
+        var artists = DATA.yearGenres[year].artists;
+        artists.forEach(function(a) {
+          artistTotalPlays[a.n] = (artistTotalPlays[a.n] || 0) + a.p;
+        });
+
+        // Track appearances
+        var tracks = DATA.tracks[year];
+        if (!tracks) return;
+        tracks.forEach(function(t) {
+          if (!artistTracks[t.artist]) artistTracks[t.artist] = {};
+          if (!artistTracks[t.artist][t.name]) artistTracks[t.artist][t.name] = 0;
+          artistTracks[t.artist][t.name] += t.plays;
+        });
+      });
+
+      var oneSong = [];
+      Object.keys(artistTracks).forEach(function(artist) {
+        var tracks = artistTracks[artist];
+        var trackNames = Object.keys(tracks);
+        if (trackNames.length === 1 && artistTotalPlays[artist] >= 50) {
+          oneSong.push({
+            artist: artist,
+            song: trackNames[0],
+            songPlays: tracks[trackNames[0]],
+            totalPlays: artistTotalPlays[artist] || 0
+          });
+        }
+      });
+
+      oneSong.sort(function(a, b) { return b.songPlays - a.songPlays; });
+      oneSong = oneSong.slice(0, 15);
+
+      oneSong.forEach(function(a) {
+        var item = document.createElement('div');
+        item.className = 'one-song-item';
+
+        var left = document.createElement('div');
+        left.className = 'os-left';
+
+        var btn = document.createElement('button');
+        btn.className = 'yc-btn';
+        btn.textContent = '\u25B6';
+        btn.setAttribute('aria-label', 'Play preview of ' + a.song + ' by ' + a.artist);
+        btn.setAttribute('aria-pressed', 'false');
+        btn.addEventListener('click', function() { playPreview(a.artist, a.song, btn); });
+        left.appendChild(btn);
+
+        var text = document.createElement('div');
+        text.className = 'os-text';
+
+        var artistSpan = document.createElement('div');
+        artistSpan.className = 'os-artist';
+        artistSpan.textContent = a.artist;
+        text.appendChild(artistSpan);
+
+        var songSpan = document.createElement('div');
+        songSpan.className = 'os-song';
+        songSpan.textContent = a.song;
+        text.appendChild(songSpan);
+
+        left.appendChild(text);
+        item.appendChild(left);
+
+        var right = document.createElement('div');
+        right.className = 'os-plays mono';
+        right.textContent = a.songPlays + ' plays';
+        item.appendChild(right);
+
+        list.appendChild(item);
       });
     })();
 
