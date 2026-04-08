@@ -567,14 +567,15 @@ fetch('viz_data.json')
         name.textContent = a.name;
         item.appendChild(name);
 
+        var actualSpan = parseInt(a.last) - parseInt(a.first) + 1;
         var span = document.createElement('span');
         span.className = 'lifer-span mono';
-        span.textContent = a.yearCount + ' years';
+        span.textContent = actualSpan + '-year run';
         item.appendChild(span);
 
         var range = document.createElement('span');
         range.className = 'lifer-range';
-        range.textContent = a.first + '\u2013' + a.last + ' \u00B7 ' + a.total.toLocaleString() + ' plays';
+        range.textContent = a.first + '\u2013' + a.last + ' \u00B7 top 15 in ' + a.yearCount + ' of those \u00B7 ' + a.total.toLocaleString() + ' plays';
         item.appendChild(range);
 
         list.appendChild(item);
@@ -598,7 +599,8 @@ fetch('viz_data.json')
         });
       });
 
-      var recentYears = years.slice(-3);
+      var recentYears = years.slice(-5);
+      var currentYear = parseInt(years[years.length - 1]);
       var fallen = [];
 
       Object.keys(artistYears).forEach(function(name) {
@@ -609,6 +611,7 @@ fetch('viz_data.json')
         var peakYear = null;
         var peakPlays = 0;
         var lastYear = null;
+        var activeYears = Object.keys(allPlays).length;
 
         Object.keys(allPlays).forEach(function(y) {
           totalPlays += allPlays[y];
@@ -617,13 +620,15 @@ fetch('viz_data.json')
           if (!lastYear || y > lastYear) lastYear = y;
         });
 
-        if (totalPlays >= 150 && recentPlays === 0 && peakPlays >= 50) {
+        var yearsSinceLast = currentYear - parseInt(lastYear);
+        if (totalPlays >= 150 && recentPlays === 0 && peakPlays >= 50 && yearsSinceLast >= 4) {
           fallen.push({
             name: name,
             peakYear: peakYear,
             peakPlays: peakPlays,
             lastYear: lastYear,
             totalPlays: totalPlays,
+            activeYears: activeYears,
             families: data.families
           });
         }
@@ -651,14 +656,14 @@ fetch('viz_data.json')
         stats.className = 'fo-stats mono';
 
         var peak = document.createElement('span');
-        peak.textContent = a.peakPlays + ' plays in ' + a.peakYear;
+        peak.textContent = 'Peaked at ' + a.peakPlays + ' plays in ' + a.peakYear;
         stats.appendChild(peak);
 
         card.appendChild(stats);
 
         var last = document.createElement('div');
         last.className = 'fo-last';
-        last.textContent = 'Last heard ' + a.lastYear + ' \u00B7 ' + a.totalPlays + ' total plays';
+        last.textContent = 'Last topped the chart in ' + a.lastYear + ' \u00B7 ' + a.totalPlays + ' total plays across ' + a.activeYears + ' years';
         card.appendChild(last);
 
         grid.appendChild(card);
