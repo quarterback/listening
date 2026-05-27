@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0a0f">
+<title>Music Card Generator</title>
+<meta name="description" content="Paste any song link — Spotify, Apple Music, YouTube, Tidal — and get a shareable card image for your story. Works for any song, any platform, any destination.">
+<meta property="og:title" content="Music Card Generator">
+<meta property="og:description" content="Paste a song link, get a shareable card. Any source, any story — TikTok, Threads, Snapchat, anywhere.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Instrument+Sans:wght@400;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="card.css">
+</head>
+<body>
+
+<a href="#card-input" class="skip-link">Skip to generator</a>
+
+<main class="wrap">
+  <header class="head">
+    <h1>Music&nbsp;Card</h1>
+    <p class="tagline">Paste a link to any song &mdash; Spotify, Apple Music, YouTube, Tidal, Deezer, anywhere. Get a card you can drop into any story.</p>
+  </header>
+
+  <section class="controls">
+    <label class="field-label mono" for="card-input">Song link or search</label>
+    <div class="input-row">
+      <input id="card-input" type="text" autocomplete="off" spellcheck="false"
+        placeholder="https://open.spotify.com/track/...  or  artist - song">
+      <button id="generate-btn" type="button">Generate</button>
+    </div>
+    <p class="hint">No link handy? Type an artist and song name and we'll find it.</p>
+
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+
+    <fieldset class="styles" aria-label="Card style">
+      <legend class="field-label mono">Style</legend>
+      <div class="style-grid" id="style-grid">
+        <button type="button" class="style-btn is-active" data-style="dark">Dark</button>
+        <button type="button" class="style-btn" data-style="light">Light</button>
+        <button type="button" class="style-btn" data-style="vinyl">Vinyl</button>
+        <button type="button" class="style-btn" data-style="polaroid">Polaroid</button>
+        <button type="button" class="style-btn" data-style="minimal">Minimal</button>
+      </div>
+    </fieldset>
+
+    <label class="toggle">
+      <input type="checkbox" id="qr-toggle">
+      <span>Add a scan-to-listen QR code</span>
+    </label>
+  </section>
+
+  <section class="output">
+    <div class="canvas-shell" id="canvas-shell" hidden>
+      <canvas id="card-canvas" width="1080" height="1920" aria-label="Generated music card preview"></canvas>
+    </div>
+    <div class="placeholder" id="placeholder">
+      <p>Your card will appear here.</p>
+    </div>
+    <div class="actions" id="actions" hidden>
+      <button id="download-btn" type="button" class="primary">Download PNG</button>
+      <button id="copy-link-btn" type="button">Copy universal link</button>
+    </div>
+    <p class="universal" id="universal" hidden></p>
+  </section>
+
+  <footer class="foot">
+    <p>Metadata via <a href="https://odesli.co/" rel="noopener">Odesli</a> &amp; the iTunes Search API. Artwork belongs to its rights holders.</p>
+  </footer>
+</main>
+
+<script src="card.js"></script>
+</body>
+</html>
