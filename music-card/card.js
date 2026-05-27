@@ -1,8 +1,14 @@
 'use strict';
 
 // ── Config ──
+// Primary resolver: a same-origin serverless function (see api/resolve.js) that
+// calls Odesli server-side. Odesli sends no CORS header, so the browser can't
+// hit it directly; the function sidesteps CORS and is reliable.
+var RESOLVE = '/api/resolve?url=';
+// Fallback for static hosts without serverless functions: a public CORS proxy
+// in front of Odesli. Flaky — only used if the function isn't available.
 var ODESLI = 'https://api.song.link/v1-alpha.1/links?songIfSingle=true&url=';
-var PROXY = 'https://api.allorigins.win/raw?url='; // Odesli sends no CORS header; proxy adds one.
+var PROXY = 'https://api.allorigins.win/raw?url=';
 var QR = 'https://api.qrserver.com/v1/create-qr-code/?margin=0&format=png&size=600x600&data=';
 
 // Platform display names + brand colors, in the order we want to show them.
@@ -54,11 +60,17 @@ function resolve(input) {
 }
 
 function resolveOdesli(link) {
-  var target = ODESLI + encodeURIComponent(link.trim());
-  // Try direct first (free if CORS ever allowed); fall back to proxy.
-  return fetchJson(target)
-    .catch(function () { return fetchJson(PROXY + encodeURIComponent(target)); })
-    .then(parseOdesli);
+  var clean = link.trim();
+  // Prefer our own serverless function; fall back to the public proxy if it's
+  // not deployed (e.g. plain static hosting), and only then surface an error.
+  return fetchJson(RESOLVE + encodeURIComponent(clean))
+    .catch(function () {
+      return fetchJson(PROXY + encodeURIComponent(ODESLI + encodeURIComponent(clean)));
+    })
+    .then(function (d) {
+      if (d && d.error) throw new Error(d.error);
+      return parseOdesli(d);
+    });
 }
 
 function parseOdesli(d) {

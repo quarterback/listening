@@ -21,27 +21,48 @@ site.
 
 ## Run it locally
 
-It's plain HTML/CSS/JS with no build step. Open it through a local web server
-(not `file://`, so the browser uses a real origin for the API requests):
+The front end is plain HTML/CSS/JS with no build step, but link resolution uses
+a serverless function (`api/resolve.js`). To exercise that locally, use the
+Vercel CLI so the function runs too:
 
 ```
 cd music-card
-python3 -m http.server 8000
-# then visit http://localhost:8000
+npx vercel dev      # serves the page AND the /api/resolve function
 ```
 
-## Deploy
+A plain static server (`python3 -m http.server`) also works, but without the
+function the app falls back to a public CORS proxy for link resolution (which
+can be flaky); typed `artist - song` searches work either way.
 
-Copy the folder's three files (`index.html`, `card.css`, `card.js`) to any
-static host — GitHub Pages, Netlify, Cloudflare Pages, S3, etc. There's
-nothing to build.
+## Deploy (Vercel)
+
+This app expects to run on Vercel because it includes a serverless function.
+
+1. **vercel.com → Add New → Project** and import this repo.
+2. Set **Root Directory = `music-card`**.
+3. **Framework Preset = Other**, no build command, default output directory.
+4. Deploy.
+
+With the root directory set to `music-card`, the `api/` folder is detected
+automatically and `api/resolve.js` is served at `/api/resolve`. The static
+files are served directly. No `vercel.json` required.
+
+## Why a serverless function?
+
+Odesli's public API sends no CORS header, so the browser cannot call it
+directly. The function `api/resolve.js` calls Odesli **server-side** (no CORS
+involved) and returns the JSON to the page on the same origin. This replaced an
+earlier dependency on the public `allorigins.win` proxy, which was unreliable
+and would cause cards to silently fail to load when it was down. The proxy
+remains only as a last-resort fallback for static-only hosting.
 
 ## How it works
 
 1. **Link resolution.** The Odesli API does not send CORS headers, so the
-   browser can't call it directly. The app attempts a direct request first,
-   then falls back to the `allorigins.win` proxy, which adds the
-   `Access-Control-Allow-Origin` header.
+   browser can't call it directly. The app calls its own `/api/resolve`
+   serverless function, which fetches Odesli server-side and returns the JSON.
+   If that function isn't available (plain static host), it falls back to the
+   `allorigins.win` proxy.
 2. **Artwork.** Cover art is loaded with `crossOrigin = "anonymous"` so the
    canvas stays untainted and exportable. The app prefers CDNs known to send
    CORS headers (Spotify, Amazon), probes each candidate for canvas-taint, and
@@ -64,7 +85,7 @@ Runtime calls go to these services (all free, no key required):
 
 | Service | Used for |
 |---------|----------|
-| `api.song.link` (Odesli) | Link resolution & cross-platform links |
-| `api.allorigins.win` | CORS proxy for Odesli |
+| `api.song.link` (Odesli) | Link resolution & cross-platform links (called server-side by `api/resolve.js`) |
 | `itunes.apple.com` | Text-search fallback |
 | `api.qrserver.com` | Optional QR code |
+| `api.allorigins.win` | Last-resort CORS proxy if the serverless function is absent |
