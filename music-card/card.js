@@ -10,6 +10,9 @@ var RESOLVE = '/api/resolve?url=';
 var ODESLI = 'https://api.song.link/v1-alpha.1/links?songIfSingle=true&url=';
 var PROXY = 'https://api.allorigins.win/raw?url=';
 var QR = 'https://api.qrserver.com/v1/create-qr-code/?margin=0&format=png&size=600x600&data=';
+// Last.fm "now playing" — same public read key the main site uses.
+var LASTFM_USER = 'statechampion';
+var LASTFM_KEY = '4f1d49f394a1567717e2c9049947d004';
 
 // Platform display names + brand colors, in the order we want to show them.
 var PLATFORMS = [
@@ -31,7 +34,7 @@ var ART_PREFERENCE = ['spotify', 'amazon', 'itunes', 'deezer'];
 var state = { data: null, style: 'dark', qr: false };
 
 var els = {};
-['card-input', 'generate-btn', 'status', 'style-grid', 'qr-toggle',
+['card-input', 'generate-btn', 'lastfm-btn', 'status', 'style-grid', 'qr-toggle',
  'canvas-shell', 'card-canvas', 'placeholder', 'actions',
  'download-btn', 'copy-link-btn', 'universal'].forEach(function (id) {
   els[id] = document.getElementById(id);
@@ -122,6 +125,43 @@ function resolveItunes(query) {
       platforms: r.trackViewUrl
         ? [{ name: 'Apple Music', color: '#fa57c1', url: r.trackViewUrl }] : []
     };
+  });
+}
+
+// Fetch the most recent (or now-playing) scrobble for the configured user.
+function lastfmRecent() {
+  var u = 'https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=' +
+    encodeURIComponent(LASTFM_USER) + '&limit=1&api_key=' + LASTFM_KEY + '&format=json';
+  return fetchJson(u).then(function (d) {
+    var t = d && d.recenttracks && d.recenttracks.track;
+    if (Array.isArray(t)) t = t[0];
+    if (!t || !t.name) throw new Error('No recent scrobbles found for ' + LASTFM_USER + '.');
+    return {
+      artist: (t.artist && (t.artist['#text'] || t.artist.name)) || '',
+      track: t.name,
+      nowplaying: !!(t['@attr'] && t['@attr'].nowplaying)
+    };
+  });
+}
+
+// Last.fm gives only artist + track, so match it via iTunes (art + Apple link),
+// then upgrade to full cross-platform links through Odesli when possible.
+function resolveScrobble() {
+  return lastfmRecent().then(function (s) {
+    var query = (s.artist ? s.artist + ' ' : '') + s.track;
+    els['card-input'].value = (s.artist ? s.artist + ' - ' : '') + s.track;
+    return resolveItunes(query).then(function (t) {
+      var up = t.pageUrl ? resolveOdesli(t.pageUrl).catch(function () { return t; })
+                         : Promise.resolve(t);
+      return up.then(function (track) {
+        track._nowplaying = s.nowplaying;
+        track._scrobbled = true;
+        return track;
+      });
+    }).catch(function () {
+      throw new Error('Found your scrobble (' + s.artist + ' – ' + s.track +
+        ") but couldn't match it to a streaming track.");
+    });
   });
 }
 
@@ -394,7 +434,161 @@ function tMinimal(c, t, art, qr) {
   drawFooter(c, t, qr, '#fff', '#666');
 }
 
-var TEMPLATES = { dark: tDark, light: tLight, vinyl: tVinyl, polaroid: tPolaroid, minimal: tMinimal };
+// Frosted: full-bleed blurred cover behind the sharp art (the classic share look).
+function tAura(c, t, art, qr) {
+  c.save();
+  c.filter = 'blur(60px)';
+  drawCover(c, art, -80, -80, W + 160, H + 160);
+  c.restore();
+  c.fillStyle = 'rgba(0,0,0,0.5)'; c.fillRect(0, 0, W, H);
+
+  var sz = 640, ax = (W - sz) / 2, ay = 360;
+  c.save();
+  c.shadowColor = 'rgba(0,0,0,0.6)'; c.shadowBlur = 70; c.shadowOffsetY = 30;
+  roundRect(c, ax, ay, sz, sz, 30); c.fillStyle = '#000'; c.fill();
+  c.restore();
+  c.save(); roundRect(c, ax, ay, sz, sz, 30); c.clip();
+  drawCover(c, art, ax, ay, sz, sz); c.restore();
+
+  c.textAlign = 'center';
+  var ty = ay + sz + 130;
+  c.fillStyle = '#fff';
+  var tpx = fitFont(c, t.title, W - 200, 84, 'Instrument Sans', '700');
+  var lines = wrapLines(c, t.title, W - 200, 2);
+  lines.forEach(function (ln, i) { c.fillText(ln, W / 2, ty + i * (tpx + 10)); });
+  var ay2 = ty + lines.length * (tpx + 10) + 8;
+  c.fillStyle = 'rgba(255,255,255,0.8)'; c.font = "400 46px 'Instrument Sans'";
+  c.fillText(wrapLines(c, t.artist, W - 200, 1)[0], W / 2, ay2);
+
+  drawFooter(c, t, qr, '#fff', 'rgba(255,255,255,0.6)', true);
+}
+
+// Poster: cover fills the frame, headline overlaid on a bottom scrim.
+function tPoster(c, t, art, qr) {
+  drawCover(c, art, 0, 0, W, H);
+  var g = c.createLinearGradient(0, H * 0.42, 0, H);
+  g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(0.55, 'rgba(0,0,0,0.6)');
+  g.addColorStop(1, 'rgba(0,0,0,0.92)');
+  c.fillStyle = g; c.fillRect(0, 0, W, H);
+
+  c.textAlign = 'left';
+  c.fillStyle = '#ff6b35'; c.font = "700 30px 'JetBrains Mono'";
+  c.fillText('NOW PLAYING', 110, H - 470);
+
+  c.fillStyle = '#fff';
+  var tpx = fitFont(c, t.title, W - 200, 132, 'Instrument Sans', '700');
+  var lines = wrapLines(c, t.title, W - 200, 3);
+  var startY = H - 380;
+  lines.forEach(function (ln, i) { c.fillText(ln, 110, startY + i * (tpx + 4)); });
+  var ay2 = startY + lines.length * (tpx + 4) + 24;
+  c.fillStyle = 'rgba(255,255,255,0.85)'; c.font = "400 52px 'Instrument Sans'";
+  c.fillText(wrapLines(c, t.artist, W - 200, 1)[0], 110, ay2);
+
+  drawFooter(c, t, qr, '#fff', 'rgba(255,255,255,0.7)');
+}
+
+// Cassette: a tape with the cover on its label and two spinning reels.
+function tCassette(c, t, art, qr) {
+  c.fillStyle = '#0d0d10'; c.fillRect(0, 0, W, H);
+  var col = averageColor(art);
+  var bx = 90, by = 540, bw = W - 180, bh = 600, r = 28;
+
+  c.save();
+  c.shadowColor = 'rgba(0,0,0,0.55)'; c.shadowBlur = 60; c.shadowOffsetY = 24;
+  roundRect(c, bx, by, bw, bh, r); c.fillStyle = mix(col, 0.7); c.fill();
+  c.restore();
+  // Top label strip = album art
+  var lx = bx + 50, ly = by + 45, lw = bw - 100, lh = 230;
+  c.save(); roundRect(c, lx, ly, lw, lh, 12); c.clip();
+  drawCover(c, art, lx, ly, lw, lh); c.restore();
+  // Window with two reels
+  var wx = bx + 130, wy = ly + lh + 50, ww = bw - 260, wh = 200;
+  roundRect(c, wx, wy, ww, wh, 16); c.fillStyle = '#15151a'; c.fill();
+  var cy = wy + wh / 2, rad = 70;
+  [wx + 150, wx + ww - 150].forEach(function (cx) {
+    c.beginPath(); c.arc(cx, cy, rad, 0, Math.PI * 2); c.fillStyle = '#2a2a30'; c.fill();
+    c.save(); c.translate(cx, cy);
+    c.strokeStyle = '#4a4a52'; c.lineWidth = 10;
+    for (var i = 0; i < 6; i++) { c.rotate(Math.PI / 3); c.beginPath(); c.moveTo(0, 0); c.lineTo(0, -rad + 6); c.stroke(); }
+    c.restore();
+    c.beginPath(); c.arc(cx, cy, 18, 0, Math.PI * 2); c.fillStyle = mix(col, 1.2); c.fill();
+  });
+  // Bottom corner screws
+  c.fillStyle = 'rgba(0,0,0,0.3)';
+  [[bx + 40, by + bh - 40], [bx + bw - 40, by + bh - 40]].forEach(function (p) {
+    c.beginPath(); c.arc(p[0], p[1], 12, 0, Math.PI * 2); c.fill();
+  });
+
+  c.textAlign = 'center';
+  var ty = by + bh + 130;
+  c.fillStyle = '#fff';
+  var tpx = fitFont(c, t.title, W - 200, 80, 'Instrument Sans', '700');
+  var lines = wrapLines(c, t.title, W - 200, 2);
+  lines.forEach(function (ln, i) { c.fillText(ln, W / 2, ty + i * (tpx + 8)); });
+  var ay2 = ty + lines.length * (tpx + 8) + 6;
+  c.fillStyle = 'rgba(255,255,255,0.65)'; c.font = "400 44px 'Instrument Sans'";
+  c.fillText(wrapLines(c, t.artist, W - 200, 1)[0], W / 2, ay2);
+
+  drawFooter(c, t, qr, '#fff', 'rgba(255,255,255,0.5)', true);
+}
+
+// Ticket: a concert-stub layout on warm paper.
+function tTicket(c, t, art, qr) {
+  c.fillStyle = '#161617'; c.fillRect(0, 0, W, H);
+  var tx = 90, tw = W - 180, ty = 420, th = 1080, rr = 24;
+  c.save();
+  c.shadowColor = 'rgba(0,0,0,0.5)'; c.shadowBlur = 50; c.shadowOffsetY = 20;
+  roundRect(c, tx, ty, tw, th, rr); c.fillStyle = '#f3ede2'; c.fill();
+  c.restore();
+
+  // Header art band
+  var ah = 470;
+  c.save(); roundRect(c, tx, ty, tw, ah, rr); c.clip();
+  drawCover(c, art, tx, ty, tw, ah);
+  var g = c.createLinearGradient(0, ty, 0, ty + ah);
+  g.addColorStop(0, 'rgba(0,0,0,0.1)'); g.addColorStop(1, 'rgba(0,0,0,0.55)');
+  c.fillStyle = g; c.fillRect(tx, ty, tw, ah);
+  c.restore();
+  c.textAlign = 'left';
+  c.fillStyle = 'rgba(255,255,255,0.9)'; c.font = "700 28px 'JetBrains Mono'";
+  c.fillText('ADMIT ONE  ·  NOW PLAYING', tx + 50, ty + ah - 40);
+
+  // Perforation
+  var perfY = ty + ah + 70;
+  c.strokeStyle = '#161617'; c.lineWidth = 6; c.setLineDash([18, 18]);
+  c.beginPath(); c.moveTo(tx + 30, perfY); c.lineTo(tx + tw - 30, perfY); c.stroke();
+  c.setLineDash([]);
+  c.fillStyle = '#161617';
+  c.beginPath(); c.arc(tx, perfY, 28, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.arc(tx + tw, perfY, 28, 0, Math.PI * 2); c.fill();
+
+  // Body text
+  c.fillStyle = '#9a3b12'; c.font = "700 26px 'JetBrains Mono'";
+  c.fillText('TRACK', tx + 50, perfY + 80);
+  c.fillStyle = '#1a1a1a';
+  var tpx = fitFont(c, t.title, tw - 100, 70, 'Instrument Sans', '700');
+  var lines = wrapLines(c, t.title, tw - 100, 2);
+  lines.forEach(function (ln, i) { c.fillText(ln, tx + 50, perfY + 150 + i * (tpx + 8)); });
+  var afterTitle = perfY + 150 + lines.length * (tpx + 8);
+  c.fillStyle = '#9a3b12'; c.font = "700 26px 'JetBrains Mono'";
+  c.fillText('ARTIST', tx + 50, afterTitle + 40);
+  c.fillStyle = '#444'; c.font = "400 44px 'Instrument Sans'";
+  c.fillText(wrapLines(c, t.artist, tw - 100, 1)[0], tx + 50, afterTitle + 100);
+
+  // Footer line inside ticket
+  var short = (t.pageUrl || '').replace(/^https?:\/\//, '');
+  c.fillStyle = '#777'; c.font = "700 28px 'JetBrains Mono'";
+  if (short) c.fillText(short, tx + 50, ty + th - 50);
+  if (qr && qr.img) {
+    var qs = 150, qx = tx + tw - qs - 50, qy = ty + th - qs - 40;
+    c.drawImage(qr.img, qx, qy, qs, qs);
+  }
+}
+
+var TEMPLATES = {
+  dark: tDark, light: tLight, vinyl: tVinyl, polaroid: tPolaroid, minimal: tMinimal,
+  aura: tAura, poster: tPoster, cassette: tCassette, ticket: tTicket
+};
 
 // Shared footer: platform line + universal URL, optional QR bottom-right.
 function drawFooter(c, t, qr, fg, muted, centered) {
@@ -436,13 +630,16 @@ function ensureFonts() {
   ]).catch(function () {});
 }
 
-function generate() {
-  var input = els['card-input'].value.trim();
-  if (!input) { setStatus('Paste a song link or type a search first.', 'error'); return; }
-  els['generate-btn'].disabled = true;
-  setStatus('Looking up song…', 'busy');
+function setBusy(on) {
+  els['generate-btn'].disabled = on;
+  els['lastfm-btn'].disabled = on;
+}
 
-  resolve(input)
+// Shared pipeline: take a promise of a normalized track → art → fonts → QR → card.
+function produce(trackPromise, busyMsg) {
+  setBusy(true);
+  setStatus(busyMsg || 'Looking up song…', 'busy');
+  return trackPromise
     .then(function (track) {
       setStatus('Loading artwork…', 'busy');
       return Promise.all([track, loadArtwork(track.artUrls), ensureFonts()]);
@@ -460,12 +657,24 @@ function generate() {
     })
     .then(function () {
       showCard();
-      setStatus(state.data.title + ' — ' + state.data.artist, 'ok');
+      var t = state.data;
+      var prefix = t._nowplaying ? '♫ Now playing — ' : (t._scrobbled ? 'Last scrobble — ' : '');
+      setStatus(prefix + t.title + ' — ' + t.artist, 'ok');
     })
     .catch(function (err) {
       setStatus(err.message || 'Something went wrong. Check the link and try again.', 'error');
     })
-    .then(function () { els['generate-btn'].disabled = false; });
+    .then(function () { setBusy(false); });
+}
+
+function generate() {
+  var input = els['card-input'].value.trim();
+  if (!input) { setStatus('Paste a song link or type a search first.', 'error'); return; }
+  produce(resolve(input));
+}
+
+function useScrobble() {
+  produce(resolveScrobble(), 'Checking Last.fm…');
 }
 
 function showCard() {
@@ -497,6 +706,7 @@ function download() {
 
 // ── Events ──
 els['generate-btn'].addEventListener('click', generate);
+els['lastfm-btn'].addEventListener('click', useScrobble);
 els['card-input'].addEventListener('keydown', function (e) { if (e.key === 'Enter') generate(); });
 
 els['style-grid'].addEventListener('click', function (e) {

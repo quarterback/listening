@@ -32,6 +32,10 @@
     </div>
     <p class="hint">No link handy? Type an artist and song name and we'll find it.</p>
 
+    <button id="lastfm-btn" type="button" class="lastfm-btn">
+      <span class="lf-dot" aria-hidden="true"></span> Use my latest Last.fm scrobble
+    </button>
+
     <div id="status" class="status" role="status" aria-live="polite"></div>
 
     <fieldset class="styles" aria-label="Card style">
@@ -39,8 +43,12 @@
       <div class="style-grid" id="style-grid">
         <button type="button" class="style-btn is-active" data-style="dark">Dark</button>
         <button type="button" class="style-btn" data-style="light">Light</button>
+        <button type="button" class="style-btn" data-style="aura">Aura</button>
+        <button type="button" class="style-btn" data-style="poster">Poster</button>
         <button type="button" class="style-btn" data-style="vinyl">Vinyl</button>
+        <button type="button" class="style-btn" data-style="cassette">Cassette</button>
         <button type="button" class="style-btn" data-style="polaroid">Polaroid</button>
+        <button type="button" class="style-btn" data-style="ticket">Ticket</button>
         <button type="button" class="style-btn" data-style="minimal">Minimal</button>
       </div>
     </fieldset>

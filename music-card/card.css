@@ -78,6 +78,17 @@ button:disabled { opacity: 0.5; cursor: progress; }
 
 .hint { margin-top: 0.55rem; font-size: 0.82rem; color: #666; }
 
+.lastfm-btn {
+  margin-top: 0.9rem; width: 100%;
+  display: flex; align-items: center; justify-content: center; gap: 0.55rem;
+  background: var(--panel); color: #ccc; font-weight: 600; font-size: 0.9rem;
+}
+.lastfm-btn:hover { border-color: #d51007; color: #fff; }
+.lf-dot {
+  width: 0.6rem; height: 0.6rem; border-radius: 50%;
+  background: #d51007; flex: none;
+}
+
 .status {
   margin-top: 1rem; min-height: 1.2rem; font-size: 0.9rem;
 }
