@@ -262,12 +262,6 @@ function mix(col, t) { // t<1 darken toward black, t>1 lighten toward white
   return 'rgb(' + ch(col.r) + ',' + ch(col.g) + ',' + ch(col.b) + ')';
 }
 
-function platformsLine(platforms) {
-  var names = platforms.map(function (p) { return p.name; });
-  if (names.length <= 4) return names.join('  ·  ');
-  return names.slice(0, 4).join('  ·  ') + '  +' + (names.length - 4);
-}
-
 // ── Templates ── (canvas is 1080×1920)
 var W = 1080, H = 1920;
 
@@ -541,17 +535,11 @@ function tTicket(c, t, art, qr) {
   roundRect(c, tx, ty, tw, th, rr); c.fillStyle = '#f3ede2'; c.fill();
   c.restore();
 
-  // Header art band
+  // Header art band — kept clean, no text overlay so it never collides
+  // with text that may be baked into the cover art.
   var ah = 470;
   c.save(); roundRect(c, tx, ty, tw, ah, rr); c.clip();
-  drawCover(c, art, tx, ty, tw, ah);
-  var g = c.createLinearGradient(0, ty, 0, ty + ah);
-  g.addColorStop(0, 'rgba(0,0,0,0.1)'); g.addColorStop(1, 'rgba(0,0,0,0.55)');
-  c.fillStyle = g; c.fillRect(tx, ty, tw, ah);
-  c.restore();
-  c.textAlign = 'left';
-  c.fillStyle = 'rgba(255,255,255,0.9)'; c.font = "700 28px 'JetBrains Mono'";
-  c.fillText('ADMIT ONE  ·  NOW PLAYING', tx + 50, ty + ah - 40);
+  drawCover(c, art, tx, ty, tw, ah); c.restore();
 
   // Perforation
   var perfY = ty + ah + 70;
@@ -562,14 +550,18 @@ function tTicket(c, t, art, qr) {
   c.beginPath(); c.arc(tx, perfY, 28, 0, Math.PI * 2); c.fill();
   c.beginPath(); c.arc(tx + tw, perfY, 28, 0, Math.PI * 2); c.fill();
 
-  // Body text
+  // Body text (stamp now lives on the paper, clear of the artwork)
+  c.textAlign = 'left';
+  c.fillStyle = '#9a3b12'; c.font = "700 24px 'JetBrains Mono'";
+  c.fillText('ADMIT ONE', tx + 50, perfY + 64);
+
   c.fillStyle = '#9a3b12'; c.font = "700 26px 'JetBrains Mono'";
-  c.fillText('TRACK', tx + 50, perfY + 80);
+  c.fillText('TRACK', tx + 50, perfY + 138);
   c.fillStyle = '#1a1a1a';
   var tpx = fitFont(c, t.title, tw - 100, 70, 'Instrument Sans', '700');
   var lines = wrapLines(c, t.title, tw - 100, 2);
-  lines.forEach(function (ln, i) { c.fillText(ln, tx + 50, perfY + 150 + i * (tpx + 8)); });
-  var afterTitle = perfY + 150 + lines.length * (tpx + 8);
+  lines.forEach(function (ln, i) { c.fillText(ln, tx + 50, perfY + 206 + i * (tpx + 8)); });
+  var afterTitle = perfY + 206 + lines.length * (tpx + 8);
   c.fillStyle = '#9a3b12'; c.font = "700 26px 'JetBrains Mono'";
   c.fillText('ARTIST', tx + 50, afterTitle + 40);
   c.fillStyle = '#444'; c.font = "400 44px 'Instrument Sans'";
@@ -590,19 +582,16 @@ var TEMPLATES = {
   aura: tAura, poster: tPoster, cassette: tCassette, ticket: tTicket
 };
 
-// Shared footer: platform line + universal URL, optional QR bottom-right.
+// Shared footer: universal URL, optional QR bottom-right.
 function drawFooter(c, t, qr, fg, muted, centered) {
-  var baseY = H - 130;
+  var baseY = H - 110;
   c.textAlign = centered ? 'center' : 'left';
   var x = centered ? W / 2 : 110;
-  if (qr) { c.textAlign = 'left'; x = 110; centered = false; }
+  if (qr) { c.textAlign = 'left'; x = 110; }
 
-  c.fillStyle = muted;
-  c.font = "400 30px 'JetBrains Mono'";
-  if (t.platforms.length) c.fillText(platformsLine(t.platforms), x, baseY);
   c.fillStyle = fg; c.font = "700 32px 'JetBrains Mono'";
   var short = (t.pageUrl || '').replace(/^https?:\/\//, '');
-  if (short) c.fillText(short, x, baseY + 52);
+  if (short) c.fillText(short, x, baseY);
 
   if (qr && qr.img) {
     var qs = 190, qx = W - qs - 90, qy = H - qs - 90;
