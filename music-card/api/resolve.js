@@ -2,9 +2,12 @@
 // Odesli's public API sends no CORS header, so the browser can't call it
 // directly. This runs on the same origin as the app, sidestepping CORS
 // entirely, and is far more reliable than a public proxy.
+//
+// Written as CommonJS (module.exports) so it runs on Vercel's Node runtime
+// without needing a package.json "type": "module".
 
-export default async function handler(req, res) {
-  const link = req.query.url;
+module.exports = async function handler(req, res) {
+  const link = req.query && req.query.url;
 
   res.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -29,4 +32,4 @@ export default async function handler(req, res) {
   } catch (e) {
     res.status(502).json({ error: 'Failed to reach Odesli.' });
   }
-}
+};

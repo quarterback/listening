@@ -4,7 +4,7 @@
 // Primary resolver: a same-origin serverless function (see api/resolve.js) that
 // calls Odesli server-side. Odesli sends no CORS header, so the browser can't
 // hit it directly; the function sidesteps CORS and is reliable.
-var RESOLVE = 'api/resolve?url=';
+var RESOLVE = '/api/resolve?url=';
 // Fallback for static hosts without serverless functions: a public CORS proxy
 // in front of Odesli. Flaky — only used if the function isn't available.
 var ODESLI = 'https://api.song.link/v1-alpha.1/links?songIfSingle=true&url=';
